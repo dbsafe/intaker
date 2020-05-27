@@ -1,11 +1,11 @@
 ﻿using DataProcessor.ProcessDefinition.Models;
 using DataProcessor.ProcessDefinition.Utils;
-using DataProcessor.ProcessDefinition.Versions._10;
+using DataProcessor.ProcessDefinition.Versions_10;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
 
-namespace DataProcessor.ProcessDefinition.Tests.Versions._10
+namespace DataProcessor.ProcessDefinition.Tests.Versions_10
 {
     [TestClass]
     public class InputDataDefinition_10Test

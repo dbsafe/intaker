@@ -2,7 +2,7 @@
 using System;
 using System.Xml.Serialization;
 
-namespace DataProcessor.ProcessDefinition.Versions._10
+namespace DataProcessor.ProcessDefinition.Versions_10
 {
     [XmlRoot("inputDataDefinition")]
     public class InputDataDefinition_10 : InputDataDefinition
