@@ -5,9 +5,9 @@ namespace DataProcessor.Domain.Models
     public class Field
     {
         public string Raw { get; set; }
-        public int FieldIndex { get; set; }
-        public int LineIndex { get; set; }
-        public bool IsValid { get; set; }
+        public int Index { get; set; }
+        public int RowIndex { get; set; }
+        public ValidationResultType? ValidationResult { get; set; }
         public object Value { get; set; }
 
         public int AsInt()
