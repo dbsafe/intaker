@@ -3,6 +3,13 @@ using System;
 
 namespace DataProcessor.Domain.Contracts
 {
+    public interface IDataSource
+    {
+        void Process(ParserContext context);
+        event EventHandler<ProcessFieldEventArgs> ProcessField;
+        event EventHandler<ProcessRowEventArgs> ProcessRow;
+    }
+
     public class ProcessFieldEventArgs
     {
         public Field Field { get; }
@@ -21,12 +28,5 @@ namespace DataProcessor.Domain.Contracts
         {
             Row = row;
         }
-    }
-
-    public interface IDataSource
-    {
-        void Process(ParserContext context);
-        event EventHandler<ProcessFieldEventArgs> ProcessField;
-        event EventHandler<ProcessRowEventArgs> ProcessRow;
     }
 }
