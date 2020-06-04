@@ -17,8 +17,9 @@ namespace DataProcessor.DataSource.File
         private readonly FileDataSourceConfig _config;
         private readonly LineParser _lineParser;
 
+        public event EventHandler<ProcessRowEventArgs> BeforeProcessRow;
+        public event EventHandler<ProcessRowEventArgs> AfterProcessRow;
         public event EventHandler<ProcessFieldEventArgs> ProcessField;
-        public event EventHandler<ProcessRowEventArgs> ProcessRow;
 
         public FileDataSource(FileDataSourceConfig config)
         {
@@ -40,13 +41,13 @@ namespace DataProcessor.DataSource.File
             using (var reader = new StreamReader(_config.Path))
             {
                 string nextLine = reader.ReadLine();
-                while (nextLine != null && !context.Abort)
+                while (nextLine != null && !context.IsAborted)
                 {
                     Debug($"Parsing Line: '{nextLine}'");
                     context.CurrentRowRaw = nextLine;
                     nextLine = reader.ReadLine();
                     context.IsCurrentRowTheLast = nextLine == null;
-                    ParseLine(context);
+                    CreateRow(context);
                     if (!context.IsCurrentRowTheLast)
                     {
                         context.CurrentRowIndex++;
@@ -55,34 +56,67 @@ namespace DataProcessor.DataSource.File
             }
         }
 
-        private void ParseLine(ParserContext context)
+        private void CreateRow(ParserContext context)
         {
-            var row = new Row { Index = context.CurrentRowIndex, Raw = context.CurrentRowRaw };
-            context.Rows.Add(row);
-
-            var rawFields = _lineParser.Parse(row.Raw);
-            for (int fieldIndex = 0; fieldIndex < rawFields.Length; fieldIndex++)
+            var row = new Row
             {
-                var rawField = rawFields[fieldIndex];
-                Debug($"Parsing field: '{rawField}'");
-                var field = new Field { Index = fieldIndex, Raw = rawField, RowIndex = row.Index };
+                Index = context.CurrentRowIndex,
+                Raw = context.CurrentRowRaw,
+                RawFields = _lineParser.Parse(context.CurrentRowRaw),
+                ValidationResult = ValidationResultType.Valid
+            };
+
+            context.CurrentRowRawFields = row.RawFields;
+
+            var processRowEventArgs = new ProcessRowEventArgs(row, context);
+
+            OnBeforeProcessRow(processRowEventArgs);
+            if (context.IsAborted)
+            {
+                return;
+            }
+
+            CreateFieldsForRow(row, context);
+            if (context.IsAborted)
+            {
+                return;
+            }
+
+            OnAfterProcessRow(processRowEventArgs);
+        }
+
+        private void CreateFieldsForRow(Row row, ParserContext context)
+        {
+            for (int fieldIndex = 0; fieldIndex < context.CurrentRowRawFields.Length; fieldIndex++)
+            {
+                var field = new Field
+                {
+                    Index = fieldIndex,
+                    Raw = context.CurrentRowRawFields[fieldIndex],
+                    Row = row,
+                    ValidationResult = ValidationResultType.Valid
+                };
+
                 row.Fields.Add(field);
-                OnProcessField(new ProcessFieldEventArgs(field));
-                if (context.Abort)
+                OnFieldCreated(new ProcessFieldEventArgs(field, context));
+                if (context.IsAborted)
                 {
                     return;
                 }
             }
-
-            OnProcessRow(new ProcessRowEventArgs(row));
         }
 
-        protected void OnProcessRow(ProcessRowEventArgs e)
+        protected virtual void OnBeforeProcessRow(ProcessRowEventArgs e)
         {
-            ProcessRow?.Invoke(this, e);
+            BeforeProcessRow?.Invoke(this, e);
         }
 
-        protected void OnProcessField(ProcessFieldEventArgs e)
+        protected virtual void OnAfterProcessRow(ProcessRowEventArgs e)
+        {
+            AfterProcessRow?.Invoke(this, e);
+        }
+
+        protected virtual void OnFieldCreated(ProcessFieldEventArgs e)
         {
             ProcessField?.Invoke(this, e);
         }

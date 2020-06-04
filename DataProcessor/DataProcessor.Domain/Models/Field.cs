@@ -6,7 +6,7 @@ namespace DataProcessor.Domain.Models
     {
         public string Raw { get; set; }
         public int Index { get; set; }
-        public int RowIndex { get; set; }
+        public Row Row { get; set; }
         public ValidationResultType? ValidationResult { get; set; }
         public object Value { get; set; }
 
