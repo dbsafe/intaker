@@ -3,19 +3,21 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30104.148
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Domain", "DataProcessor.Domain\DataProcessor.Domain.csproj", "{EB997B4E-CFCA-4D6B-8DBF-DC6930089A5B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Domain", "DataProcessor.Domain\DataProcessor.Domain.csproj", "{EB997B4E-CFCA-4D6B-8DBF-DC6930089A5B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.DataSource.File", "DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj", "{B8D451DB-E45B-4D6B-B442-C6CBCDC85602}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.DataSource.File", "DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj", "{B8D451DB-E45B-4D6B-B442-C6CBCDC85602}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.ProcessDefinition", "DataProcessor.ProcessDefinition\DataProcessor.ProcessDefinition.csproj", "{FEF1C77F-B2B4-47CE-B4CF-405E0E78E11D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ProcessDefinition", "DataProcessor.ProcessDefinition\DataProcessor.ProcessDefinition.csproj", "{FEF1C77F-B2B4-47CE-B4CF-405E0E78E11D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.ProcessDefinition.Tests", "DataProcessor.ProcessDefinition.Tests\DataProcessor.ProcessDefinition.Tests.csproj", "{AAA85FD4-BC23-4FE2-BC5E-556BB2752BBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ProcessDefinition.Tests", "DataProcessor.ProcessDefinition.Tests\DataProcessor.ProcessDefinition.Tests.csproj", "{AAA85FD4-BC23-4FE2-BC5E-556BB2752BBB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.DataSource.File.Tests", "DataProcessor.DataSource.File.Tests\DataProcessor.DataSource.File.Tests.csproj", "{2DB1E784-8389-4BF7-98A3-8C6D980BC5CC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.DataSource.File.Tests", "DataProcessor.DataSource.File.Tests\DataProcessor.DataSource.File.Tests.csproj", "{2DB1E784-8389-4BF7-98A3-8C6D980BC5CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Decoders", "DataProcessor.Decoders\DataProcessor.Decoders.csproj", "{23848E92-0431-4614-8B9F-C5D8AF130CC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Decoders", "DataProcessor.Decoders\DataProcessor.Decoders.csproj", "{23848E92-0431-4614-8B9F-C5D8AF130CC9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Decoders.Tests", "DataProcessor.Decoders.Tests\DataProcessor.Decoders.Tests.csproj", "{2D4ED62C-75E5-4952-B2FA-07140BBBCB71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Decoders.Tests", "DataProcessor.Decoders.Tests\DataProcessor.Decoders.Tests.csproj", "{2D4ED62C-75E5-4952-B2FA-07140BBBCB71}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Domain.Tests", "DataProcessor.Domain.Tests\DataProcessor.Domain.Tests.csproj", "{AD3717F5-30C0-4402-A855-30B556F520AD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{2D4ED62C-75E5-4952-B2FA-07140BBBCB71}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D4ED62C-75E5-4952-B2FA-07140BBBCB71}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D4ED62C-75E5-4952-B2FA-07140BBBCB71}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AD3717F5-30C0-4402-A855-30B556F520AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AD3717F5-30C0-4402-A855-30B556F520AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AD3717F5-30C0-4402-A855-30B556F520AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AD3717F5-30C0-4402-A855-30B556F520AD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
