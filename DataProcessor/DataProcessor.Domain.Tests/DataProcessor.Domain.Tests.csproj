@@ -7,28 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TestFiles\test-file-data-trailer.csv" />
-    <None Remove="TestFiles\test-file-data.csv" />
-    <None Remove="TestFiles\test-file-header-data-trailer.csv" />
-    <None Remove="TestFiles\test-file-header-data.csv" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="TestFiles\test-file-data-trailer.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\test-file-header-data-trailer.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\test-file-header-data.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="TestFiles\test-file-data.csv">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
