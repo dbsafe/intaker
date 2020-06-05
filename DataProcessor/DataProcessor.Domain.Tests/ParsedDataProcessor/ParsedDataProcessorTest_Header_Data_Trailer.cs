@@ -9,7 +9,6 @@ namespace DataProcessor.Domain.Tests
     public class ParsedDataProcessorTest_Header_Data_Trailer
     {
         private ProcessorDefinition _processorDefinition;
-        private ParsedDataProcessorConfig _config;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
@@ -17,7 +16,6 @@ namespace DataProcessor.Domain.Tests
         public void Initialize()
         {
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-header-data-trailer.csv", false);
-            _config = new ParsedDataProcessorConfig { HasHeader = true, HasTrailer = true };
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
             _processorDefinition = new ProcessorDefinition
@@ -53,7 +51,7 @@ namespace DataProcessor.Domain.Tests
         [TestMethod]
         public void Process_Given_a_file_with_header_Should_decode_and_parse_fields()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition, _config);
+            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
 
             var actual = target.Process();
 

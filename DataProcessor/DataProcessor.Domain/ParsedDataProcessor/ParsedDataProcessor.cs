@@ -1,5 +1,6 @@
 ﻿using DataProcessor.Domain.Contracts;
 using DataProcessor.Domain.Models;
+using DataProcessor.InputDefinitionFile;
 using System;
 
 namespace DataProcessor.Domain
@@ -8,21 +9,28 @@ namespace DataProcessor.Domain
     {
         private readonly IDataSource _source;
         private readonly ProcessorDefinition _processorDefinition;
-        private readonly ParsedDataProcessorConfig _config;
+        private bool _hasHeader;
+        private bool _hasTrailer;
 
         public ParserContext ParserContext { get; private set; }
 
-        public ParsedDataProcessor(IDataSource source, ProcessorDefinition processorDefinition, ParsedDataProcessorConfig config)
+        public ParsedDataProcessor(IDataSource source, ProcessorDefinition processorDefinition)
         {
             ValidateProcessorDefinition(processorDefinition);
 
+            _hasHeader = processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
+            _hasTrailer = processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
+
             _source = source;
             _processorDefinition = processorDefinition;
-            _config = config;
 
             _source.BeforeProcessRow += SourceBeforeProcessRow;
             _source.AfterProcessRow += SourceAfterProcessRow;
             _source.ProcessField += SourceProcessField;
+        }
+
+        public ParsedDataProcessor(IDataSource source, InputDefinitionFile_10 inputDefinitionFile_10)
+        {
         }
 
         private static void ValidateProcessorDefinition(ProcessorDefinition processorDefinition)
@@ -64,13 +72,13 @@ namespace DataProcessor.Domain
             string lineType;
             RowProcessorDefinition rowProcessorDefinition;
 
-            if (e.Row.Index == 0 && _config.HasHeader)
+            if (e.Row.Index == 0 && _hasHeader)
             {
                 lineType = "Header Line";
                 rowProcessorDefinition = _processorDefinition.HeaderRowProcessorDefinition;
                 e.Context.Header = e.Row;
             }
-            else if (e.Context.IsCurrentRowTheLast && _config.HasTrailer)
+            else if (e.Context.IsCurrentRowTheLast && _hasTrailer)
             {
                 lineType = "Trailer Line";
                 rowProcessorDefinition = _processorDefinition.TrailerRowProcessorDefinition;
@@ -109,11 +117,11 @@ namespace DataProcessor.Domain
 
             FieldProcessorDefinition fieldProcessorDefinition;
 
-            if (e.Field.Row.Index == 0 && _config.HasHeader)
+            if (e.Field.Row.Index == 0 && _hasHeader)
             {
                 fieldProcessorDefinition = _processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
-            else if (e.Context.IsCurrentRowTheLast && _config.HasTrailer)
+            else if (e.Context.IsCurrentRowTheLast && _hasTrailer)
             {
                 fieldProcessorDefinition = _processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }

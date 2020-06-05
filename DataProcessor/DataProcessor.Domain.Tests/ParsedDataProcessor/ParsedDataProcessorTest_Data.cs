@@ -12,7 +12,6 @@ namespace DataProcessor.Domain.Tests
     public class ParsedDataProcessorTest_Data
     {
         private ProcessorDefinition _processorDefinition;
-        private ParsedDataProcessorConfig _config;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
@@ -22,7 +21,6 @@ namespace DataProcessor.Domain.Tests
         public void Initialize()
         {
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.csv", false);
-            _config = new ParsedDataProcessorConfig();
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
             _processorDefinition = new ProcessorDefinition
@@ -50,7 +48,7 @@ namespace DataProcessor.Domain.Tests
         [TestMethod]
         public void Process_Given_a_file_without_header_and_trailer_Should_decode_and_parse_fields()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition, _config);
+            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
 
             var actual = target.Process();
 
@@ -86,7 +84,7 @@ namespace DataProcessor.Domain.Tests
             var incompleDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = null };
             _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
 
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition, _config);
+            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
 
             try
             {
@@ -110,7 +108,7 @@ namespace DataProcessor.Domain.Tests
             var incompleDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = null };
             _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
 
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition, _config);
+            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
 
             try
             {
@@ -135,7 +133,7 @@ namespace DataProcessor.Domain.Tests
                 new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldB" }
             };
 
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition, _config);
+            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
 
             var actual = target.Process();
 
