@@ -1,6 +1,6 @@
 ﻿using System.Xml.Serialization;
 
-namespace DataProcessor.ProcessDefinition.Models
+namespace DataProcessor.InputDefinitionFile.Models
 {
     public class RuleDefinition
     {

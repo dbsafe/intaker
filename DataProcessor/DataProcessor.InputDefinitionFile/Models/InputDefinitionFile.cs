@@ -1,8 +1,8 @@
 ﻿using System.Xml.Serialization;
 
-namespace DataProcessor.ProcessDefinition.Models
+namespace DataProcessor.InputDefinitionFile.Models
 {
-    public abstract class InputDataDefinition
+    public abstract class InputDefinitionFile
     {
         private string frameworkVersion;
 

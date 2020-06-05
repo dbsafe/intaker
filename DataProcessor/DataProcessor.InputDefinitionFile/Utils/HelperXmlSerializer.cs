@@ -2,7 +2,7 @@
 using System.Text;
 using System.Xml.Serialization;
 
-namespace DataProcessor.ProcessDefinition.Utils
+namespace DataProcessor.InputDefinitionFile
 {
     public class HelperXmlSerializer
     {

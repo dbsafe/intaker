@@ -1,21 +1,19 @@
-﻿using DataProcessor.ProcessDefinition.Models;
-using DataProcessor.ProcessDefinition.Utils;
-using DataProcessor.ProcessDefinition.Versions_10;
+﻿using DataProcessor.InputDefinitionFile.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
 
-namespace DataProcessor.ProcessDefinition.Tests.Versions_10
+namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
 {
     [TestClass]
-    public class InputDataDefinition_10Test
+    public class InputDefinitionFile_10Test
     {
         public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void Serialize()
         {
-            var target = new InputDataDefinition_10
+            var target = new InputDefinitionFile_10
             {
                 Name = "FXWDCSV",
                 Description = "Demo defining part of FXWDCSV",
@@ -85,7 +83,7 @@ namespace DataProcessor.ProcessDefinition.Tests.Versions_10
             var path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV.definition.xml");
             var inputXml = File.ReadAllText(path);
 
-            var actual = HelperXmlSerializer.Deserialize<InputDataDefinition_10>(inputXml);
+            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_10>(inputXml);
             var outputXml = HelperXmlSerializer.Serialize(actual);
             TestContext.WriteLine(outputXml);
 

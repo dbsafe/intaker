@@ -1,11 +1,10 @@
-﻿using DataProcessor.ProcessDefinition.Models;
-using System;
+﻿using System;
 using System.Xml.Serialization;
 
-namespace DataProcessor.ProcessDefinition.Versions_10
+namespace DataProcessor.InputDefinitionFile
 {
     [XmlRoot("inputDataDefinition")]
-    public class InputDataDefinition_10 : InputDataDefinition
+    public class InputDefinitionFile_10 : Models.InputDefinitionFile
     {
         protected override void OnFrameworkVersionSet(string frameworkVersion)
         {
