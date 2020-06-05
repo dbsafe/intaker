@@ -1,28 +1,33 @@
 ﻿using DataProcessor.DataSource.File;
 using DataProcessor.Decoders;
 using DataProcessor.Domain.Models;
+using DataProcessor.ProcessorDefinition.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DataProcessor.Domain.Tests
+namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Data_Tailer
+    public class ParsedDataProcessorTest_Header_Data
     {
-        private ProcessorDefinition _processorDefinition;
+        private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
         [TestInitialize]
         public void Initialize()
         {
-            _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data-trailer.csv", false);
+            _fileDataSource = TestHelpers.CreateFileDataSource("test-file-header-data.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
-            _processorDefinition = new ProcessorDefinition
+            _processorDefinition = new ProcessorDefinition.Models.ProcessorDefinition
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition
                 {
-                    FieldProcessorDefinitions = new FieldProcessorDefinition[] { },
+                    FieldProcessorDefinitions = new FieldProcessorDefinition[]
+                    {
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-HA" },
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-HB" }
+                    },
                 },
                 DataRowProcessorDefinition = new RowProcessorDefinition
                 {
@@ -35,11 +40,7 @@ namespace DataProcessor.Domain.Tests
                 },
                 TrailerRowProcessorDefinition = new RowProcessorDefinition
                 {
-                    FieldProcessorDefinitions = new FieldProcessorDefinition[]
-                    {
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-TA" },
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-TB" }
-                    }
+                    FieldProcessorDefinitions = new FieldProcessorDefinition[] { }
                 }
             };
         }
@@ -56,10 +57,9 @@ namespace DataProcessor.Domain.Tests
             Assert.AreEqual(0, actual.Errors.Count);
 
             var row0 = actual.Rows[0];
-            Assert.AreEqual(3, row0.Fields.Count);
+            Assert.AreEqual(2, row0.Fields.Count);
             Assert.AreEqual("field-1a", row0.Fields[0].Value);
             Assert.AreEqual("field-1b", row0.Fields[1].Value);
-            Assert.AreEqual("field-1c", row0.Fields[2].Value);
 
             var row1 = actual.Rows[1];
             Assert.AreEqual(3, row1.Fields.Count);
@@ -68,12 +68,13 @@ namespace DataProcessor.Domain.Tests
             Assert.AreEqual("field-2c", row1.Fields[2].Value);
 
             var row2 = actual.Rows[2];
-            Assert.AreEqual(2, row2.Fields.Count);
+            Assert.AreEqual(3, row2.Fields.Count);
             Assert.AreEqual("field-3a", row2.Fields[0].Value);
             Assert.AreEqual("field-3b", row2.Fields[1].Value);
+            Assert.AreEqual("field-3c", row2.Fields[2].Value);
 
-            Assert.IsNull(actual.Header);
-            Assert.AreEqual(row2, actual.Trailer);
+            Assert.AreSame(row0, actual.Header);
+            Assert.IsNull(actual.Trailer);
         }
     }
 }

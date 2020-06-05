@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataProcessor.Domain
+namespace DataProcessor
 {
     public class ParsedDataProcessorException : Exception
     {

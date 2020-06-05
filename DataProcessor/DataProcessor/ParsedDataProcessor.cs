@@ -1,20 +1,21 @@
 ﻿using DataProcessor.Domain.Contracts;
 using DataProcessor.Domain.Models;
 using DataProcessor.InputDefinitionFile;
+using DataProcessor.ProcessorDefinition.Models;
 using System;
 
-namespace DataProcessor.Domain
+namespace DataProcessor
 {
     public class ParsedDataProcessor
     {
         private readonly IDataSource _source;
-        private readonly ProcessorDefinition _processorDefinition;
+        private readonly ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
         private bool _hasHeader;
         private bool _hasTrailer;
 
         public ParserContext ParserContext { get; private set; }
 
-        public ParsedDataProcessor(IDataSource source, ProcessorDefinition processorDefinition)
+        public ParsedDataProcessor(IDataSource source, ProcessorDefinition.Models.ProcessorDefinition processorDefinition)
         {
             ValidateProcessorDefinition(processorDefinition);
 
@@ -33,7 +34,7 @@ namespace DataProcessor.Domain
         {
         }
 
-        private static void ValidateProcessorDefinition(ProcessorDefinition processorDefinition)
+        private static void ValidateProcessorDefinition(ProcessorDefinition.Models.ProcessorDefinition processorDefinition)
         {
             if (processorDefinition is null)
             {

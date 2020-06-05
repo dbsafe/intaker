@@ -1,7 +1,7 @@
 ﻿using DataProcessor.Domain.Models;
 using System.Collections.Generic;
 
-namespace DataProcessor.Domain
+namespace DataProcessor
 {
     public class ParsedData
     {

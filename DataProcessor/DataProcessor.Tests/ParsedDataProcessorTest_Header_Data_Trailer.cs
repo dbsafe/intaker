@@ -1,14 +1,15 @@
 ﻿using DataProcessor.DataSource.File;
 using DataProcessor.Decoders;
 using DataProcessor.Domain.Models;
+using DataProcessor.ProcessorDefinition.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DataProcessor.Domain.Tests
+namespace DataProcessor.Tests
 {
     [TestClass]
     public class ParsedDataProcessorTest_Header_Data_Trailer
     {
-        private ProcessorDefinition _processorDefinition;
+        private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
@@ -18,7 +19,7 @@ namespace DataProcessor.Domain.Tests
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-header-data-trailer.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
-            _processorDefinition = new ProcessorDefinition
+            _processorDefinition = new ProcessorDefinition.Models.ProcessorDefinition
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition
                 {
