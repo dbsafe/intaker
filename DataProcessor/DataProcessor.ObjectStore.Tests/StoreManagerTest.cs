@@ -22,8 +22,8 @@ namespace DataProcessor.ObjectStore.Tests
         {
             var actual = StoreManager.DecoderStore.GetRegisteredObjects().ToList();
 
-            var numberOfDecodersRegisteredInThisTest = TestDecoderRegistry.RegisteredObjects.Count();
-            var numberOfDecodersRegisteredInTheDecoderRegistry = DecoderRegistry.RegisteredObjects.Count();
+            var numberOfDecodersRegisteredInThisTest = TestDecoderRegistry.RegisteredDecoders.Count();
+            var numberOfDecodersRegisteredInTheDecoderRegistry = ObjectRegistry.RegisteredDecoders.Count();
 
             Assert.AreEqual(numberOfDecodersRegisteredInThisTest + numberOfDecodersRegisteredInTheDecoderRegistry, actual.Count);
 
@@ -35,15 +35,15 @@ namespace DataProcessor.ObjectStore.Tests
         }
     }
 
-    public class TestDecoderRegistry : IDecoderRegistry
+    public class TestDecoderRegistry : IObjectRegistry
     {
-        public static IEnumerable<KeyValuePair<string, Type>> RegisteredObjects { get; } = new KeyValuePair<string, Type>[]
+        public static IEnumerable<KeyValuePair<string, Type>> RegisteredDecoders { get; } = new KeyValuePair<string, Type>[]
         {
             new KeyValuePair<string, Type>("Test-FieldA", typeof(TestFieldDecoder)),
             new KeyValuePair<string, Type>("Test-FieldB", typeof(TestFieldDecoder))
         };
 
-        public IEnumerable<KeyValuePair<string, Type>> GetRegisteredObjects() => RegisteredObjects;
+        public IEnumerable<KeyValuePair<string, Type>> GetRegisteredDecoders() => RegisteredDecoders;
     }
 
     public class TestFieldDecoder : FieldDecoder

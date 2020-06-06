@@ -7,6 +7,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="BypassDecoderTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="TestFiles\balance-with-header-and-trailer.csv" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.definition.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="BypassDecoderTest.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer.definition.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
@@ -14,7 +35,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataProcessor.Decoders\DataProcessor.Decoders.csproj" />
     <ProjectReference Include="..\DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="TestFiles\balance-with-header-and-trailer.csv" />
+    <Resource Include="TestFiles\balance-with-header-and-trailer.definition.xml" />
   </ItemGroup>
 
 </Project>
