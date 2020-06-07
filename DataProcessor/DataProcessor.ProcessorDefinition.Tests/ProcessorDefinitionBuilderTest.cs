@@ -16,7 +16,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
     [TestClass]
     public class ProcessorDefinitionBuilderTest
     {
-        private string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public TestContext TestContext { get; set; }
 

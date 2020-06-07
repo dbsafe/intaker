@@ -1,12 +1,10 @@
-﻿using Decoders = DataProcessor.Decoders;
-using Rules = DataProcessor.Rules;
-using DataProcessor.Domain.Contracts;
+﻿using DataProcessor.Domain.Contracts;
 using DataProcessor.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace DataProcessor.ObjectStore.Tests
@@ -14,7 +12,7 @@ namespace DataProcessor.ObjectStore.Tests
     [TestClass]
     public class StoreManagerTest
     {
-        private string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+        private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         [TestInitialize]
         public void Initialize()
