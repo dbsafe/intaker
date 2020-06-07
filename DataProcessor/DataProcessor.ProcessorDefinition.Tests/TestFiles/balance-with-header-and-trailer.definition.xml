@@ -6,7 +6,7 @@
       <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" />
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" />
       <field name="SequenceNumber" description="Sequence Number" decoder="NumberDecoder" pattern="(?!0{4})[0-9]{4}" />
-      <field name="Optional" description="OPtional Field" />
+      <field name="Optional" description="Optional Field" />
     </fields>
   </header>
   <data>
