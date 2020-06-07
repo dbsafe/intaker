@@ -1,6 +1,5 @@
 ﻿using DataProcessor.Domain.Contracts;
 using DataProcessor.Domain.Models;
-using DataProcessor.InputDefinitionFile;
 using DataProcessor.ProcessorDefinition.Models;
 using System;
 
@@ -28,10 +27,6 @@ namespace DataProcessor
             _source.BeforeProcessRow += SourceBeforeProcessRow;
             _source.AfterProcessRow += SourceAfterProcessRow;
             _source.ProcessField += SourceProcessField;
-        }
-
-        public ParsedDataProcessor(IDataSource source, InputDefinitionFile_10 inputDefinitionFile_10)
-        {
         }
 
         private static void ValidateProcessorDefinition(ProcessorDefinition.Models.ProcessorDefinition processorDefinition)
