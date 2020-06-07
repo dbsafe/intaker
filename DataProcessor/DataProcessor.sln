@@ -19,17 +19,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ObjectStore",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ObjectStore.Tests", "DataProcessor.ObjectStore.Tests\DataProcessor.ObjectStore.Tests.csproj", "{EDE16AF9-0CE5-4ECD-9BAE-F31A7AF03F1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.InputDefinitionFile", "DataProcessor.InputDefinitionFile\DataProcessor.InputDefinitionFile.csproj", "{78828C5D-4BC1-4AF0-9D56-CEBEE10183EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.InputDefinitionFile", "DataProcessor.InputDefinitionFile\DataProcessor.InputDefinitionFile.csproj", "{78828C5D-4BC1-4AF0-9D56-CEBEE10183EB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.InputDefinitionFile.Tests", "DataProcessor.InputDefinitionFile.Tests\DataProcessor.InputDefinitionFile.Tests.csproj", "{6B719E38-1A41-4669-A84C-51297BFB4CC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.InputDefinitionFile.Tests", "DataProcessor.InputDefinitionFile.Tests\DataProcessor.InputDefinitionFile.Tests.csproj", "{6B719E38-1A41-4669-A84C-51297BFB4CC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.ProcessorDefinition", "DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj", "{BCC68EA4-7EF0-40F7-8DA2-F2E59DAD3673}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ProcessorDefinition", "DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj", "{BCC68EA4-7EF0-40F7-8DA2-F2E59DAD3673}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.ProcessorDefinition.Tests", "DataProcessor.ProcessorDefinition.Tests\DataProcessor.ProcessorDefinition.Tests.csproj", "{B995EDFD-9AD2-4896-BE26-2E7DCA7D8C33}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ProcessorDefinition.Tests", "DataProcessor.ProcessorDefinition.Tests\DataProcessor.ProcessorDefinition.Tests.csproj", "{B995EDFD-9AD2-4896-BE26-2E7DCA7D8C33}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor", "DataProcessor\DataProcessor.csproj", "{2FDDA857-23A7-4015-B319-2277EA4444ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor", "DataProcessor\DataProcessor.csproj", "{2FDDA857-23A7-4015-B319-2277EA4444ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Tests", "DataProcessor.Tests\DataProcessor.Tests.csproj", "{407B24DD-D84F-44FC-8620-C1F4AD1D20B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Tests", "DataProcessor.Tests\DataProcessor.Tests.csproj", "{407B24DD-D84F-44FC-8620-C1F4AD1D20B3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Rules", "DataProcessor.Rules\DataProcessor.Rules.csproj", "{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Rules.Tests", "DataProcessor.Rules.Tests\DataProcessor.Rules.Tests.csproj", "{456057A3-34E4-46B4-A4F2-B0528DBA8337}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +97,14 @@ Global
 		{407B24DD-D84F-44FC-8620-C1F4AD1D20B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{407B24DD-D84F-44FC-8620-C1F4AD1D20B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{407B24DD-D84F-44FC-8620-C1F4AD1D20B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
