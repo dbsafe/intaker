@@ -86,12 +86,12 @@ namespace DataProcessor.ProcessorDefinition.Tests
             var count = 0;
             sb.AppendSafeWithNewLine($"{assemblies.Count()} Loaded Assemblies");
 
-            foreach (var assemblie in assemblies)
+            foreach (var assembly in assemblies)
             {
-                sb.AppendSafeWithNewLine($"[{count++}] FullName: {assemblie.FullName}, IsDynamic: {assemblie.IsDynamic}");
-                if (!assemblie.IsDynamic)
+                sb.AppendSafeWithNewLine($"[{count++}] FullName: {assembly.FullName}, IsDynamic: {assembly.IsDynamic}");
+                if (!assembly.IsDynamic)
                 {
-                    sb.AppendSafeWithNewLine($"Location: {assemblie.Location}");
+                    sb.AppendSafeWithNewLine($"Location: {assembly.Location}");
                 }
 
                 sb.AppendSafeWithNewLine(string.Empty);

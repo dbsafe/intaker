@@ -10,6 +10,7 @@ namespace DataProcessor.ObjectStore
     {
         private static List<string> _loadedAssemblies = new List<string>();
         public static ObjectDefinitionStore<IFieldDecoder> DecoderStore { get; } = new ObjectDefinitionStore<IFieldDecoder>("FieldDecoderStore");
+        public static ObjectDefinitionStore<IFieldRule> RuleStore { get; } = new ObjectDefinitionStore<IFieldRule>("FieldRuleStore");
 
         public static void RegisterObjectsFromAssembly(string path)
         {
@@ -20,11 +21,6 @@ namespace DataProcessor.ObjectStore
         }
 
         static StoreManager()
-        {
-            RegisterDecoders();
-        }
-
-        private static void RegisterDecoders()
         {
             RegisterObjects();
         }
@@ -58,7 +54,7 @@ namespace DataProcessor.ObjectStore
 
             var decoderRegistryType = typeof(IObjectRegistry);
             var registries = assembly.GetTypes()
-                .Where(a => decoderRegistryType.IsAssignableFrom(a) && !a.IsInterface);
+                .Where(a => decoderRegistryType.IsAssignableFrom(a) && !a.IsInterface && !a.IsAbstract);
 
             foreach (var registry in registries)
             {
@@ -71,15 +67,15 @@ namespace DataProcessor.ObjectStore
         {
             var registry = (IObjectRegistry)Activator.CreateInstance(registryType);
 
-            RegisterObjects(registryType, registry.GetRegisteredDecoders(), DecoderStore);
-
+            RegisterObjectsInStore(registryType, registry.GetRegisteredFieldDecoders(), DecoderStore);
+            RegisterObjectsInStore(registryType, registry.GetRegisteredFieldRules(), RuleStore);
         }
 
-        private static void RegisterObjects<TStoreType>(Type registryType, IEnumerable<KeyValuePair<string, Type>> objects, ObjectDefinitionStore<TStoreType> store)
+        private static void RegisterObjectsInStore<TStoreType>(Type registryType, IEnumerable<KeyValuePair<string, Type>> objects, ObjectDefinitionStore<TStoreType> store)
         {
             if (objects == null || objects.Count() == 0)
             {
-                Debug($"{registryType.FullName} - no {store.ObjectTypeName} found");
+                Debug($"{registryType.FullName} - No {store.ObjectTypeName} found");
                 return;
             }
 

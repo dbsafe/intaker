@@ -17,6 +17,7 @@
     <ProjectReference Include="..\DataProcessor.Decoders\DataProcessor.Decoders.csproj" />
     <ProjectReference Include="..\DataProcessor.Domain\DataProcessor.Domain.csproj" />
     <ProjectReference Include="..\DataProcessor.ObjectStore\DataProcessor.ObjectStore.csproj" />
+    <ProjectReference Include="..\DataProcessor.Rules\DataProcessor.Rules.csproj" />
   </ItemGroup>
 
 </Project>
