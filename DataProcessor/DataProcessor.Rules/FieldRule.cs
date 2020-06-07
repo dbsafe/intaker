@@ -21,9 +21,7 @@ namespace DataProcessor.Rules
             FailValidationResult = failValidationResult;
         }
 
-        public virtual void Validate(Field field)
-        {
-        }
+        public abstract void Validate(Field field);
 
         public string Args
         {

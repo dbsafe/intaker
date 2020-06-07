@@ -5,32 +5,32 @@ using System;
 namespace DataProcessor.Rules.Tests
 {
     [TestClass]
-    public class MinNumberFieldRuleTest
+    public class MinDateFieldRuleTest
     {
         [TestMethod]
         public void Validate_Given_a_number_greater_than_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidFixable);
+            var target = new MinDateFieldRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidFixable);
 
             var field = new Field
             {
-                Value = "100",
+                Value = "2020-10-10",
                 ValidationResult = ValidationResultType.Valid
             };
 
             target.Validate(field);
 
-            Assert.AreEqual(ValidationResultType.Valid, field.ValidationResult);            
+            Assert.AreEqual(ValidationResultType.Valid, field.ValidationResult);
         }
 
         [TestMethod]
         public void Validate_Given_a_number_equal_to_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidCritical);
+            var target = new MinDateFieldRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidCritical);
 
             var field = new Field
             {
-                Value = "10",
+                Value = "2020-10-10",
                 ValidationResult = ValidationResultType.Valid
             };
 
@@ -42,11 +42,11 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_smaller_than_ruleValue_ValidationResult_should_be_set_with_the_value_from_the_rule()
         {
-            var target = new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidCritical);
+            var target = new MinDateFieldRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidCritical);
 
             var field = new Field
             {
-                Value = "1",
+                Value = "2019-10-10",
                 ValidationResult = ValidationResultType.Valid
             };
 
@@ -60,11 +60,11 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "{'invalid-arg':'10'}", ValidationResultType.InvalidCritical);
+                new MinDateFieldRule("rule-name", "rule-description", "{'invalid-arg':'2020-01-10'}", ValidationResultType.InvalidCritical);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid args [{'invalid-arg':'10'}]", ex.Message);
+                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid args [{'invalid-arg':'2020-01-10'}]", ex.Message);
                 return;
             }
 
@@ -76,7 +76,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "", ValidationResultType.InvalidCritical);
+                new MinDateFieldRule("rule-name", "rule-description", "", ValidationResultType.InvalidCritical);
             }
             catch (InvalidOperationException ex)
             {
@@ -92,11 +92,11 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'|", ValidationResultType.InvalidFixable);
+                new MinDateFieldRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'|", ValidationResultType.InvalidFixable);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Error reading Args [{'ruleValue':'10'|]", ex.Message);
+                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Error reading Args [{'ruleValue':'2020-01-10'|]", ex.Message);
                 return;
             }
 
@@ -104,15 +104,15 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Constructor_Given_an_invalid_number_in_args_Should_throw_an_exception()
+        public void Constructor_Given_an_invalid_date_in_args_Should_throw_an_exception()
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'ab'", ValidationResultType.InvalidFixable);
+                new MinDateFieldRule("rule-name", "rule-description", "{'ruleValue':'2020-0a-10'", ValidationResultType.InvalidFixable);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Error reading Args [{'ruleValue':'ab']", ex.Message);
+                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Error reading Args [{'ruleValue':'2020-0a-10']", ex.Message);
                 return;
             }
 
