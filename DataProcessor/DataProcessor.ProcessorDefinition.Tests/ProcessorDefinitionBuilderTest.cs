@@ -1,6 +1,8 @@
-﻿using DataProcessor.Domain.Utils;
+﻿using DataProcessor.Decoders;
+using DataProcessor.Domain.Utils;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.ObjectStore;
+using DataProcessor.ProcessorDefinition.Models;
 using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -39,10 +41,30 @@ namespace DataProcessor.ProcessorDefinition.Tests
             var actual = ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
 
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition);
-            Assert.IsNotNull(actual.DataRowProcessorDefinition);
-            Assert.IsNotNull(actual.TrailerRowProcessorDefinition);
+            Assert.IsNotNull(actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
+            Assert.AreEqual(5, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length);
 
-            Assert.Inconclusive();
+            AssertFieldProcessorDefinition("RecordType", "HEADER", typeof(TextDecoder), actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[0]);
+            AssertFieldProcessorDefinition("CreationDate", "MMddyyyy", typeof(DateDecoder), actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[1]);
+            AssertFieldProcessorDefinition("LocationID", "[a-zA-Z]{12}", typeof(TextDecoder), actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[2]);
+            AssertFieldProcessorDefinition("SequenceNumber", "(?!0{4})[0-9]{4}", typeof(NumberDecoder), actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[3]);
+            AssertFieldProcessorDefinition("Optional", null, typeof(BypassDecoder), actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[4]);
+
+            Assert.IsNotNull(actual.DataRowProcessorDefinition);
+            Assert.IsNotNull(actual.DataRowProcessorDefinition.FieldProcessorDefinitions);
+            Assert.AreEqual(7, actual.DataRowProcessorDefinition.FieldProcessorDefinitions.Length);
+
+            Assert.IsNotNull(actual.TrailerRowProcessorDefinition);
+            Assert.IsNotNull(actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
+            Assert.AreEqual(3, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length);
+        }
+
+        private void AssertFieldProcessorDefinition(string expectedFieldName, string expectedPattern, Type expectedType, FieldProcessorDefinition fieldProcessorDefinition)
+        {
+            Assert.AreEqual(expectedFieldName, fieldProcessorDefinition.FieldName);
+            Assert.IsNotNull(fieldProcessorDefinition.Decoder);
+            Assert.AreEqual(expectedPattern, fieldProcessorDefinition.Decoder.Pattern);
+            Assert.AreEqual(expectedType, fieldProcessorDefinition.Decoder.GetType());
         }
 
         private void PrintLoadedAssemblies()

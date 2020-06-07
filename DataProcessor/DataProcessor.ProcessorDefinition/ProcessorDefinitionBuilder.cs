@@ -39,7 +39,16 @@ namespace DataProcessor.ProcessorDefinition
 
         private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition)
         {
-            IFieldDecoder decoder = string.IsNullOrEmpty(fieldDefinition.Decoder) ? new BypassDecoder() : StoreManager.DecoderStore.CreateObject(fieldDefinition.Decoder);
+            IFieldDecoder decoder;
+            if (string.IsNullOrEmpty(fieldDefinition.Decoder))
+            {
+                decoder = new BypassDecoder();
+            }
+            else
+            {
+                decoder = StoreManager.DecoderStore.CreateObject(fieldDefinition.Decoder);
+                decoder.Pattern = fieldDefinition.Pattern;
+            }
 
             return new Models.FieldProcessorDefinition
             {
