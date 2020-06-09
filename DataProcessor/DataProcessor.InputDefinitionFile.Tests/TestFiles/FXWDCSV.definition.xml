@@ -2,32 +2,32 @@
 <inputDataDefinition name="FXWDCSV" version="1.0" description="Demo defining part of FXWDCSV" frameworkVersion="1.0">
   <header>
     <fields>
-      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" />
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="HEADER" />
-      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" />
-      <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" />
-      <field name="SequenceNumber" description="Sequence Number" decoder="NumberDecoder" pattern="(?!0{4})[0-9]{4}" />
+      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" isFixable="false" />
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="HEADER" isFixable="false" />
+      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" isFixable="false" />
+      <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" isFixable="true" />
+      <field name="SequenceNumber" description="Sequence Number" decoder="NumberDecoder" pattern="(?!0{4})[0-9]{4}" isFixable="false" />
     </fields>
   </header>
   <data>
     <fields>
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="PAYMENT" />
-      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(FXW|MBW)" />
-      <field name="SendersReferenceNumber" description="Senders Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" />
-      <field name="RelatedReferenceNumber" description="Related Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" />
-      <field name="ValueDate" description="Value Date" decoder="DateDecoder" pattern="MMddyyyy" />
-      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(DEBIT|CREDIT)" />
-      <field name="Amount" description="Amount" decoder="NumberDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" />
-      <field name="CreditCurrency" description="Credit Currency" decoder="TextDecoder" pattern="[A-Z]{3}" />
-      <field name="OriginatorName" description="Originator Name" decoder="TextDecoder" pattern="[a-zA-Z\s-']{2,35}" />
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="PAYMENT" isFixable="false" />
+      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(FXW|MBW)" isFixable="false" />
+      <field name="SendersReferenceNumber" description="Senders Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" isFixable="false" />
+      <field name="RelatedReferenceNumber" description="Related Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" isFixable="false" />
+      <field name="ValueDate" description="Value Date" decoder="DateDecoder" pattern="MMddyyyy" isFixable="false" />
+      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(DEBIT|CREDIT)" isFixable="false" />
+      <field name="Amount" description="Amount" decoder="NumberDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" isFixable="false" />
+      <field name="CreditCurrency" description="Credit Currency" decoder="TextDecoder" pattern="[A-Z]{3}" isFixable="false" />
+      <field name="OriginatorName" description="Originator Name" decoder="TextDecoder" pattern="[a-zA-Z\s-']{2,35}" isFixable="false" />
     </fields>
   </data>
   <trailer>
     <fields>
-      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" />
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="TRAILER" />
-      <field name="HashTotal" description="Hash Total" decoder="NumberDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" />
-      <field name="RecordCount" description="Record Count" decoder="NumberDecoder" pattern="\d{1,5}" />
+      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" isFixable="false" />
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="TRAILER" isFixable="false" />
+      <field name="HashTotal" description="Hash Total" decoder="NumberDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" isFixable="false" />
+      <field name="RecordCount" description="Record Count" decoder="NumberDecoder" pattern="\d{1,5}" isFixable="false" />
     </fields>
   </trailer>
 </inputDataDefinition>

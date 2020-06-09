@@ -1,4 +1,5 @@
 ﻿using DataProcessor.Domain.Contracts;
+using DataProcessor.Domain.Models;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.InputDefinitionFile.Models;
 using DataProcessor.ObjectStore;
@@ -39,6 +40,41 @@ namespace DataProcessor.ProcessorDefinition
 
         private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition)
         {
+            return new Models.FieldProcessorDefinition
+            {
+                FieldName = fieldDefinition.Name,
+                Decoder = CreateDecoder(fieldDefinition),
+                Rules = CreateRules(fieldDefinition)
+            };
+        }
+
+        private static IFieldRule[] CreateRules(FieldDefinition fieldDefinition)
+        {
+            var fieldRules = new List<IFieldRule>();
+
+            if (fieldDefinition.Rules?.Length > 0)
+            {
+                foreach (var ruleDefinition in fieldDefinition.Rules)
+                {
+                    fieldRules.Add(CreateRule(ruleDefinition));
+                }
+            }
+
+            return fieldRules.ToArray();
+        }
+
+        private static IFieldRule CreateRule(RuleDefinition ruleDefinition)
+        {
+            var rule = StoreManager.RuleStore.CreateObject(ruleDefinition.Rule);
+            rule.Args = ruleDefinition.Args;
+            rule.Description = ruleDefinition.Description;
+            rule.FailValidationResult = ruleDefinition.IsFixable ? ValidationResultType.InvalidFixable : ValidationResultType.InvalidCritical;
+            rule.Name = ruleDefinition.Name;
+            return rule;
+        }
+
+        private static IFieldDecoder CreateDecoder(FieldDefinition fieldDefinition)
+        {
             IFieldDecoder decoder;
             if (string.IsNullOrEmpty(fieldDefinition.Decoder))
             {
@@ -48,13 +84,10 @@ namespace DataProcessor.ProcessorDefinition
             {
                 decoder = StoreManager.DecoderStore.CreateObject(fieldDefinition.Decoder);
                 decoder.Pattern = fieldDefinition.Pattern;
+                decoder.FailValidationResult = fieldDefinition.IsFixable ? ValidationResultType.InvalidFixable : ValidationResultType.InvalidCritical;
             }
 
-            return new Models.FieldProcessorDefinition
-            {
-                FieldName = fieldDefinition.Name,
-                Decoder = decoder
-            };
+            return decoder;
         }
     }
 }

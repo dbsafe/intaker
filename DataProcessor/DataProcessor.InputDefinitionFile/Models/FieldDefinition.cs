@@ -16,6 +16,9 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("pattern")]
         public string Pattern { get; set; }
 
+        [XmlAttribute("isFixable")]
+        public bool IsFixable { get; set; }
+
         [XmlArray(ElementName = "rules")]
         [XmlArrayItem(ElementName = "rule")]
         public RuleDefinition[] Rules { get; set; }

@@ -37,6 +37,7 @@
   <ItemGroup>
     <ProjectReference Include="..\DataProcessor.Decoders\DataProcessor.Decoders.csproj" />
     <ProjectReference Include="..\DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj" />
+    <ProjectReference Include="..\DataProcessor.Rules\DataProcessor.Rules.csproj" />
   </ItemGroup>
 
   <ItemGroup>

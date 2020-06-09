@@ -1,4 +1,6 @@
-﻿using System.Xml.Serialization;
+﻿using DataProcessor.Domain.Models;
+using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile.Models
 {
@@ -15,6 +17,9 @@ namespace DataProcessor.InputDefinitionFile.Models
 
         [XmlAttribute("args")]
         public string Args { get; set; }
+
+        [XmlAttribute("isFixable")]
+        public bool IsFixable { get; set; }
 
         public RuleDefinition()
         {
