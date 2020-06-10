@@ -65,7 +65,7 @@ namespace DataProcessor.ObjectStore.Tests
         }
     }
 
-    public class TestDecoderRegistry : IObjectRegistry
+    public class TestDecoderRegistry : BaseObjectRegistry
     {
         public static IEnumerable<KeyValuePair<string, Type>> RegisteredFieldDecoders { get; } = new KeyValuePair<string, Type>[]
         {
@@ -73,12 +73,7 @@ namespace DataProcessor.ObjectStore.Tests
             new KeyValuePair<string, Type>("Test-FieldB", typeof(TestFieldDecoder))
         };
 
-        public IEnumerable<KeyValuePair<string, Type>> GetRegisteredFieldDecoders() => RegisteredFieldDecoders;
-
-        public IEnumerable<KeyValuePair<string, Type>> GetRegisteredFieldRules()
-        {
-            return Enumerable.Empty<KeyValuePair<string, Type>>();
-        }
+        public override IEnumerable<KeyValuePair<string, Type>> GetRegisteredFieldDecoders() => RegisteredFieldDecoders;
     }
 
     public class TestFieldDecoder : Decoders.FieldDecoder
