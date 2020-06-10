@@ -4,10 +4,9 @@ namespace DataProcessor.Domain.Contracts
 {
     public interface IFieldAggregator
     {
-        void Aggregate(Field field, Aggregate aggregate);
+        void AggregateField(Field field);
         string Name { get; set; }
         string Description { get; set; }
-        string Args { get; set; }
-        ValidationResultType? FailValidationResult { get; set; }
+        Aggregate Aggregate { get; set; }
     }
 }

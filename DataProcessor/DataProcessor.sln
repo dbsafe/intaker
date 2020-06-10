@@ -35,6 +35,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Rules", "Data
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Rules.Tests", "DataProcessor.Rules.Tests\DataProcessor.Rules.Tests.csproj", "{456057A3-34E4-46B4-A4F2-B0528DBA8337}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Aggregators", "DataProcessor.Aggregators\DataProcessor.Aggregators.csproj", "{2F20167A-5421-406F-9136-70F9B3ABF89E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Aggregators.Tests", "DataProcessor.Aggregators.Tests\DataProcessor.Aggregators.Tests.csproj", "{A656591F-CE54-4A8A-A303-24001F3E9499}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +109,14 @@ Global
 		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{456057A3-34E4-46B4-A4F2-B0528DBA8337}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F20167A-5421-406F-9136-70F9B3ABF89E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F20167A-5421-406F-9136-70F9B3ABF89E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F20167A-5421-406F-9136-70F9B3ABF89E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F20167A-5421-406F-9136-70F9B3ABF89E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A656591F-CE54-4A8A-A303-24001F3E9499}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A656591F-CE54-4A8A-A303-24001F3E9499}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A656591F-CE54-4A8A-A303-24001F3E9499}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A656591F-CE54-4A8A-A303-24001F3E9499}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
