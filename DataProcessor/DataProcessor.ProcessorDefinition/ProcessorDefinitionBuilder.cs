@@ -44,8 +44,32 @@ namespace DataProcessor.ProcessorDefinition
             {
                 FieldName = fieldDefinition.Name,
                 Decoder = CreateDecoder(fieldDefinition),
-                Rules = CreateRules(fieldDefinition)
+                Rules = CreateRules(fieldDefinition),
+                Aggregators = CreateAggregators(fieldDefinition)
             };
+        }
+
+        private static IFieldAggregator[] CreateAggregators(FieldDefinition fieldDefinition)
+        {
+            var fieldAggregators = new List<IFieldAggregator>();
+
+            if (fieldDefinition.Aggregators?.Length > 0)
+            {
+                foreach (var aggregatorDefinition in fieldDefinition.Aggregators)
+                {
+                    fieldAggregators.Add(CreateAggregator(aggregatorDefinition));
+                }
+            }
+
+            return fieldAggregators.ToArray();
+        }
+
+        private static IFieldAggregator CreateAggregator(AggregatorDefinition aggregatorDefinition)
+        {
+            var aggregator = StoreManager.AggregatorStore.CreateObject(aggregatorDefinition.Aggregator);
+            aggregator.Description = aggregatorDefinition.Description;
+            aggregator.Name = aggregatorDefinition.Name;
+            return aggregator;
         }
 
         private static IFieldRule[] CreateRules(FieldDefinition fieldDefinition)

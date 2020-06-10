@@ -9,9 +9,9 @@ namespace DataProcessor.Aggregators
         private static IEnumerable<KeyValuePair<string, Type>> _registeredFieldAggregators = new KeyValuePair<string, Type>[]
         {
             new KeyValuePair<string, Type>("SumAggregator", typeof(SumAggregator)),
-            new KeyValuePair<string, Type>("RecordCountAggregator", typeof(RecordCountAggregator))
+            new KeyValuePair<string, Type>("RowCountAggregator", typeof(RowCountAggregator))
         };
 
-        public override IEnumerable<KeyValuePair<string, Type>> GetRegisteredFieldDecoders() => _registeredFieldAggregators;
+        public override IEnumerable<KeyValuePair<string, Type>> GetRegisteredFieldAggregators() => _registeredFieldAggregators;
     }
 }

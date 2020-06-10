@@ -2,7 +2,7 @@
 
 namespace DataProcessor.Aggregators
 {
-    public class RecordCountAggregator : FieldAggregator
+    public class RowCountAggregator : FieldAggregator
     {
         public override void AggregateField(Field field)
         {

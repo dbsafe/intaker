@@ -47,9 +47,9 @@ namespace DataProcessor.ObjectStore.Tests
             var actual = StoreManager.RuleStore.GetRegisteredObjects().ToList();
 
             var objectRegistry = new Rules.ObjectRegistry();
-            var numberOfRulesRegisteredInTheDecoderRegistry = objectRegistry.GetRegisteredFieldRules().Count();
+            var numberOfRulesRegisteredInTheRulesRegistry = objectRegistry.GetRegisteredFieldRules().Count();
 
-            Assert.AreEqual(numberOfRulesRegisteredInTheDecoderRegistry, actual.Count);
+            Assert.AreEqual(numberOfRulesRegisteredInTheRulesRegistry, actual.Count);
 
             Assert.AreEqual("MinDateFieldRule", actual[0].Key);
             Assert.AreEqual(typeof(Rules.MinDateFieldRule), actual[0].Value);
@@ -62,6 +62,26 @@ namespace DataProcessor.ObjectStore.Tests
 
             Assert.AreEqual("MaxNumberFieldRule", actual[3].Key);
             Assert.AreEqual(typeof(Rules.MaxNumberFieldRule), actual[3].Value);
+        }
+
+        [TestMethod]
+        public void AggregatorStore_Aggregators_should_be_registered()
+        {
+            var assemblyWithAggregators = Path.Combine(_testDirectory, "DataProcessor.Aggregators.dll");
+            StoreManager.RegisterObjectsFromAssembly(assemblyWithAggregators);
+
+            var actual = StoreManager.AggregatorStore.GetRegisteredObjects().ToList();
+
+            var objectRegistry = new Aggregators.ObjectRegistry();
+            var numberOfAggregatorssRegisteredInTheAggregatorsRegistry = objectRegistry.GetRegisteredFieldAggregators().Count();
+
+            Assert.AreEqual(numberOfAggregatorssRegisteredInTheAggregatorsRegistry, actual.Count);
+
+            Assert.AreEqual("SumAggregator", actual[0].Key);
+            Assert.AreEqual(typeof(Aggregators.SumAggregator), actual[0].Value);
+
+            Assert.AreEqual("RowCountAggregator", actual[1].Key);
+            Assert.AreEqual(typeof(Aggregators.RowCountAggregator), actual[1].Value);
         }
     }
 

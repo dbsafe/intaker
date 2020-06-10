@@ -1,4 +1,5 @@
-﻿using DataProcessor.Decoders;
+﻿using DataProcessor.Aggregators;
+using DataProcessor.Decoders;
 using DataProcessor.Domain.Models;
 using DataProcessor.Domain.Utils;
 using DataProcessor.InputDefinitionFile;
@@ -30,6 +31,8 @@ namespace DataProcessor.ProcessorDefinition.Tests
             var assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Decoders.dll");
             StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
             assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Rules.dll");
+            StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
+            assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Aggregators.dll");
             StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
 
             PrintLoadedAssemblies();
@@ -87,7 +90,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition);
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
             Assert.AreEqual(5, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length);
-            AssertFieldProcessorDefinition("SequenceNumber", "(?!0{4})[0-9]{4}", typeof(NumberDecoder), ValidationResultType.InvalidCritical, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[3]);
+            Assert.AreEqual("SequenceNumber", actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[3].FieldName);
             
             var rules = actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[3].Rules;
             Assert.IsNotNull(rules);
@@ -106,6 +109,35 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.AreEqual(ValidationResultType.InvalidCritical, rule1.FailValidationResult);
             Assert.AreEqual(typeof(MaxNumberFieldRule), rule1.GetType());
             Assert.AreEqual("SequenceNumber-MaxNumberFieldRule", rule1.Name);
+        }
+
+        [TestMethod]
+        public void CreateProcessorDefinition_Gien_an_input_definition_file_Aggregators_should_be_created()
+        {
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
+
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+
+            var actual = ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
+
+            Assert.IsNotNull(actual.DataRowProcessorDefinition);
+            Assert.IsNotNull(actual.DataRowProcessorDefinition.FieldProcessorDefinitions);
+            Assert.AreEqual(7, actual.DataRowProcessorDefinition.FieldProcessorDefinitions.Length);
+            Assert.AreEqual("Balance", actual.DataRowProcessorDefinition.FieldProcessorDefinitions[6].FieldName);
+
+            var aggregators = actual.DataRowProcessorDefinition.FieldProcessorDefinitions[6].Aggregators;
+            Assert.IsNotNull(aggregators);
+            Assert.AreEqual(2, aggregators.Length);
+
+            var aggregator0 = aggregators[0];
+            Assert.AreEqual("Balance aggregator", aggregator0.Description);
+            Assert.AreEqual(typeof(SumAggregator), aggregator0.GetType());
+            Assert.AreEqual("BalanceAggregator", aggregator0.Name);
+
+            var aggregator1 = aggregators[1];
+            Assert.AreEqual("Data row counter", aggregator1.Description);
+            Assert.AreEqual(typeof(RowCountAggregator), aggregator1.GetType());
+            Assert.AreEqual("DataRowCountAggregator", aggregator1.Name);
         }
 
         private void AssertFieldProcessorDefinition(

@@ -11,6 +11,7 @@ namespace DataProcessor.ObjectStore
         private static List<string> _loadedAssemblies = new List<string>();
         public static ObjectDefinitionStore<IFieldDecoder> DecoderStore { get; } = new ObjectDefinitionStore<IFieldDecoder>("FieldDecoderStore");
         public static ObjectDefinitionStore<IFieldRule> RuleStore { get; } = new ObjectDefinitionStore<IFieldRule>("FieldRuleStore");
+        public static ObjectDefinitionStore<IFieldAggregator> AggregatorStore { get; } = new ObjectDefinitionStore<IFieldAggregator>("FieldAggregatorStore");
 
         public static void RegisterObjectsFromAssembly(string path)
         {
@@ -31,7 +32,7 @@ namespace DataProcessor.ObjectStore
 
             var registryType = typeof(IObjectRegistry);
             var assemblies = AppDomain.CurrentDomain.GetAssemblies()
-                .Where(a => a.GetTypes().Any(t =>  registryType.IsAssignableFrom(t) && !t.IsInterface));
+                .Where(a => a.GetTypes().Any(t =>  registryType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract));
 
             Debug($"Found {assemblies.Count()} loaded assemblies that have an ObjectRegistry");
             foreach (var assembly in assemblies)
@@ -69,13 +70,14 @@ namespace DataProcessor.ObjectStore
 
             RegisterObjectsInStore(registryType, registry.GetRegisteredFieldDecoders(), DecoderStore);
             RegisterObjectsInStore(registryType, registry.GetRegisteredFieldRules(), RuleStore);
+            RegisterObjectsInStore(registryType, registry.GetRegisteredFieldAggregators(), AggregatorStore);
         }
 
         private static void RegisterObjectsInStore<TStoreType>(Type registryType, IEnumerable<KeyValuePair<string, Type>> objects, ObjectDefinitionStore<TStoreType> store)
         {
             if (objects == null || objects.Count() == 0)
             {
-                Debug($"{registryType.FullName} - No {store.ObjectTypeName} found");
+                Debug($"{registryType.FullName} - {store.ObjectTypeName} is empty or not assigned");
                 return;
             }
 
