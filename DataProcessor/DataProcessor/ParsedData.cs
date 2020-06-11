@@ -7,7 +7,7 @@ namespace DataProcessor
     {
         public Row Header { get; set; }
         public Row Trailer { get; set; }
-        public IList<Row> Rows { get; set; }
+        public IList<Row> AllRows { get; set; }
         public IList<Row> InvalidRows { get; set; }
         public IList<string> Errors { get; set; }
     }

@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestFiles\balance-with-header-and-trailer.csv" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.definition.xml" />
     <None Remove="TestFiles\test-file-data-trailer.csv" />
     <None Remove="TestFiles\test-file-data.csv" />
     <None Remove="TestFiles\test-file-header-data-trailer.csv" />
@@ -14,6 +16,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestFiles\balance-with-header-and-trailer.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer.definition.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\test-file-data-trailer.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -36,9 +44,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\DataProcessor.Aggregators\DataProcessor.Aggregators.csproj" />
     <ProjectReference Include="..\DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj" />
     <ProjectReference Include="..\DataProcessor.Decoders\DataProcessor.Decoders.csproj" />
     <ProjectReference Include="..\DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj" />
+    <ProjectReference Include="..\DataProcessor.Rules\DataProcessor.Rules.csproj" />
     <ProjectReference Include="..\DataProcessor\DataProcessor.csproj" />
   </ItemGroup>
 

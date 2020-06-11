@@ -91,7 +91,7 @@ namespace DataProcessor
 
         private void SourceAfterProcessRow(object sender, ProcessRowEventArgs e)
         {
-            e.Context.Rows.Add(e.Row);
+            e.Context.AllRows.Add(e.Row);
 
             if (e.Row.ValidationResult != ValidationResultType.Valid)
             {
@@ -169,7 +169,7 @@ namespace DataProcessor
             return new ParsedData
             {
                 Errors = ParserContext.Errors,
-                Rows = ParserContext.Rows,
+                AllRows = ParserContext.AllRows,
                 InvalidRows = ParserContext.InvalidRows,
                 Header = ParserContext.Header,
                 Trailer = ParserContext.Trailer
