@@ -3,6 +3,7 @@ using DataProcessor.Domain.Utils;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.ObjectStore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
 
@@ -40,11 +41,24 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
 
             var actual = target.Process();
+            PrintJson(actual.AllRows);
 
             Assert.AreEqual(0, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(0, actual.InvalidRows.Count);
 
+        }
+
+        private void PrintJson(object obj)
+        {
+            var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            Print(json);
+        }
+
+        private void Print(string message)
+        {
+            TestContext.WriteLine(message);
         }
     }
 }

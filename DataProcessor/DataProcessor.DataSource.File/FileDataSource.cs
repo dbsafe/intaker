@@ -123,7 +123,7 @@ namespace DataProcessor.DataSource.File
 
         private void Debug(string message)
         {
-            Domain.Utils.DataProcessorGlobal.Debug($"{nameof(FileDataSource)} - '{message}'");
+            Domain.Utils.DataProcessorGlobal.Debug($"{nameof(FileDataSource)} - {message}");
         }
     }
 }

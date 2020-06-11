@@ -11,7 +11,6 @@
           <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" args="{'max':'100'}" />
         </rules>
       </field>
-      <field name="Optional" description="Optional Field" />
     </fields>
   </header>
   <data>
@@ -28,6 +27,7 @@
           <aggregator name="DataRowCountAggregator" description="Data row counter" aggregator="RowCountAggregator" />
         </aggregators>
       </field>
+      <field name="CustomField" description="Custom Field without validation" />
     </fields>
   </data>
   <trailer>

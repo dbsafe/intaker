@@ -11,6 +11,7 @@ namespace DataProcessor.ProcessorDefinition
         public void Decode(Field field)
         {
             field.ValidationResult = ValidationResultType.Valid;
+            field.Value = field.Raw;
         }
     }
 }

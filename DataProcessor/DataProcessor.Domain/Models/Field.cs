@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+using System;
 
 namespace DataProcessor.Domain.Models
 {
@@ -6,7 +8,9 @@ namespace DataProcessor.Domain.Models
     {
         public string Raw { get; set; }
         public int Index { get; set; }
+        [JsonIgnore]
         public Row Row { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ValidationResultType? ValidationResult { get; set; }
         public object Value { get; set; }
 
