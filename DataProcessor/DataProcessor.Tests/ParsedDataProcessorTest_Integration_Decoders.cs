@@ -164,8 +164,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_header_Should_indicate_error()
         {
-            var fileDataSourceInvalidHeader = TestHelpers.CreateFileDataSource("balance-with-invalid-header.csv", false);
-            var target = new ParsedDataProcessor(fileDataSourceInvalidHeader, _processorDefinition);
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-invalid-header.csv", false);
+            var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
@@ -186,8 +186,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_data_row_Should_indicate_error()
         {
-            var fileDataSourceInvalidHeader = TestHelpers.CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv", false);
-            var target = new ParsedDataProcessor(fileDataSourceInvalidHeader, _processorDefinition);
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv", false);
+            var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
@@ -209,8 +209,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_trailer_Should_indicate_error()
         {
-            var fileDataSourceInvalidHeader = TestHelpers.CreateFileDataSource("balance-with-invalid-trailer.csv", false);
-            var target = new ParsedDataProcessor(fileDataSourceInvalidHeader, _processorDefinition);
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-invalid-trailer.csv", false);
+            var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
@@ -226,6 +226,34 @@ namespace DataProcessor.Tests
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid BalanceTotal '6000.oo'", invalidRow.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_multiple_rows_with_errors_Should_indicate_the_errors()
+        {
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-multiple-errors.csv", false);
+            var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
+
+            var actual = target.Process();
+            PrintJson(actual.AllRows);
+
+            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
+            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(2, actual.InvalidRows.Count);
+
+            Assert.AreSame(actual.Header, actual.InvalidRows[0]);
+            var invalidRow = actual.Header;
+            Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
+            Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual("Invalid RecordType 'H'", invalidRow.Errors[0]);
+
+            Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
+            invalidRow = actual.AllRows[2];
+            Assert.AreEqual(ValidationResultType.InvalidFixable, invalidRow.ValidationResult);
+            Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }
 
         private void PrintJson(object obj)
