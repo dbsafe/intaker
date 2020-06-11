@@ -15,5 +15,6 @@ namespace DataProcessor.Domain.Models
         public IList<Row> InvalidRows { get; set; } = new List<Row>();
         public Row Header { get; set; }
         public Row Trailer { get; set; }
+        public ValidationResultType ValidationResult { get; set; }
     }
 }

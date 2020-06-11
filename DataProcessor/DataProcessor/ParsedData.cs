@@ -11,5 +11,6 @@ namespace DataProcessor
         public IList<Row> DataRows { get; set; }
         public IList<Row> InvalidRows { get; set; }
         public IList<string> Errors { get; set; }
+        public ValidationResultType ValidationResult { get; set; }
     }
 }

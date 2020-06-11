@@ -99,9 +99,9 @@ namespace DataProcessor
                 e.Context.InvalidRows.Add(e.Row);
             }
 
-            if (e.Row.ValidationResult == ValidationResultType.InvalidCritical)
+            if (e.Row.ValidationResult != ValidationResultType.Valid)
             {
-                return;
+                e.Context.ValidationResult = (ValidationResultType)Math.Max((int)(e.Context.ValidationResult), (int)(e.Row.ValidationResult.Value));
             }
         }
 
@@ -135,6 +135,12 @@ namespace DataProcessor
             try
             {
                 fieldDecoder.Decode(field);
+                if (field.ValidationResult != ValidationResultType.Valid)
+                {
+                    field.Row.ValidationResult = (ValidationResultType)Math.Max((int)(field.Row.ValidationResult.Value), (int)(field.ValidationResult.Value));
+                    var error = $"Invalid {fieldName} '{field.Raw}'";
+                    field.Row.Errors.Add(error);
+                }
             }
             catch (Exception ex)
             {
@@ -164,7 +170,7 @@ namespace DataProcessor
 
         public ParsedData Process()
         {
-            ParserContext = new ParserContext();
+            ParserContext = new ParserContext { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
 
             return new ParsedData
@@ -174,7 +180,8 @@ namespace DataProcessor
                 DataRows = ParserContext.DataRows,
                 InvalidRows = ParserContext.InvalidRows,
                 Header = ParserContext.Header,
-                Trailer = ParserContext.Trailer
+                Trailer = ParserContext.Trailer,
+                ValidationResult = ParserContext.ValidationResult
             };
         }
     }

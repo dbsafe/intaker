@@ -15,7 +15,6 @@ namespace DataProcessor.Tests
     public class ParsedDataProcessorTest_Integration_Decoders
     {
         private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
-        private FileDataSource _fileDataSource;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public TestContext TestContext { get; set; }
@@ -31,7 +30,6 @@ namespace DataProcessor.Tests
             assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Aggregators.dll");
             StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
 
-            _fileDataSource = TestHelpers.CreateFileDataSource("balance-with-header-and-trailer.csv", false);
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             _processorDefinition = ProcessorDefinition.ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
@@ -40,11 +38,13 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_There_should_no_be_errors()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-header-and-trailer.csv", false);
+            var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
 
+            Assert.AreEqual(ValidationResultType.Valid, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
@@ -54,7 +54,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Header_should_be_decoded()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-header-and-trailer.csv", false);
+            var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
@@ -77,7 +78,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Data_rows_should_be_decoded()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-header-and-trailer.csv", false);
+            var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
@@ -140,7 +142,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Trailer_should_be_decoded()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-header-and-trailer.csv", false);
+            var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
             PrintJson(actual.AllRows);
@@ -157,6 +160,51 @@ namespace DataProcessor.Tests
             AssertValidField(0, "TRAILER", "TRAILER", actual.Trailer, actual.Trailer.Fields[0]);
             AssertValidField(1, "6000.00", 6000m, actual.Trailer, actual.Trailer.Fields[1]);
             AssertValidField(2, "3", 3m, actual.Trailer, actual.Trailer.Fields[2]);
+        }
+
+        [TestMethod]
+        public void Process_Given_an_invalid_header_Should_indicate_error()
+        {
+            var fileDataSourceInvalidHeader = TestHelpers.CreateFileDataSource("balance-with-invalid-header.csv", false);
+            var target = new ParsedDataProcessor(fileDataSourceInvalidHeader, _processorDefinition);
+
+            var actual = target.Process();
+            PrintJson(actual.AllRows);
+
+            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
+            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(1, actual.InvalidRows.Count);
+
+            Assert.AreSame(actual.Header, actual.InvalidRows[0]);
+            var invalidRow = actual.Header;
+            Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
+            Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual("Invalid RecordType 'H'", invalidRow.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_an_invalid_data_row_Should_indicate_error()
+        {
+            var fileDataSourceInvalidHeader = TestHelpers.CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv", false);
+            var target = new ParsedDataProcessor(fileDataSourceInvalidHeader, _processorDefinition);
+
+            var actual = target.Process();
+            PrintJson(actual.AllRows);
+
+            Assert.AreEqual(ValidationResultType.InvalidFixable, actual.ValidationResult);
+            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(1, actual.InvalidRows.Count);
+
+            Assert.AreSame(actual.AllRows[2], actual.InvalidRows[0]);
+            
+            var invalidRow = actual.AllRows[2];
+            Assert.AreEqual(ValidationResultType.InvalidFixable, invalidRow.ValidationResult);
+            Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }
 
         private void PrintJson(object obj)
