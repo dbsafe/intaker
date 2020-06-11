@@ -43,6 +43,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(0, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
 
         }
     }

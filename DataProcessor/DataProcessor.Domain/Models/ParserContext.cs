@@ -11,6 +11,7 @@ namespace DataProcessor.Domain.Models
         public bool IsAborted { get; set; }
         public IList<string> Errors { get; set; } = new List<string>();
         public IList<Row> AllRows { get; set; } = new List<Row>();
+        public IList<Row> DataRows { get; set; } = new List<Row>();
         public IList<Row> InvalidRows { get; set; } = new List<Row>();
         public Row Header { get; set; }
         public Row Trailer { get; set; }

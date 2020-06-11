@@ -84,6 +84,7 @@ namespace DataProcessor
             {
                 lineType = "Data Line";
                 rowProcessorDefinition = _processorDefinition.DataRowProcessorDefinition;
+                e.Context.DataRows.Add(e.Row);
             }
 
             ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
@@ -170,6 +171,7 @@ namespace DataProcessor
             {
                 Errors = ParserContext.Errors,
                 AllRows = ParserContext.AllRows,
+                DataRows = ParserContext.DataRows,
                 InvalidRows = ParserContext.InvalidRows,
                 Header = ParserContext.Header,
                 Trailer = ParserContext.Trailer
