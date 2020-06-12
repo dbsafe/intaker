@@ -32,9 +32,9 @@ namespace DataProcessor.Tests
                 {
                     FieldProcessorDefinitions = new FieldProcessorDefinition[]
                     {
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldA" },
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldB" },
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldC" }
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldA", Description = "Field A" },
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldB", Description = "Field B" },
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldC", Description = "Field C" }
                     }
                 },
                 TrailerRowProcessorDefinition = new RowProcessorDefinition
@@ -91,7 +91,7 @@ namespace DataProcessor.Tests
             }
             catch (ParsedDataProcessorException ex)
             {
-                Assert.AreEqual("RowIndex: 0, FieldIndex: 1, FieldName: FieldB", ex.Message);
+                Assert.AreEqual("RowIndex: 0, FieldIndex: 1, Field: Field B", ex.Message);
                 Assert.IsNotNull(ex.InnerException);
                 Assert.AreEqual(typeof(InvalidOperationException), ex.InnerException.GetType());
                 Assert.AreEqual("Property FailValidationResult cannot be empty or null", ex.InnerException.Message);

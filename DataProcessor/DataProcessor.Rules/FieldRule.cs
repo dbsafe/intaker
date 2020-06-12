@@ -21,7 +21,10 @@ namespace DataProcessor.Rules
             FailValidationResult = failValidationResult;
         }
 
-        public abstract void Validate(Field field);
+        public virtual void Validate(Field field)
+        {
+            EnsureThatPropertiesAreInitialized();
+        }
 
         public string Args
         {
@@ -53,5 +56,28 @@ namespace DataProcessor.Rules
                 throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Error reading Args [{Args}]", ex);
             }
         }
+
+        protected void EnsureThatPropertiesAreInitialized()
+        {
+            EnsureThatPropertyIsInitialized(nameof(TArgs), _args);
+            EnsureThatPropertyIsInitialized(nameof(FailValidationResult), FailValidationResult);
+        }
+
+        protected void EnsureThatPropertyIsInitialized(string name, string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                throw new InvalidOperationException($"Property {name} cannot be empty or null");
+            }
+        }
+
+        protected void EnsureThatPropertyIsInitialized(string name, object value)
+        {
+            if (value == null)
+            {
+                throw new InvalidOperationException($"Property {name} cannot be empty or null");
+            }
+        }
+
     }
 }

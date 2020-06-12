@@ -41,7 +41,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.Valid, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
@@ -57,7 +57,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.IsNotNull(actual.Header);
             Assert.AreEqual(0, actual.Header.Index);
@@ -81,7 +81,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             var dataRow0 = actual.DataRows[0];
             Assert.AreEqual(1, dataRow0.Index);
@@ -145,7 +145,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.IsNotNull(actual.Trailer);
             Assert.AreEqual(4, actual.Trailer.Index);
@@ -168,7 +168,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
@@ -180,7 +180,7 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual("Invalid RecordType 'H'", invalidRow.Errors[0]);
+            Assert.AreEqual("Invalid Record Type (Header Line) 'H'", invalidRow.Errors[0]);
         }
 
         [TestMethod]
@@ -190,7 +190,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidFixable, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
@@ -213,7 +213,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
@@ -225,7 +225,7 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Trailer;
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual("Invalid BalanceTotal '6000.oo'", invalidRow.Errors[0]);
+            Assert.AreEqual("Invalid Sum of all balances '6000.oo'", invalidRow.Errors[0]);
         }
 
         [TestMethod]
@@ -235,7 +235,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
-            PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
@@ -247,24 +247,13 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual("Invalid RecordType 'H'", invalidRow.Errors[0]);
+            Assert.AreEqual("Invalid Record Type (Header Line) 'H'", invalidRow.Errors[0]);
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
             invalidRow = actual.AllRows[2];
             Assert.AreEqual(ValidationResultType.InvalidFixable, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
-        }
-
-        private void PrintJson(object obj)
-        {
-            var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
-            Print(json);
-        }
-
-        private void Print(string message)
-        {
-            TestContext.WriteLine(message);
         }
 
         public void AssertValidField(int expectedIndex, string expectedRaw, object expectedValue, Row expectedRow, Field actualField)

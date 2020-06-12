@@ -1,4 +1,6 @@
 ﻿using DataProcessor.DataSource.File;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using System.IO;
 using System.Reflection;
 
@@ -17,6 +19,17 @@ namespace DataProcessor.Tests
             };
 
             return new FileDataSource(config);
+        }
+
+        public static void PrintJson(this TestContext testContext, object obj)
+        {
+            var json = JsonConvert.SerializeObject(obj, Formatting.Indented);
+            testContext.Print(json);
+        }
+
+        public static void Print(this TestContext testContext, string message)
+        {
+            testContext.WriteLine(message);
         }
     }
 }

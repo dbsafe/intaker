@@ -101,7 +101,7 @@ namespace DataProcessor
 
             if (e.Row.ValidationResult != ValidationResultType.Valid)
             {
-                e.Context.ValidationResult = (ValidationResultType)Math.Max((int)(e.Context.ValidationResult), (int)(e.Row.ValidationResult.Value));
+                e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult.Value);
             }
         }
 
@@ -127,24 +127,64 @@ namespace DataProcessor
                 fieldProcessorDefinition = _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
 
-            ProcessField(fieldProcessorDefinition.FieldName, e.Field, fieldProcessorDefinition.Decoder);
+            ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);
         }
 
-        private void ProcessField(string fieldName, Field field, IFieldDecoder fieldDecoder)
+        private void ProcessField(string description, Field field, FieldProcessorDefinition fieldProcessorDefinition)
         {
             try
             {
-                fieldDecoder.Decode(field);
                 if (field.ValidationResult != ValidationResultType.Valid)
                 {
-                    field.Row.ValidationResult = (ValidationResultType)Math.Max((int)(field.Row.ValidationResult.Value), (int)(field.ValidationResult.Value));
-                    var error = $"Invalid {fieldName} '{field.Raw}'";
-                    field.Row.Errors.Add(error);
+                    return;
                 }
+
+                DecodeField(description, field, fieldProcessorDefinition.Decoder);
+
+                if (field.ValidationResult != ValidationResultType.Valid)
+                {
+                    return;
+                }
+
+                ValidateFieldRules(description, field, fieldProcessorDefinition.Rules);
             }
             catch (Exception ex)
             {
-                throw new ParsedDataProcessorException($"RowIndex: {field.Row.Index}, FieldIndex: {field.Index}, FieldName: {fieldName}", ex);
+                throw new ParsedDataProcessorException($"RowIndex: {field.Row.Index}, FieldIndex: {field.Index}, Field: {description}", ex);
+            }
+        }
+
+        private void ValidateFieldRules(string description, Field field, IFieldRule[] fieldRules)
+        {
+            if (fieldRules == null || fieldRules.Length == 0)
+            {
+                return;
+            }
+
+            var tempValidationResultType = field.ValidationResult.Value;
+            foreach (var fieldRule in fieldRules)
+            {
+                field.ValidationResult = ValidationResultType.Valid;
+                fieldRule.Validate(field);
+                tempValidationResultType = ParsedDataProcessorHelper.GetMaxValidationResult(tempValidationResultType, field.ValidationResult.Value);
+                if (field.ValidationResult != ValidationResultType.Valid)
+                {
+                    field.Row.Errors.Add(fieldRule.Description);
+                }
+            }
+
+            field.ValidationResult = tempValidationResultType;
+            field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult.Value, field.ValidationResult.Value);
+        }
+
+        private void DecodeField(string description, Field field, IFieldDecoder fieldDecoder)
+        {
+            fieldDecoder.Decode(field);
+            if (field.ValidationResult != ValidationResultType.Valid)
+            {
+                field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult.Value, field.ValidationResult.Value);
+                var error = $"Invalid {description} '{field.Raw}'";
+                field.Row.Errors.Add(error);
             }
         }
 

@@ -17,11 +17,13 @@ namespace DataProcessor.Rules
 
         public override void Validate(Field field)
         {
+            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
+            base.Validate(field);
             if (field.ValidationResult != ValidationResultType.Valid)
             {
                 return;
             }
-
+            
             if (field.AsDecimal() > DecodedArgs.RuleValue)
             {
                 field.ValidationResult = FailValidationResult;

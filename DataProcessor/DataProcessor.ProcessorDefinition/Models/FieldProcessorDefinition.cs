@@ -8,5 +8,6 @@ namespace DataProcessor.ProcessorDefinition.Models
         public IFieldRule[] Rules { get; set; }
         public IFieldAggregator[] Aggregators { get; set; }
         public string FieldName { get; set; }
+        public string Description { get; set; }
     }
 }

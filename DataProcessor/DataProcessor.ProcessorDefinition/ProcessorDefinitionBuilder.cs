@@ -43,6 +43,7 @@ namespace DataProcessor.ProcessorDefinition
             return new Models.FieldProcessorDefinition
             {
                 FieldName = fieldDefinition.Name,
+                Description = fieldDefinition.Description,
                 Decoder = CreateDecoder(fieldDefinition),
                 Rules = CreateRules(fieldDefinition),
                 Aggregators = CreateAggregators(fieldDefinition)

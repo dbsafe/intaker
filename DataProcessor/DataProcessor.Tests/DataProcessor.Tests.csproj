@@ -13,6 +13,7 @@
     <None Remove="TestFiles\balance-with-invalid-header.csv" />
     <None Remove="TestFiles\balance-with-invalid-trailer.csv" />
     <None Remove="TestFiles\balance-with-multiple-errors.csv" />
+    <None Remove="TestFiles\balance-with-rule-violations.csv" />
     <None Remove="TestFiles\test-file-data-trailer.csv" />
     <None Remove="TestFiles\test-file-data.csv" />
     <None Remove="TestFiles\test-file-header-data-trailer.csv" />
@@ -20,6 +21,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestFiles\balance-with-rule-violations.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\balance-with-multiple-errors.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
