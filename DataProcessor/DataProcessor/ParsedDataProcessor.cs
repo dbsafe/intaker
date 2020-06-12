@@ -1,5 +1,6 @@
 ﻿using DataProcessor.Domain.Contracts;
 using DataProcessor.Domain.Models;
+using DataProcessor.Domain.Utils;
 using DataProcessor.ProcessorDefinition.Models;
 using System;
 
@@ -65,6 +66,8 @@ namespace DataProcessor
 
         private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs e)
         {
+            DataProcessorGlobal.Debug($"Processing Row. Index: {e.Row.Index}, Raw Data: '{e.Row.Raw}'");
+
             string lineType;
             RowProcessorDefinition rowProcessorDefinition;
 
@@ -139,7 +142,7 @@ namespace DataProcessor
                     return;
                 }
 
-                DecodeField(description, field, fieldProcessorDefinition.Decoder);
+                DecodeField(fieldProcessorDefinition.FieldName, description, field, fieldProcessorDefinition.Decoder);
 
                 if (field.ValidationResult != ValidationResultType.Valid)
                 {
@@ -147,10 +150,32 @@ namespace DataProcessor
                 }
 
                 ValidateFieldRules(description, field, fieldProcessorDefinition.Rules);
+
+                if (field.ValidationResult != ValidationResultType.Valid)
+                {
+                    return;
+                }
+
+                ProcessAggregators(field, fieldProcessorDefinition.Aggregators);
             }
             catch (Exception ex)
             {
                 throw new ParsedDataProcessorException($"RowIndex: {field.Row.Index}, FieldIndex: {field.Index}, Field: {description}", ex);
+            }
+        }
+
+        private void ProcessAggregators(Field field, IFieldAggregator[] aggregators)
+        {
+            if (aggregators == null || aggregators.Length == 0)
+            {
+                return;
+            }
+
+            foreach(var aggregator in aggregators)
+            {
+                DataProcessorGlobal.Debug($"Processing Aggregator: {aggregator.Name}, Value: {aggregator.Aggregate.Value}");
+                aggregator.AggregateField(field);
+                DataProcessorGlobal.Debug($"Processed Aggregator: {aggregator.Name}, New Value: {aggregator.Aggregate.Value}");
             }
         }
 
@@ -164,11 +189,13 @@ namespace DataProcessor
             var tempValidationResultType = field.ValidationResult.Value;
             foreach (var fieldRule in fieldRules)
             {
+                DataProcessorGlobal.Debug($"Processing Field Rule: {fieldRule.Name}");
                 field.ValidationResult = ValidationResultType.Valid;
                 fieldRule.Validate(field);
                 tempValidationResultType = ParsedDataProcessorHelper.GetMaxValidationResult(tempValidationResultType, field.ValidationResult.Value);
                 if (field.ValidationResult != ValidationResultType.Valid)
                 {
+                    DataProcessorGlobal.Debug($"Field Rule {fieldRule.Name} failed");
                     field.Row.Errors.Add(fieldRule.Description);
                 }
             }
@@ -177,8 +204,9 @@ namespace DataProcessor
             field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult.Value, field.ValidationResult.Value);
         }
 
-        private void DecodeField(string description, Field field, IFieldDecoder fieldDecoder)
+        private void DecodeField(string fieldName, string description, Field field, IFieldDecoder fieldDecoder)
         {
+            DataProcessorGlobal.Debug($"Decoding Field: {fieldName}, Raw Value: '{field.Raw}'");
             fieldDecoder.Decode(field);
             if (field.ValidationResult != ValidationResultType.Valid)
             {

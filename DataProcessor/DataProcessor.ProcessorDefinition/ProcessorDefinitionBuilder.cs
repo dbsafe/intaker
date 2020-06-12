@@ -40,17 +40,18 @@ namespace DataProcessor.ProcessorDefinition
 
         private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition)
         {
+            var aggregateManager = new AggregateManager();
             return new Models.FieldProcessorDefinition
             {
                 FieldName = fieldDefinition.Name,
                 Description = fieldDefinition.Description,
                 Decoder = CreateDecoder(fieldDefinition),
                 Rules = CreateRules(fieldDefinition),
-                Aggregators = CreateAggregators(fieldDefinition)
+                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)
             };
         }
 
-        private static IFieldAggregator[] CreateAggregators(FieldDefinition fieldDefinition)
+        private static IFieldAggregator[] CreateAggregators(FieldDefinition fieldDefinition, AggregateManager aggregateManager)
         {
             var fieldAggregators = new List<IFieldAggregator>();
 
@@ -58,18 +59,20 @@ namespace DataProcessor.ProcessorDefinition
             {
                 foreach (var aggregatorDefinition in fieldDefinition.Aggregators)
                 {
-                    fieldAggregators.Add(CreateAggregator(aggregatorDefinition));
+                    fieldAggregators.Add(CreateAggregator(aggregatorDefinition, aggregateManager));
                 }
             }
 
             return fieldAggregators.ToArray();
         }
 
-        private static IFieldAggregator CreateAggregator(AggregatorDefinition aggregatorDefinition)
+        private static IFieldAggregator CreateAggregator(AggregatorDefinition aggregatorDefinition, AggregateManager aggregateManager)
         {
             var aggregator = StoreManager.AggregatorStore.CreateObject(aggregatorDefinition.Aggregator);
             aggregator.Description = aggregatorDefinition.Description;
             aggregator.Name = aggregatorDefinition.Name;
+            aggregator.Aggregate = aggregateManager.GetAggregateByName(aggregator.Name);
+
             return aggregator;
         }
 
