@@ -4,6 +4,7 @@ using DataProcessor.InputDefinitionFile;
 using DataProcessor.InputDefinitionFile.Models;
 using DataProcessor.ObjectStore;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DataProcessor.ProcessorDefinition
 {
@@ -11,15 +12,31 @@ namespace DataProcessor.ProcessorDefinition
     {
         public static Models.ProcessorDefinition CreateProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
         {
-            return new Models.ProcessorDefinition
+            var aggregateManager = new AggregateManager();
+            var processorDefinition = new Models.ProcessorDefinition
             {
-                HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Header),
-                DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data),
-                TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Trailer)
+                HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Header, aggregateManager),
+                DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager),
+                TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Trailer, aggregateManager)
             };
+
+            InitializeRules(processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+            InitializeRules(processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+            InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+
+            return processorDefinition;
         }
 
-        private static Models.RowProcessorDefinition LoadRowProcessorDefinition(RowDefinition rowDefinition)
+        private static void InitializeRules(IEnumerable<IFieldRule> rules, IEnumerable<Aggregate> aggregates)
+        {
+            var config = new FieldRuleConfiguration { Aggregates = aggregates };
+            foreach (var rule in rules)
+            {
+                rule.Initialize(config);
+            }
+        }
+
+        private static Models.RowProcessorDefinition LoadRowProcessorDefinition(RowDefinition rowDefinition, AggregateManager aggregateManager)
         {
             var fieldProcessorDefinitions = new List<Models.FieldProcessorDefinition>();
 
@@ -27,7 +44,7 @@ namespace DataProcessor.ProcessorDefinition
             {
                 foreach (var fieldDefinition in rowDefinition.Fields)
                 {
-                    var fieldProcessorDefinition = LoadFieldProcessorDefinition(fieldDefinition);
+                    var fieldProcessorDefinition = LoadFieldProcessorDefinition(fieldDefinition, aggregateManager);
                     fieldProcessorDefinitions.Add(fieldProcessorDefinition);
                 }
             }
@@ -38,9 +55,8 @@ namespace DataProcessor.ProcessorDefinition
             };
         }
 
-        private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition)
+        private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition, AggregateManager aggregateManager)
         {
-            var aggregateManager = new AggregateManager();
             return new Models.FieldProcessorDefinition
             {
                 FieldName = fieldDefinition.Name,

@@ -21,5 +21,10 @@ namespace DataProcessor.ProcessorDefinition
 
             return aggregate;
         }
+
+        public IEnumerable<Aggregate> GetAggregates()
+        {
+            return _aggregates;
+        }
     }
 }

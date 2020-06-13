@@ -7,8 +7,8 @@
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" />
       <field name="SequenceNumber" description="Sequence Number" decoder="NumberDecoder" pattern="(?!0{4})[0-9]{4}">
         <rules>
-          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Minimum sequence number should be 10" args="{'min':'10'}" isFixable="true"/>
-          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" args="{'max':'100'}" />
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Minimum sequence number should be 10" args="{'ruleValue':'10'}" isFixable="true"/>
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" args="{'ruleValue':'100'}" />
         </rules>
       </field>
       <field name="Optional" description="Optional Field" />
