@@ -5,11 +5,6 @@ namespace DataProcessor.Rules
 {
     public class MaxDateFieldRule : FieldRule<DateFieldRuleArgs>
     {
-        public MaxDateFieldRule()
-            : base()
-        {
-        }
-
         public override void Validate(Field field)
         {
             base.Validate(field);

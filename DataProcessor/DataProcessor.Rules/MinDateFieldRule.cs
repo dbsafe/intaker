@@ -5,14 +5,8 @@ namespace DataProcessor.Rules
 {
     public class MinDateFieldRule : FieldRule<DateFieldRuleArgs>
     {
-        public MinDateFieldRule()
-            : base()
-        {
-        }
-
         public override void Validate(Field field)
         {
-            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
             base.Validate(field);
             if (field.ValidationResult != ValidationResultType.Valid)
             {

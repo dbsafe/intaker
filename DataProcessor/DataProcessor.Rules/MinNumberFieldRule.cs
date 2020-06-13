@@ -1,23 +1,12 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.Domain.Contracts;
+using DataProcessor.Domain.Models;
 
 namespace DataProcessor.Rules
 {
     public class MinNumberFieldRule : FieldRule<NumberFieldRuleArgs>
     {
-        public MinNumberFieldRule()
-            : base()
-        {
-        }
-
-        public MinNumberFieldRule(string ruleName, string ruleDescription, string args, ValidationResultType? failValidationResult)
-            : base(ruleName, ruleDescription, args, failValidationResult)
-        {
-            ArgsHelper.EnsureDecodedArgs(Name, Description, args, DecodedArgs.RuleValue);
-        }
-
         public override void Validate(Field field)
         {
-            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
             base.Validate(field);
             if (field.ValidationResult != ValidationResultType.Valid)
             {
@@ -28,6 +17,12 @@ namespace DataProcessor.Rules
             {
                 field.ValidationResult = FailValidationResult;
             }
+        }
+
+        public override void Initialize(FieldRuleConfiguration config)
+        {
+            base.Initialize(config);
+            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
         }
     }
 }

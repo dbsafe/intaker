@@ -1,4 +1,5 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.Domain.Contracts;
+using DataProcessor.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -7,10 +8,13 @@ namespace DataProcessor.Rules.Tests
     [TestClass]
     public class MinNumberFieldRuleTest
     {
+        private readonly FieldRuleConfiguration _config = new FieldRuleConfiguration();
+
         [TestMethod]
         public void Validate_Given_a_number_greater_than_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidFixable);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidFixable);
+            target.Initialize(_config);
 
             var field = new Field
             {
@@ -26,7 +30,8 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_equal_to_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidCritical);
+            target.Initialize(_config);
 
             var field = new Field
             {
@@ -42,7 +47,8 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_smaller_than_ruleValue_ValidationResult_should_be_set_with_the_value_from_the_rule()
         {
-            var target = new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidCritical);
+            target.Initialize(_config);
 
             var field = new Field
             {
@@ -56,11 +62,12 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Constructor_Given_an_invalid_args_Should_throw_an_exception()
+        public void Initialize_Given_an_invalid_args_Should_throw_an_exception()
         {
+            var target = CreateRule("rule-name", "rule-description", "{'invalid-arg':'10'}", ValidationResultType.InvalidCritical);
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "{'invalid-arg':'10'}", ValidationResultType.InvalidCritical);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
@@ -72,11 +79,11 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Constructor_Given_an_empty_args_Should_throw_an_exception()
+        public void Args_Given_an_empty_args_Should_throw_an_exception()
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "", ValidationResultType.InvalidCritical);
+                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidCritical);
             }
             catch (InvalidOperationException ex)
             {
@@ -88,11 +95,11 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Constructor_Given_an_invalid_json_args_Should_throw_an_exception()
+        public void Args_Given_an_invalid_json_args_Should_throw_an_exception()
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'10'|", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'10'|", ValidationResultType.InvalidFixable);
             }
             catch (InvalidOperationException ex)
             {
@@ -104,11 +111,11 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Constructor_Given_an_invalid_number_in_args_Should_throw_an_exception()
+        public void Args_Given_an_invalid_number_in_args_Should_throw_an_exception()
         {
             try
             {
-                new MinNumberFieldRule("rule-name", "rule-description", "{'ruleValue':'ab'", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'ab'", ValidationResultType.InvalidFixable);
             }
             catch (InvalidOperationException ex)
             {
@@ -117,6 +124,17 @@ namespace DataProcessor.Rules.Tests
             }
 
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
+
+        public MinNumberFieldRule CreateRule(string name, string description, string args, ValidationResultType? failValidationResult)
+        {
+            return new MinNumberFieldRule
+            {
+                Description = description,
+                FailValidationResult = failValidationResult,
+                Name = name,
+                Args = args
+            };
         }
     }
 }
