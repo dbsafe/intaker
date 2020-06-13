@@ -24,7 +24,6 @@ namespace DataProcessor.Rules
 
         public virtual void Validate(Field field)
         {
-            EnsureThatPropertiesAreInitialized();
         }
 
         public string Args
@@ -82,6 +81,11 @@ namespace DataProcessor.Rules
 
         public virtual void SetAggregates(IEnumerable<Aggregate> aggregates)
         {
+        }
+
+        public virtual void Initialize(FieldRuleConfiguration config)
+        {
+            EnsureThatPropertiesAreInitialized();
         }
     }
 }

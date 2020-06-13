@@ -1,4 +1,5 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.Domain.Contracts;
+using DataProcessor.Domain.Models;
 
 namespace DataProcessor.Rules
 {
@@ -7,12 +8,6 @@ namespace DataProcessor.Rules
         public MinDateFieldRule()
             : base()
         {
-        }
-
-        public MinDateFieldRule(string ruleName, string ruleDescription, string args, ValidationResultType? failValidationResult)
-            : base(ruleName, ruleDescription, args, failValidationResult)
-        {
-            ArgsHelper.EnsureDecodedArgs(Name, Description, args, DecodedArgs.RuleValue);
         }
 
         public override void Validate(Field field)
@@ -28,6 +23,12 @@ namespace DataProcessor.Rules
             {
                 field.ValidationResult = FailValidationResult;
             }
+        }
+
+        public override void Initialize(FieldRuleConfiguration config)
+        {
+            base.Initialize(config);
+            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
         }
     }
 }
