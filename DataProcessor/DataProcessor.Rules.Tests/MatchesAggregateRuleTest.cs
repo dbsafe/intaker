@@ -6,7 +6,7 @@ using System;
 namespace DataProcessor.Rules.Tests
 {
     [TestClass]
-    public class MatchesRowCountRuleTest
+    public class MatchesAggregateRuleTest
     {
         private readonly FieldRuleConfiguration _config = new FieldRuleConfiguration
         {
@@ -32,7 +32,7 @@ namespace DataProcessor.Rules.Tests
             var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidFixable);
             target.Initialize(config);
 
-            var field = new Field { Value = "20", ValidationResult = ValidationResultType.Valid };
+            var field = new Field { Value = 20, ValidationResult = ValidationResultType.Valid };
 
             target.Validate(field);
 
@@ -63,7 +63,7 @@ namespace DataProcessor.Rules.Tests
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual($"DataProcessor.Rules.MatchesRowCountRule - Aggregate 'aggregate-3' not found", ex.Message);
+                Assert.AreEqual($"DataProcessor.Rules.MatchesAggregateRule - Aggregate 'aggregate-3' not found", ex.Message);
                 return;
             }
 
@@ -90,7 +90,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Initialize_Given_an_empty_args_Should_throw_an_exception()
         {
-            var target = new MatchesRowCountRule
+            var target = new MatchesAggregateRule
             {
                 Description = "rule-description",
                 FailValidationResult = ValidationResultType.InvalidCritical,
@@ -142,9 +142,9 @@ namespace DataProcessor.Rules.Tests
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
         }
 
-        public MatchesRowCountRule CreateRule(string name, string description, string args, ValidationResultType? failValidationResult)
+        public MatchesAggregateRule CreateRule(string name, string description, string args, ValidationResultType? failValidationResult)
         {
-            return new MatchesRowCountRule
+            return new MatchesAggregateRule
             {
                 Description = description,
                 FailValidationResult = failValidationResult,

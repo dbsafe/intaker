@@ -6,16 +6,16 @@ using System.Linq;
 
 namespace DataProcessor.Rules
 {
-    public class MatchesRowCountRule : FieldRule<MatchesRowCountRuleArgs>
+    public class MatchesAggregateRule : FieldRule<MatchesAggregateRuleArgs>
     {
         private Aggregate _aggregate;
 
-        private void SetAggregates(IEnumerable<Aggregate> aggregates)
+        private void SetAggregate(IEnumerable<Aggregate> aggregates)
         {
             _aggregate = aggregates.FirstOrDefault(a => a.Name == DecodedArgs.RuleValue);
             if (_aggregate == null)
             {
-                throw new InvalidOperationException($"{typeof(MatchesRowCountRule)} - Aggregate '{DecodedArgs.RuleValue}' not found");
+                throw new InvalidOperationException($"{typeof(MatchesAggregateRule)} - Aggregate '{DecodedArgs.RuleValue}' not found");
             }
         }
 
@@ -27,7 +27,7 @@ namespace DataProcessor.Rules
                 return;
             }
 
-            if (field.AsInt() != _aggregate.AsInt())
+            if (field.AsDecimal() != _aggregate.AsDecimal())
             {
                 field.ValidationResult = FailValidationResult;
             }
@@ -37,7 +37,7 @@ namespace DataProcessor.Rules
         {
             base.Initialize(config);
             ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
-            SetAggregates(config.Aggregates);
+            SetAggregate(config.Aggregates);
         }
     }
 }

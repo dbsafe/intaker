@@ -12,7 +12,7 @@ namespace DataProcessor.Rules
             new KeyValuePair<string, Type>("MaxDateFieldRule", typeof(MaxDateFieldRule)),
             new KeyValuePair<string, Type>("MinNumberFieldRule", typeof(MinNumberFieldRule)),
             new KeyValuePair<string, Type>("MaxNumberFieldRule", typeof(MaxNumberFieldRule)),
-            new KeyValuePair<string, Type>("MatchesRowCountRule", typeof(MatchesRowCountRule))
+            new KeyValuePair<string, Type>("MatchesAggregateRule", typeof(MatchesAggregateRule))
         };
 
         public override IEnumerable<KeyValuePair<string, Type>> GetRegisteredFieldRules() => _registeredFieldRules;

@@ -1,6 +1,6 @@
 ﻿namespace DataProcessor.Rules
 {
-    public class MatchesRowCountRuleArgs
+    public class MatchesAggregateRuleArgs
     {
         public string RuleValue { get; set; }
     }
