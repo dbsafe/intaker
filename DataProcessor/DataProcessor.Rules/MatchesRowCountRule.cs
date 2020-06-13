@@ -1,4 +1,5 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.Domain.Contracts;
+using DataProcessor.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,7 @@ namespace DataProcessor.Rules
     {
         private Aggregate _aggregate;
 
-        public MatchesRowCountRule()
-            : base()
-        {
-        }
-
-        public MatchesRowCountRule(string ruleName, string ruleDescription, string args, ValidationResultType? failValidationResult)
-            : base(ruleName, ruleDescription, args, failValidationResult)
-        {
-            ArgsHelper.EnsureDecodedArgs(Name, Description, args, DecodedArgs.RuleValue);
-        }
-
-        public override void SetAggregates(IEnumerable<Aggregate> aggregates)
+        private void SetAggregates(IEnumerable<Aggregate> aggregates)
         {
             _aggregate = aggregates.FirstOrDefault(a => a.Name == DecodedArgs.RuleValue);
             if (_aggregate == null)
@@ -31,7 +21,6 @@ namespace DataProcessor.Rules
 
         public override void Validate(Field field)
         {
-            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
             base.Validate(field);
             if (field.ValidationResult != ValidationResultType.Valid)
             {
@@ -42,6 +31,13 @@ namespace DataProcessor.Rules
             {
                 field.ValidationResult = FailValidationResult;
             }
+        }
+
+        public override void Initialize(FieldRuleConfiguration config)
+        {
+            base.Initialize(config);
+            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
+            SetAggregates(config.Aggregates);
         }
     }
 }

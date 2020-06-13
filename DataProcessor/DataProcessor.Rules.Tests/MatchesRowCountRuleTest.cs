@@ -1,4 +1,5 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.Domain.Contracts;
+using DataProcessor.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -7,17 +8,29 @@ namespace DataProcessor.Rules.Tests
     [TestClass]
     public class MatchesRowCountRuleTest
     {
-        [TestMethod]
-        public void Validate_Given_field_value_matches_the_aggregate_ValidResult_should_be_valid()
+        private readonly FieldRuleConfiguration _config = new FieldRuleConfiguration
         {
-            var aggregates = new Aggregate[]
+            Aggregates = new Aggregate[]
             {
                 new Aggregate {Name = "aggregate-1", Value = 10},
                 new Aggregate {Name = "aggregate-2", Value = 20}
+            }
+        };
+
+        [TestMethod]
+        public void Validate_Given_field_value_matches_the_aggregate_ValidResult_should_be_valid()
+        {
+            var config = new FieldRuleConfiguration
+            {
+                Aggregates = new Aggregate[]
+                {
+                    new Aggregate {Name = "aggregate-1", Value = 10},
+                    new Aggregate {Name = "aggregate-2", Value = 20}
+                }
             };
 
-            var target = new MatchesRowCountRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidFixable);
-            target.SetAggregates(aggregates);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidFixable);
+            target.Initialize(config);
 
             var field = new Field { Value = "20", ValidationResult = ValidationResultType.Valid };
 
@@ -29,14 +42,8 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_field_value_does_not_matche_the_aggregate_ValidResult_should_be_invalid()
         {
-            var aggregates = new Aggregate[]
-            {
-                new Aggregate {Name = "aggregate-1", Value = 10},
-                new Aggregate {Name = "aggregate-2", Value = 20}
-            };
-
-            var target = new MatchesRowCountRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidCritical);
-            target.SetAggregates(aggregates);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidCritical);
+            target.Initialize(_config);
 
             var field = new Field { Value = "5", ValidationResult = ValidationResultType.Valid };
 
@@ -46,19 +53,13 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void SetAggregates_Given_that_the_aggregator_is_not_found_Should_throw_an_exception()
+        public void Initialize_Given_that_the_aggregator_is_not_found_Should_throw_an_exception()
         {
-            var aggregates = new Aggregate[]
-            {
-                new Aggregate {Name = "aggregate-1", Value = 10},
-                new Aggregate {Name = "aggregate-2", Value = 20}
-            };
-
-            var target = new MatchesRowCountRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'}", ValidationResultType.InvalidCritical);
 
             try
             {
-                target.SetAggregates(aggregates);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
@@ -67,7 +68,89 @@ namespace DataProcessor.Rules.Tests
             }
 
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
 
+        [TestMethod]
+        public void Initialize_Given_an_invalid_args_Should_throw_an_exception()
+        {
+            var target = CreateRule("rule-name", "rule-description", "{'invalid-arg':'aggregate-3'}", ValidationResultType.InvalidCritical);
+            try
+            {
+                target.Initialize(_config);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid args [{'invalid-arg':'aggregate-3'}]", ex.Message);
+                return;
+            }
+
+            Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
+
+        [TestMethod]
+        public void Initialize_Given_an_empty_args_Should_throw_an_exception()
+        {
+            var target = new MatchesRowCountRule
+            {
+                Description = "rule-description",
+                FailValidationResult = ValidationResultType.InvalidCritical,
+                Name = "rule-name"
+            };
+
+            try
+            {
+                target.Initialize(_config);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("Property TArgs cannot be empty or null", ex.Message);
+                return;
+            }
+
+            Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
+
+        [TestMethod]
+        public void Args_Given_an_empty_args_Should_throw_an_exception()
+        {
+            try
+            {
+                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidFixable);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Args is empty", ex.Message);
+                return;
+            }
+
+            Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
+
+        [TestMethod]
+        public void Args_Given_an_invalid_json_args_Should_throw_an_exception()
+        {
+            try
+            {
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'|", ValidationResultType.InvalidFixable);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Error reading Args [{'ruleValue':'aggregate-3'|]", ex.Message);
+                return;
+            }
+
+            Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
+
+        public MatchesRowCountRule CreateRule(string name, string description, string args, ValidationResultType? failValidationResult)
+        {
+            return new MatchesRowCountRule
+            {
+                Description = description,
+                FailValidationResult = failValidationResult,
+                Name = name,
+                Args = args
+            };
         }
     }
 }

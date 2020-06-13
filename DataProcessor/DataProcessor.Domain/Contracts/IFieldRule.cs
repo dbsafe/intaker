@@ -15,7 +15,6 @@ namespace DataProcessor.Domain.Contracts
         string Description { get; set; }
         string Args { get; set; }
         ValidationResultType? FailValidationResult { get; set; }
-        void SetAggregates(IEnumerable<Aggregate> aggregates);
         void Initialize(FieldRuleConfiguration config);
     }
 }
