@@ -34,7 +34,11 @@
     <fields>
       <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" />
       <field name="BalanceTotal" description="Sum of all balances" decoder="NumberDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" />
-      <field name="RecordCount" description="Record Count" decoder="NumberDecoder" pattern="\d{1,5}" />
+      <field name="RecordCount" description="Record Count" decoder="NumberDecoder" pattern="\d{1,5}">
+        <rules>
+          <!--<rule name="RecordCount-MatchesRowCountRule" rule="MatchesRowCountRule" description="Record Count should match the number data row" args="{'ruleValue':'DataRowCountAggregator'}" />-->
+        </rules>
+      </field>
     </fields>
   </trailer>
 </inputDataDefinition>

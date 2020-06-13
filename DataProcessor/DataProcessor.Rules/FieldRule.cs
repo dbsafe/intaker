@@ -2,6 +2,7 @@
 using DataProcessor.Domain.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace DataProcessor.Rules
 {
@@ -79,5 +80,8 @@ namespace DataProcessor.Rules
             }
         }
 
+        public virtual void SetAggregates(IEnumerable<Aggregate> aggregates)
+        {
+        }
     }
 }
