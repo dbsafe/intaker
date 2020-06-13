@@ -55,9 +55,11 @@ namespace DataProcessor.Tests
 
             Assert.AreSame(actual.Trailer, actual.InvalidRows[1]);
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.Trailer.ValidationResult);
+            Assert.AreEqual(ValidationResultType.InvalidFixable, actual.Trailer.Fields[1].ValidationResult);
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.Trailer.Fields[2].ValidationResult);
-            Assert.AreEqual(1, actual.Trailer.Errors.Count);
-            Assert.AreEqual("Record Count should match the number data row", actual.Trailer.Errors[0]);
+            Assert.AreEqual(2, actual.Trailer.Errors.Count);
+            Assert.AreEqual("Balance Total is incorrect", actual.Trailer.Errors[0]);
+            Assert.AreEqual("Record Count should match the number data row", actual.Trailer.Errors[1]);
         }
     }
 }

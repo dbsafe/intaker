@@ -225,7 +225,7 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Trailer;
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual("Invalid Sum of all balances '6000.oo'", invalidRow.Errors[0]);
+            Assert.AreEqual("Invalid Balance Total '6000.oo'", invalidRow.Errors[0]);
         }
 
         [TestMethod]
