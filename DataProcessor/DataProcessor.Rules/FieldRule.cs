@@ -1,8 +1,8 @@
 ﻿using DataProcessor.Domain.Contracts;
 using DataProcessor.Domain.Models;
+using DataProcessor.Domain.Utils;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace DataProcessor.Rules
 {
@@ -81,6 +81,7 @@ namespace DataProcessor.Rules
 
         public virtual void Initialize(FieldRuleConfiguration config)
         {
+            DataProcessorGlobal.Debug($"Rule: {Name}. Initializing.");
             EnsureThatPropertiesAreInitialized();
         }
     }
