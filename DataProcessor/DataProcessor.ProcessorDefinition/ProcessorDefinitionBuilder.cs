@@ -15,6 +15,7 @@ namespace DataProcessor.ProcessorDefinition
             var aggregateManager = new AggregateManager();
             var processorDefinition = new Models.ProcessorDefinition
             {
+                CreateRowJsonEnabled = inputDefinitionFile_10.CreateRowJsonEnabled,
                 HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Header, aggregateManager),
                 DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager),
                 TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Trailer, aggregateManager)

@@ -47,6 +47,8 @@ namespace DataProcessor.ProcessorDefinition.Tests
 
             var actual = ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
 
+            Assert.IsTrue(actual.CreateRowJsonEnabled);
+
             // Header definition
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition);
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions);

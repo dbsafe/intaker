@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<inputDataDefinition name="Balance" version="1.0" description="Demo file" delimiter="," hasFieldsEnclosedInQuotes="false" frameworkVersion="1.0">
+<inputDataDefinition name="Balance" version="1.0" description="Demo file" delimiter="," hasFieldsEnclosedInQuotes="false" frameworkVersion="1.0" createRowJsonEnabled="true">
   <header>
     <fields>
       <field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />

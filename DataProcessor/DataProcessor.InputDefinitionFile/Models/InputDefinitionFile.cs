@@ -35,6 +35,9 @@ namespace DataProcessor.InputDefinitionFile.Models
             }
         }
 
+        [XmlAttribute("createRowJsonEnabled")]
+        public bool CreateRowJsonEnabled { get; set; }
+
         protected virtual void OnFrameworkVersionSet(string frameworkVersion)
         {
         }

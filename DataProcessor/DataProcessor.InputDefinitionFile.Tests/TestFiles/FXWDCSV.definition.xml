@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<inputDataDefinition name="FXWDCSV" version="1.0" description="Demo defining part of FXWDCSV" frameworkVersion="1.0">
+<inputDataDefinition name="FXWDCSV" version="1.0" description="Demo defining part of FXWDCSV" frameworkVersion="1.0" createRowJsonEnabled="false">
   <header>
     <fields>
       <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" isFixable="false" />
