@@ -141,7 +141,7 @@ namespace DataProcessor.Tests
 
             var row0 = actual.AllRows[0];
             Assert.AreEqual(1, row0.Errors.Count);
-            Assert.AreEqual("Data Line - The expected number of fields 2 is not equal to the actual number of fields 3", row0.Errors[0]);
+            Assert.AreEqual("Data Row - The expected number of fields 2 is not equal to the actual number of fields 3", row0.Errors[0]);
         }
     }
 }

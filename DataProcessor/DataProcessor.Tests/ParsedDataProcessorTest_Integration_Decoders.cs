@@ -183,7 +183,7 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual("Invalid Record Type (Header Line) 'H'", invalidRow.Errors[0]);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
         }
 
         [TestMethod]
@@ -256,7 +256,7 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.InvalidCritical, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual("Invalid Record Type (Header Line) 'H'", invalidRow.Errors[0]);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
             invalidRow = actual.AllRows[2];

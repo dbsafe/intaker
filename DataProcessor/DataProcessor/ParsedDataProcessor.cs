@@ -83,7 +83,7 @@ namespace DataProcessor
 
             if (IsHeaderRow(e.Row))
             {
-                lineType = "Header Line";
+                lineType = "Header Row";
                 rowProcessorDefinition = _processorDefinition.HeaderRowProcessorDefinition;
                 e.Context.Header = e.Row;
                 ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
@@ -92,14 +92,14 @@ namespace DataProcessor
 
             if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
             {
-                lineType = "Trailer Line";
+                lineType = "Trailer Row";
                 rowProcessorDefinition = _processorDefinition.TrailerRowProcessorDefinition;
                 e.Context.Trailer = e.Row;
                 ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
                 return;
             }
 
-            lineType = "Data Line";
+            lineType = "Data Row";
             rowProcessorDefinition = _processorDefinition.DataRowProcessorDefinition;
             e.Context.DataRows.Add(e.Row);
             ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
