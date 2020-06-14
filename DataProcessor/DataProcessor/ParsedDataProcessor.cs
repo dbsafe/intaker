@@ -12,28 +12,28 @@ namespace DataProcessor
     public class ParsedDataProcessor
     {
         private readonly IDataSource _source;
-        private readonly ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
+        private readonly FileProcessorDefinition _fileProcessorDefinition;
         private bool _hasHeader;
         private bool _hasTrailer;
 
         public ParserContext ParserContext { get; private set; }
 
-        public ParsedDataProcessor(IDataSource source, ProcessorDefinition.Models.ProcessorDefinition processorDefinition)
+        public ParsedDataProcessor(IDataSource source, FileProcessorDefinition fileProcessorDefinition)
         {
-            ValidateProcessorDefinition(processorDefinition);
+            ValidateProcessorDefinition(fileProcessorDefinition);
 
-            _hasHeader = processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
-            _hasTrailer = processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
+            _hasHeader = fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
+            _hasTrailer = fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
 
             _source = source;
-            _processorDefinition = processorDefinition;
+            _fileProcessorDefinition = fileProcessorDefinition;
 
             _source.BeforeProcessRow += SourceBeforeProcessRow;
             _source.AfterProcessRow += SourceAfterProcessRow;
             _source.ProcessField += SourceProcessField;
         }
 
-        private static void ValidateProcessorDefinition(ProcessorDefinition.Models.ProcessorDefinition processorDefinition)
+        private static void ValidateProcessorDefinition(FileProcessorDefinition processorDefinition)
         {
             if (processorDefinition is null)
             {
@@ -87,7 +87,7 @@ namespace DataProcessor
             if (IsHeaderRow(e.Row))
             {
                 lineType = "Header Row";
-                rowProcessorDefinition = _processorDefinition.HeaderRowProcessorDefinition;
+                rowProcessorDefinition = _fileProcessorDefinition.HeaderRowProcessorDefinition;
                 e.Context.Header = e.Row;
                 ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
                 return;
@@ -96,14 +96,14 @@ namespace DataProcessor
             if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
             {
                 lineType = "Trailer Row";
-                rowProcessorDefinition = _processorDefinition.TrailerRowProcessorDefinition;
+                rowProcessorDefinition = _fileProcessorDefinition.TrailerRowProcessorDefinition;
                 e.Context.Trailer = e.Row;
                 ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
                 return;
             }
 
             lineType = "Data Row";
-            rowProcessorDefinition = _processorDefinition.DataRowProcessorDefinition;
+            rowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinition;
             e.Context.DataRows.Add(e.Row);
             ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
         }
@@ -133,21 +133,21 @@ namespace DataProcessor
                 return;
             }
 
-            if (_processorDefinition.CreateRowJsonEnabled)
+            if (_fileProcessorDefinition.CreateRowJsonEnabled)
             {
                 if (IsHeaderRow(e.Row))
                 {
-                    SetJson(e.Row, _processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
+                    SetJson(e.Row, _fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
                     return;
                 }
 
                 if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
                 {
-                    SetJson(e.Row, _processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
+                    SetJson(e.Row, _fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
                     return;
                 }
 
-                SetJson(e.Row, _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
+                SetJson(e.Row, _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
             }
         }
 
@@ -176,15 +176,15 @@ namespace DataProcessor
 
             if (e.Field.Row.Index == 0 && _hasHeader)
             {
-                fieldProcessorDefinition = _processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
+                fieldProcessorDefinition = _fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
             else if (e.Context.IsCurrentRowTheLast && _hasTrailer)
             {
-                fieldProcessorDefinition = _processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
+                fieldProcessorDefinition = _fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
             else
             {
-                fieldProcessorDefinition = _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
+                fieldProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
 
             ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);

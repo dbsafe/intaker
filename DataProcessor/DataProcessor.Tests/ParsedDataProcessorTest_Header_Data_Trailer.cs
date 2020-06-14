@@ -9,7 +9,7 @@ namespace DataProcessor.Tests
     [TestClass]
     public class ParsedDataProcessorTest_Header_Data_Trailer
     {
-        private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
+        private FileProcessorDefinition _fileProcessorDefinition;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
@@ -21,7 +21,7 @@ namespace DataProcessor.Tests
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-header-data-trailer.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
-            _processorDefinition = new ProcessorDefinition.Models.ProcessorDefinition
+            _fileProcessorDefinition = new FileProcessorDefinition
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition
                 {
@@ -54,7 +54,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_file_with_header_data_and_trailer_Should_decode_and_parse_fields()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -96,8 +96,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_file_with_header_data_and_trailer_Should_create_the_json_for_the_rows()
         {
-            _processorDefinition.CreateRowJsonEnabled = true;
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            _fileProcessorDefinition.CreateRowJsonEnabled = true;
+            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);

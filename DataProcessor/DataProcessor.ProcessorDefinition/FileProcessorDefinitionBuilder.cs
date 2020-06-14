@@ -8,12 +8,12 @@ using System.Linq;
 
 namespace DataProcessor.ProcessorDefinition
 {
-    public static class ProcessorDefinitionBuilder
+    public static class FileProcessorDefinitionBuilder
     {
-        public static Models.ProcessorDefinition CreateProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
+        public static Models.FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
         {
             var aggregateManager = new AggregateManager();
-            var processorDefinition = new Models.ProcessorDefinition
+            var processorDefinition = new Models.FileProcessorDefinition
             {
                 CreateRowJsonEnabled = inputDefinitionFile_10.CreateRowJsonEnabled,
                 HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Header, aggregateManager),

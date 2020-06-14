@@ -10,7 +10,7 @@ namespace DataProcessor.Tests
     [TestClass]
     public class ParsedDataProcessorTest_Data
     {
-        private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
+        private FileProcessorDefinition _fileProcessorDefinition;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
@@ -22,7 +22,7 @@ namespace DataProcessor.Tests
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
-            _processorDefinition = new ProcessorDefinition.Models.ProcessorDefinition
+            _fileProcessorDefinition = new FileProcessorDefinition
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition
                 {
@@ -47,7 +47,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_file_without_header_and_trailer_Should_decode_and_parse_fields()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
 
@@ -81,9 +81,9 @@ namespace DataProcessor.Tests
         public void Process_Given_a_decoder_without_a_value_for_failValidationResult_Should_throw_an_exception()
         {
             var incompleDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = null };
-            _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
+            _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
 
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
 
             try
             {
@@ -105,9 +105,9 @@ namespace DataProcessor.Tests
         public void Process_Given_that_an_exception_is_thrown_Context_should_indicate_the_row_being_processed()
         {
             var incompleDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = null };
-            _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
+            _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
 
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
 
             try
             {
@@ -126,13 +126,13 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_that_the_number_of_fields_dont_match_The_row_should_indicate_the_error()
         {
-            _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions = new FieldProcessorDefinition[]
+            _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions = new FieldProcessorDefinition[]
             {
                 new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldA" },
                 new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldB" }
             };
 
-            var target = new ParsedDataProcessor(_fileDataSource, _processorDefinition);
+            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
 

@@ -1,6 +1,6 @@
 ﻿namespace DataProcessor.ProcessorDefinition.Models
 {
-    public class ProcessorDefinition
+    public class FileProcessorDefinition
     {
         public bool CreateRowJsonEnabled { get; set; }
         public RowProcessorDefinition HeaderRowProcessorDefinition { get; set; }
