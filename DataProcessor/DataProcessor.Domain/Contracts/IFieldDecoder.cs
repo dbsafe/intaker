@@ -6,6 +6,6 @@ namespace DataProcessor.Domain.Contracts
     {
         void Decode(Field field);
         string Pattern { get; set; }
-        ValidationResultType? FailValidationResult { get; set; }
+        ValidationResultType FailValidationResult { get; set; }
     }
 }

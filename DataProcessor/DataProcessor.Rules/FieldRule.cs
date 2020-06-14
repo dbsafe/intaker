@@ -14,7 +14,7 @@ namespace DataProcessor.Rules
         {
         }
 
-        public FieldRule(string ruleName, string ruleDescription, string args, ValidationResultType? failValidationResult)
+        public FieldRule(string ruleName, string ruleDescription, string args, ValidationResultType failValidationResult)
         {
             Name = ruleName;
             Description = ruleDescription;
@@ -38,7 +38,7 @@ namespace DataProcessor.Rules
         protected TArgs DecodedArgs { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ValidationResultType? FailValidationResult { get; set; }
+        public ValidationResultType FailValidationResult { get; set; }
 
         protected TArgs GetArgs()
         {

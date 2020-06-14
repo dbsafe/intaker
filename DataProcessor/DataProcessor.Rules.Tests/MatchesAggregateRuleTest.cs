@@ -142,7 +142,7 @@ namespace DataProcessor.Rules.Tests
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
         }
 
-        public MatchesAggregateRule CreateRule(string name, string description, string args, ValidationResultType? failValidationResult)
+        public MatchesAggregateRule CreateRule(string name, string description, string args, ValidationResultType failValidationResult)
         {
             return new MatchesAggregateRule
             {

@@ -133,7 +133,7 @@ namespace DataProcessor.Rules.Tests
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
         }
 
-        public MinDateFieldRule CreateRule(string name, string description, string args, ValidationResultType? failValidationResult)
+        public MinDateFieldRule CreateRule(string name, string description, string args, ValidationResultType failValidationResult)
         {
             return new MinDateFieldRule
             {

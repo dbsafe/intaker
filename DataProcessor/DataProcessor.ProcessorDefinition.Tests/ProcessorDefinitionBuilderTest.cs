@@ -146,7 +146,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
             string expectedFieldName, 
             string expectedPattern, 
             Type expectedType,
-            ValidationResultType? expectedFailValidationResult,
+            ValidationResultType expectedFailValidationResult,
             FieldProcessorDefinition fieldProcessorDefinition)
         {
             Assert.AreEqual(expectedFieldName, fieldProcessorDefinition.FieldName);

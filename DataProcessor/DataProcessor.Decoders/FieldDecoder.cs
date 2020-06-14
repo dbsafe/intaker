@@ -20,7 +20,7 @@ namespace DataProcessor.Decoders
                 _regex = new Regex($"^{_pattern}$", RegexOptions.Compiled);
             }
         }
-        public ValidationResultType? FailValidationResult { get; set; }
+        public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.InvalidCritical;
 
         public virtual void Decode(Field field)
         {
