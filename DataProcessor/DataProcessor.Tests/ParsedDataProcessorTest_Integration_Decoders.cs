@@ -65,13 +65,13 @@ namespace DataProcessor.Tests
             Assert.AreEqual("HEADER,09212013,ABCDCompLndn,0001", actual.Header.Raw);
             Assert.AreEqual("HEADER,09212013,ABCDCompLndn,0001", string.Join(',', actual.Header.RawFields));
             Assert.AreEqual(0, actual.Header.Errors.Count);
+            Assert.AreEqual("{\"RecordType\":\"HEADER\",\"CreationDate\":\"2013-09-21T00:00:00\",\"LocationID\":\"ABCDCompLndn\",\"SequenceNumber\":1}", actual.Header.Json);
 
             Assert.AreEqual(4, actual.Header.Fields.Count);
             AssertValidField(0, "HEADER", "HEADER", actual.Header, actual.Header.Fields[0]);
             AssertValidField(1, "09212013", new DateTime(2013, 9, 21), actual.Header, actual.Header.Fields[1]);
             AssertValidField(2, "ABCDCompLndn", "ABCDCompLndn", actual.Header, actual.Header.Fields[2]);
             AssertValidField(3, "0001", 1, actual.Header, actual.Header.Fields[3]);
-            // Assert.AreEqual("", actual.Header.Json);
         }
 
         [TestMethod]
@@ -89,9 +89,9 @@ namespace DataProcessor.Tests
             Assert.AreEqual("BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00,AA", dataRow0.Raw);
             Assert.AreEqual("BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00,AA", string.Join(',', dataRow0.RawFields));
             Assert.AreEqual(0, dataRow0.Errors.Count);
+            Assert.AreEqual("{\"RecordType\":\"BALANCE\",\"ConsumerID\":1001,\"SSN\":\"111-22-1001\",\"FirstName\":\"fname-01\",\"LastName\":\"lname-01\",\"DOB\":\"2000-10-21T00:00:00\",\"Balance\":1000.00,\"CustomField\":\"AA\"}", dataRow0.Json);
 
             Assert.AreEqual(8, dataRow0.Fields.Count);
-
             AssertValidField(0, "BALANCE", "BALANCE", dataRow0, dataRow0.Fields[0]);
             AssertValidField(1, "1001", 1001, dataRow0, dataRow0.Fields[1]);
             AssertValidField(2, "111-22-1001", "111-22-1001", dataRow0, dataRow0.Fields[2]);
@@ -107,9 +107,9 @@ namespace DataProcessor.Tests
             Assert.AreEqual("BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00,", dataRow1.Raw);
             Assert.AreEqual("BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00,", string.Join(',', dataRow1.RawFields));
             Assert.AreEqual(0, dataRow1.Errors.Count);
+            Assert.AreEqual("{\"RecordType\":\"BALANCE\",\"ConsumerID\":1002,\"SSN\":\"111-22-1002\",\"FirstName\":\"fname-02\",\"LastName\":\"lname-02\",\"DOB\":\"2000-10-22T00:00:00\",\"Balance\":2000.00,\"CustomField\":\"\"}", dataRow1.Json);
 
             Assert.AreEqual(8, dataRow1.Fields.Count);
-
             AssertValidField(0, "BALANCE", "BALANCE", dataRow1, dataRow1.Fields[0]);
             AssertValidField(1, "1002", 1002, dataRow1, dataRow1.Fields[1]);
             AssertValidField(2, "111-22-1002", "111-22-1002", dataRow1, dataRow1.Fields[2]);
@@ -125,9 +125,9 @@ namespace DataProcessor.Tests
             Assert.AreEqual("BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00,", dataRow2.Raw);
             Assert.AreEqual("BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00,", string.Join(',', dataRow2.RawFields));
             Assert.AreEqual(0, dataRow2.Errors.Count);
+            Assert.AreEqual("{\"RecordType\":\"BALANCE\",\"ConsumerID\":1003,\"SSN\":\"111-22-1003\",\"FirstName\":\"fname-03\",\"LastName\":\"lname-03\",\"DOB\":\"2000-10-23T00:00:00\",\"Balance\":3000.00,\"CustomField\":\"\"}", dataRow2.Json);
 
             Assert.AreEqual(8, dataRow2.Fields.Count);
-
             AssertValidField(0, "BALANCE", "BALANCE", dataRow2, dataRow2.Fields[0]);
             AssertValidField(1, "1003", 1003, dataRow2, dataRow2.Fields[1]);
             AssertValidField(2, "111-22-1003", "111-22-1003", dataRow2, dataRow2.Fields[2]);
@@ -153,9 +153,9 @@ namespace DataProcessor.Tests
             Assert.AreEqual("TRAILER,6000.00,3", actual.Trailer.Raw);
             Assert.AreEqual("TRAILER,6000.00,3", string.Join(',', actual.Trailer.RawFields));
             Assert.AreEqual(0, actual.Trailer.Errors.Count);
+            Assert.AreEqual("{\"RecordType\":\"TRAILER\",\"BalanceTotal\":6000.00,\"RecordCount\":3}", actual.Trailer.Json);
 
             Assert.AreEqual(3, actual.Trailer.Fields.Count);
-
             AssertValidField(0, "TRAILER", "TRAILER", actual.Trailer, actual.Trailer.Fields[0]);
             AssertValidField(1, "6000.00", 6000m, actual.Trailer, actual.Trailer.Fields[1]);
             AssertValidField(2, "3", 3, actual.Trailer, actual.Trailer.Fields[2]);
