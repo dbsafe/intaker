@@ -117,12 +117,16 @@ namespace DataProcessor
                 if (IsHeaderRow(e.Row))
                 {
                     e.Context.Errors.Add("Header row is not valid");
+                    return;
                 }
 
                 if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
                 {
                     e.Context.Errors.Add("Trailer row is not valid");
+                    return;
                 }
+
+                e.Context.InvalidDataRowCount++;
             }
         }
 
@@ -258,6 +262,18 @@ namespace DataProcessor
         {
             ParserContext = new ParserContext { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
+
+            if (ParserContext.InvalidDataRowCount > 0)
+            {
+                if (ParserContext.InvalidDataRowCount == 1)
+                {
+                    ParserContext.Errors.Add($"There is 1 invalid data row");
+                }
+                else
+                {
+                    ParserContext.Errors.Add($"There are {ParserContext.InvalidDataRowCount} invalid data rows");
+                }
+            }
 
             return new ParsedData
             {

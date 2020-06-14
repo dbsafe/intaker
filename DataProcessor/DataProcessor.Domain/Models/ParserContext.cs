@@ -16,5 +16,6 @@ namespace DataProcessor.Domain.Models
         public Row Header { get; set; }
         public Row Trailer { get; set; }
         public ValidationResultType ValidationResult { get; set; }
+        public int InvalidDataRowCount { get; set; }
     }
 }
