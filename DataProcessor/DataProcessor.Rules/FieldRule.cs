@@ -10,18 +10,6 @@ namespace DataProcessor.Rules
     {
         private string _args;
 
-        public FieldRule()
-        {
-        }
-
-        public FieldRule(string ruleName, string ruleDescription, string args, ValidationResultType failValidationResult)
-        {
-            Name = ruleName;
-            Description = ruleDescription;
-            Args = args;
-            FailValidationResult = failValidationResult;
-        }
-
         public virtual void Validate(Field field)
         {
         }
