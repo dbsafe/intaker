@@ -2,7 +2,10 @@
 using DataProcessor.Domain.Models;
 using DataProcessor.Domain.Utils;
 using DataProcessor.ProcessorDefinition.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 
 namespace DataProcessor
 {
@@ -127,7 +130,39 @@ namespace DataProcessor
                 }
 
                 e.Context.InvalidDataRowCount++;
+                return;
             }
+
+            if (_processorDefinition.CreateRowJsonEnabled)
+            {
+                if (IsHeaderRow(e.Row))
+                {
+                    SetJson(e.Row, _processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
+                    return;
+                }
+
+                if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
+                {
+                    SetJson(e.Row, _processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
+                    return;
+                }
+
+                SetJson(e.Row, _processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
+            }
+        }
+
+        private void SetJson(Row row, FieldProcessorDefinition[] fieldProcessorDefinitions)
+        {
+            var jProperties = new List<JProperty>();
+            for (int i = 0; i < row.Fields.Count; i++)
+            {
+                var field = row.Fields[i];
+                var fieldProcessorDefinition = fieldProcessorDefinitions[i];
+                jProperties.Add(new JProperty(fieldProcessorDefinition.FieldName, field.Value));
+            }
+
+            var json = new JObject(jProperties);
+            row.Json = json.ToString(Formatting.None);
         }
 
         private void SourceProcessField(object sender, ProcessFieldEventArgs e)

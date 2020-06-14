@@ -2,6 +2,7 @@
 {
     public class ProcessorDefinition
     {
+        public bool CreateRowJsonEnabled { get; set; }
         public RowProcessorDefinition HeaderRowProcessorDefinition { get; set; }
         public RowProcessorDefinition TrailerRowProcessorDefinition { get; set; }
         public RowProcessorDefinition DataRowProcessorDefinition { get; set; }

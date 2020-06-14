@@ -1,6 +1,8 @@
 ﻿using DataProcessor.DataSource.File;
+using DataProcessor.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
@@ -30,6 +32,15 @@ namespace DataProcessor.Tests
         public static void Print(this TestContext testContext, string message)
         {
             testContext.WriteLine(message);
+        }
+
+        public static void PrintRowJsons(this TestContext testContext, IEnumerable<Row> rows)
+        {
+            foreach(var row in rows)
+            {
+                var message = $"Row Index: {row.Index}\nJSON:\n{row.Json}";
+                testContext.WriteLine(message);
+            }
         }
     }
 }
