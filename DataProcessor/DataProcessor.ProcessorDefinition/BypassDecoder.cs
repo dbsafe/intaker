@@ -6,7 +6,7 @@ namespace DataProcessor.ProcessorDefinition
     public class BypassDecoder : IFieldDecoder
     {
         public string Pattern { get; set; }
-        public ValidationResultType? FailValidationResult { get; set; } = ValidationResultType.Valid;
+        public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Valid;
 
         public void Decode(Field field)
         {

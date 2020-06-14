@@ -11,7 +11,7 @@ namespace DataProcessor.Domain.Models
         [JsonIgnore]
         public Row Row { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public ValidationResultType? ValidationResult { get; set; }
+        public ValidationResultType ValidationResult { get; set; }
         public object Value { get; set; }
 
         public int AsInt()

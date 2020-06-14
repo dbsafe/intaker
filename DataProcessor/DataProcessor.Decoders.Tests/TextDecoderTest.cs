@@ -29,25 +29,6 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        public void Decode_Given_that_property_validationResult_is_not_set_Should_throw_an_exception()
-        {
-            var field = new Field { Raw = "AAA" };
-            target = new TextDecoder { Pattern = "(AAA|BBB)" };
-
-            try
-            {
-                target.Decode(field);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Assert.AreEqual("Property FailValidationResult cannot be empty or null", ex.Message);
-                return;
-            }
-
-            Assert.Fail("An exception was not thrown");
-        }
-
-        [TestMethod]
         public void Decode_Given_a_valid_text_Value_should_be_set_with_the_text()
         {
             var field = new Field { Raw = "BBB" };

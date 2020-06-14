@@ -14,7 +14,7 @@ namespace DataProcessor.Domain.Contracts
         string Name { get; set; }
         string Description { get; set; }
         string Args { get; set; }
-        ValidationResultType? FailValidationResult { get; set; }
+        ValidationResultType FailValidationResult { get; set; }
         void Initialize(FieldRuleConfiguration config);
     }
 }

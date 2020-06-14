@@ -8,7 +8,7 @@ namespace DataProcessor.Domain.Models
     {
         public int Index { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
-        public ValidationResultType? ValidationResult { get; set; }
+        public ValidationResultType ValidationResult { get; set; }
         public string Raw { get; set; }
         public string[] RawFields { get; set; }
         public IList<Field> Fields { get; set; } = new List<Field>();

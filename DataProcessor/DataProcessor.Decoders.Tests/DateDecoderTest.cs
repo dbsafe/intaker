@@ -27,22 +27,14 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        public void Decode_Given_that_property_validationResult_is_not_set_Should_throw_an_exception()
+        public void Decode_Given_that_property_validationResult_is_not_set_Should_default_to_invalidCritical()
         {
-            var field = new Field { Raw = "2020-10-20" };
+            var field = new Field { Raw = "2020-10-aa", ValidationResult = ValidationResultType.Valid };
             var target = new DateDecoder { Pattern = "yyyy-MM-dd" };
 
-            try
-            {
-                target.Decode(field);
-            }
-            catch (InvalidOperationException ex)
-            {
-                Assert.AreEqual("Property FailValidationResult cannot be empty or null", ex.Message);
-                return;
-            }
+            target.Decode(field);
 
-            Assert.Fail("An exception was not thrown");
+            Assert.AreEqual(ValidationResultType.InvalidCritical, field.ValidationResult);
         }
 
         [TestMethod]

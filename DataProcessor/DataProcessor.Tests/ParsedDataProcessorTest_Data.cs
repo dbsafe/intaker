@@ -78,52 +78,6 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_decoder_without_a_value_for_failValidationResult_Should_throw_an_exception()
-        {
-            var incompleDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = null };
-            _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
-
-            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
-
-            try
-            {
-                target.Process();
-            }
-            catch (ParsedDataProcessorException ex)
-            {
-                Assert.AreEqual("RowIndex: 0, FieldIndex: 1, Field: Field B", ex.Message);
-                Assert.IsNotNull(ex.InnerException);
-                Assert.AreEqual(typeof(InvalidOperationException), ex.InnerException.GetType());
-                Assert.AreEqual("Property FailValidationResult cannot be empty or null", ex.InnerException.Message);
-                return;
-            }
-
-            Assert.Fail("Expected exception was not thrown");
-        }
-
-        [TestMethod]
-        public void Process_Given_that_an_exception_is_thrown_Context_should_indicate_the_row_being_processed()
-        {
-            var incompleDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = null };
-            _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[1].Decoder = incompleDecoder;
-
-            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
-
-            try
-            {
-                target.Process();
-            }
-            catch
-            {
-                Assert.AreEqual(0, target.ParserContext.CurrentRowIndex);
-                Assert.AreEqual("field-1a,field-1b,field-1c", target.ParserContext.CurrentRowRaw);
-                return;
-            }
-
-            Assert.Fail("Expected exception was not thrown");
-        }
-
-        [TestMethod]
         public void Process_Given_that_the_number_of_fields_dont_match_The_row_should_indicate_the_error()
         {
             _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions = new FieldProcessorDefinition[]

@@ -115,7 +115,7 @@ namespace DataProcessor
             if (e.Row.ValidationResult != ValidationResultType.Valid)
             {
                 e.Context.InvalidRows.Add(e.Row);
-                e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult.Value);
+                e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
 
                 if (IsHeaderRow(e.Row))
                 {
@@ -243,13 +243,13 @@ namespace DataProcessor
                 return;
             }
 
-            var tempValidationResultType = field.ValidationResult.Value;
+            var tempValidationResultType = field.ValidationResult;
             foreach (var fieldRule in fieldRules)
             {
                 DataProcessorGlobal.Debug($"Processing Field Rule: {fieldRule.Name}");
                 field.ValidationResult = ValidationResultType.Valid;
                 fieldRule.Validate(field);
-                tempValidationResultType = ParsedDataProcessorHelper.GetMaxValidationResult(tempValidationResultType, field.ValidationResult.Value);
+                tempValidationResultType = ParsedDataProcessorHelper.GetMaxValidationResult(tempValidationResultType, field.ValidationResult);
                 if (field.ValidationResult != ValidationResultType.Valid)
                 {
                     DataProcessorGlobal.Debug($"Field Rule {fieldRule.Name} failed");
@@ -258,7 +258,7 @@ namespace DataProcessor
             }
 
             field.ValidationResult = tempValidationResultType;
-            field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult.Value, field.ValidationResult.Value);
+            field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult, field.ValidationResult);
         }
 
         private void DecodeField(string fieldName, string description, Field field, IFieldDecoder fieldDecoder)
@@ -267,7 +267,7 @@ namespace DataProcessor
             fieldDecoder.Decode(field);
             if (field.ValidationResult != ValidationResultType.Valid)
             {
-                field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult.Value, field.ValidationResult.Value);
+                field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult, field.ValidationResult);
                 var error = $"Invalid {description} '{field.Raw}'";
                 field.Row.Errors.Add(error);
             }
