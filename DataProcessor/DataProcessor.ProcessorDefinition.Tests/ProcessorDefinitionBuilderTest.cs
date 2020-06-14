@@ -45,7 +45,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
 
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
 
-            var actual = ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
+            var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             Assert.IsTrue(actual.CreateRowJsonEnabled);
 
@@ -87,7 +87,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
 
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
 
-            var actual = ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
+            var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition);
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
@@ -120,7 +120,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
 
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
 
-            var actual = ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
+            var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             Assert.IsNotNull(actual.DataRowProcessorDefinition);
             Assert.IsNotNull(actual.DataRowProcessorDefinition.FieldProcessorDefinitions);

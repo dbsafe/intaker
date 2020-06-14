@@ -11,7 +11,7 @@ namespace DataProcessor.Tests
     [TestClass]
     public class ParsedDataProcessorTest_Integration_File_Errors
     {
-        private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
+        private ProcessorDefinition.Models.FileProcessorDefinition _fileProcessorDefinition;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public TestContext TestContext { get; set; }
@@ -29,14 +29,14 @@ namespace DataProcessor.Tests
 
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
-            _processorDefinition = ProcessorDefinition.ProcessorDefinitionBuilder.CreateProcessorDefinition(inputDefinitionFile);
+            _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
         }
 
         [TestMethod]
         public void Process_Given_a_file_with_a_missing_header_Should_indicate_the_error()
         {
             var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-missing-header.csv", false);
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
+            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
