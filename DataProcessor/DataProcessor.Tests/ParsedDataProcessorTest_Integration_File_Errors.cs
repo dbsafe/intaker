@@ -9,7 +9,7 @@ using System.Reflection;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Integration_Rules
+    public class ParsedDataProcessorTest_Integration_File_Errors
     {
         private ProcessorDefinition.Models.ProcessorDefinition _processorDefinition;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -33,9 +33,9 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_rule_violation_Result_should_indicate_the_error()
+        public void Process_Given_a_file_with_a_missing_header_Should_indicate_the_error()
         {
-            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-rule-violations.csv", false);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-missing-header.csv", false);
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _processorDefinition);
 
             var actual = target.Process();
@@ -44,26 +44,12 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
-            Assert.AreEqual(5, actual.AllRows.Count);
-            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(4, actual.AllRows.Count);
+            Assert.AreEqual(2, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidRows.Count);
 
             Assert.AreEqual("Header row is not valid", actual.Errors[0]);
             Assert.AreEqual("Trailer row is not valid", actual.Errors[1]);
-
-            Assert.AreSame(actual.Header, actual.InvalidRows[0]);
-            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.Header.ValidationResult);
-            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.Header.Fields[3].ValidationResult);
-            Assert.AreEqual(1, actual.Header.Errors.Count);
-            Assert.AreEqual("Sequence number should be equal or less than 100", actual.Header.Errors[0]);
-
-            Assert.AreSame(actual.Trailer, actual.InvalidRows[1]);
-            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.Trailer.ValidationResult);
-            Assert.AreEqual(ValidationResultType.InvalidFixable, actual.Trailer.Fields[1].ValidationResult);
-            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.Trailer.Fields[2].ValidationResult);
-            Assert.AreEqual(2, actual.Trailer.Errors.Count);
-            Assert.AreEqual("Balance Total is incorrect", actual.Trailer.Errors[0]);
-            Assert.AreEqual("Record Count should match the number data row", actual.Trailer.Errors[1]);
         }
     }
 }

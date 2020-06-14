@@ -168,13 +168,16 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
-            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(1, actual.InvalidRows.Count);
+
+            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
 
             Assert.AreSame(actual.Header, actual.InvalidRows[0]);
             var invalidRow = actual.Header;
@@ -213,13 +216,16 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
-            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(1, actual.InvalidRows.Count);
+
+            Assert.AreEqual("Trailer row is not valid", actual.Errors[0]);
 
             Assert.AreSame(actual.Trailer, actual.InvalidRows[0]);
             var invalidRow = actual.Trailer;
@@ -235,13 +241,16 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSource, _processorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
-            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidRows.Count);
+
+            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
 
             Assert.AreSame(actual.Header, actual.InvalidRows[0]);
             var invalidRow = actual.Header;

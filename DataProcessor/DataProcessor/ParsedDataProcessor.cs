@@ -64,6 +64,16 @@ namespace DataProcessor
             }
         }
 
+        private bool IsHeaderRow(Row row)
+        {
+            return row.Index == 0 && _hasHeader;
+        }
+
+        private bool IsTrailerRow(bool isCurrentRowTheLast)
+        {
+            return isCurrentRowTheLast && _hasTrailer;
+        }
+
         private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs e)
         {
             DataProcessorGlobal.Debug($"Processing Row. Index: {e.Row.Index}, Raw Data: '{e.Row.Raw}'");
@@ -71,25 +81,27 @@ namespace DataProcessor
             string lineType;
             RowProcessorDefinition rowProcessorDefinition;
 
-            if (e.Row.Index == 0 && _hasHeader)
+            if (IsHeaderRow(e.Row))
             {
                 lineType = "Header Line";
                 rowProcessorDefinition = _processorDefinition.HeaderRowProcessorDefinition;
                 e.Context.Header = e.Row;
+                ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+                return;
             }
-            else if (e.Context.IsCurrentRowTheLast && _hasTrailer)
+
+            if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
             {
                 lineType = "Trailer Line";
                 rowProcessorDefinition = _processorDefinition.TrailerRowProcessorDefinition;
                 e.Context.Trailer = e.Row;
-            }
-            else
-            {
-                lineType = "Data Line";
-                rowProcessorDefinition = _processorDefinition.DataRowProcessorDefinition;
-                e.Context.DataRows.Add(e.Row);
+                ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+                return;
             }
 
+            lineType = "Data Line";
+            rowProcessorDefinition = _processorDefinition.DataRowProcessorDefinition;
+            e.Context.DataRows.Add(e.Row);
             ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
         }
 
@@ -100,11 +112,17 @@ namespace DataProcessor
             if (e.Row.ValidationResult != ValidationResultType.Valid)
             {
                 e.Context.InvalidRows.Add(e.Row);
-            }
-
-            if (e.Row.ValidationResult != ValidationResultType.Valid)
-            {
                 e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult.Value);
+
+                if (IsHeaderRow(e.Row))
+                {
+                    e.Context.Errors.Add("Header row is not valid");
+                }
+
+                if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
+                {
+                    e.Context.Errors.Add("Trailer row is not valid");
+                }
             }
         }
 
@@ -171,7 +189,7 @@ namespace DataProcessor
                 return;
             }
 
-            foreach(var aggregator in aggregators)
+            foreach (var aggregator in aggregators)
             {
                 DataProcessorGlobal.Debug($"Processing Aggregator: {aggregator.Name}, Value: {aggregator.Aggregate.Value}");
                 aggregator.AggregateField(field);
