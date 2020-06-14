@@ -2,7 +2,7 @@
 
 namespace DataProcessor.Decoders
 {
-    public class NumberDecoder : FieldDecoder
+    public class DecimalDecoder : FieldDecoder
     {
         public override void Decode(Field field)
         {

@@ -29,7 +29,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
                     new FieldDefinition("RecordType", "Record Type", "TextDecoder", "HEADER"),
                     new FieldDefinition("CreationDate", "Creation Date", "DateDecoder", "MMddyyyy"),
                     new FieldDefinition("LocationID", "Location ID", "TextDecoder", "[a-zA-Z]{12}"),
-                    new FieldDefinition("SequenceNumber", "Sequence Number", "NumberDecoder", "(?!0{4})[0-9]{4}")
+                    new FieldDefinition("SequenceNumber", "Sequence Number", "IntegerDecoder", "(?!0{4})[0-9]{4}")
                     {
                         Rules = new RuleDefinition[]
                         {
@@ -49,7 +49,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
                     new FieldDefinition("RelatedReferenceNumber", "Related Reference Number", "TextDecoder", "[a-zA-Z0-9]{1,16}"),
                     new FieldDefinition("ValueDate", "Value Date", "DateDecoder", "MMddyyyy"),
                     new FieldDefinition("PaymentType", "Payment Type", "TextDecoder", "(DEBIT|CREDIT)"),
-                    new FieldDefinition("Amount", "Amount", "NumberDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}"),
+                    new FieldDefinition("Amount", "Amount", "DecimalDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}"),
                     new FieldDefinition("CreditCurrency", "Credit Currency", "TextDecoder", "[A-Z]{3}"),
                     new FieldDefinition("OriginatorName", "Originator Name", "TextDecoder", @"[a-zA-Z\s-']{2,35}")
                     {
@@ -67,8 +67,8 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
                 {
                     new FieldDefinition("FileType", "File Type", "TextDecoder", "PAYMENT"),
                     new FieldDefinition("RecordType", "Record Type", "TextDecoder", "TRAILER"),
-                    new FieldDefinition("HashTotal", "Hash Total", "NumberDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}"),
-                    new FieldDefinition("RecordCount", "Record Count", "NumberDecoder", @"\d{1,5}")
+                    new FieldDefinition("HashTotal", "Hash Total", "DecimalDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}"),
+                    new FieldDefinition("RecordCount", "Record Count", "IntegerDecoder", @"\d{1,5}")
                 }
             };
 

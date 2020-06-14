@@ -3,7 +3,6 @@ using DataProcessor.Domain.Utils;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.ObjectStore;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Reflection;
@@ -58,6 +57,7 @@ namespace DataProcessor.Tests
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
+            TestContext.PrintRowJsons(actual.AllRows);
 
             Assert.IsNotNull(actual.Header);
             Assert.AreEqual(0, actual.Header.Index);
@@ -67,11 +67,11 @@ namespace DataProcessor.Tests
             Assert.AreEqual(0, actual.Header.Errors.Count);
 
             Assert.AreEqual(4, actual.Header.Fields.Count);
-
             AssertValidField(0, "HEADER", "HEADER", actual.Header, actual.Header.Fields[0]);
             AssertValidField(1, "09212013", new DateTime(2013, 9, 21), actual.Header, actual.Header.Fields[1]);
             AssertValidField(2, "ABCDCompLndn", "ABCDCompLndn", actual.Header, actual.Header.Fields[2]);
-            AssertValidField(3, "0001", 1m, actual.Header, actual.Header.Fields[3]);
+            AssertValidField(3, "0001", 1, actual.Header, actual.Header.Fields[3]);
+            // Assert.AreEqual("", actual.Header.Json);
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(8, dataRow0.Fields.Count);
 
             AssertValidField(0, "BALANCE", "BALANCE", dataRow0, dataRow0.Fields[0]);
-            AssertValidField(1, "1001", 1001m, dataRow0, dataRow0.Fields[1]);
+            AssertValidField(1, "1001", 1001, dataRow0, dataRow0.Fields[1]);
             AssertValidField(2, "111-22-1001", "111-22-1001", dataRow0, dataRow0.Fields[2]);
             AssertValidField(3, "fname-01", "fname-01", dataRow0, dataRow0.Fields[3]);
             AssertValidField(4, "lname-01", "lname-01", dataRow0, dataRow0.Fields[4]);
@@ -111,7 +111,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(8, dataRow1.Fields.Count);
 
             AssertValidField(0, "BALANCE", "BALANCE", dataRow1, dataRow1.Fields[0]);
-            AssertValidField(1, "1002", 1002m, dataRow1, dataRow1.Fields[1]);
+            AssertValidField(1, "1002", 1002, dataRow1, dataRow1.Fields[1]);
             AssertValidField(2, "111-22-1002", "111-22-1002", dataRow1, dataRow1.Fields[2]);
             AssertValidField(3, "fname-02", "fname-02", dataRow1, dataRow1.Fields[3]);
             AssertValidField(4, "lname-02", "lname-02", dataRow1, dataRow1.Fields[4]);
@@ -129,7 +129,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(8, dataRow2.Fields.Count);
 
             AssertValidField(0, "BALANCE", "BALANCE", dataRow2, dataRow2.Fields[0]);
-            AssertValidField(1, "1003", 1003m, dataRow2, dataRow2.Fields[1]);
+            AssertValidField(1, "1003", 1003, dataRow2, dataRow2.Fields[1]);
             AssertValidField(2, "111-22-1003", "111-22-1003", dataRow2, dataRow2.Fields[2]);
             AssertValidField(3, "fname-03", "fname-03", dataRow2, dataRow2.Fields[3]);
             AssertValidField(4, "lname-03", "lname-03", dataRow2, dataRow2.Fields[4]);
@@ -158,7 +158,7 @@ namespace DataProcessor.Tests
 
             AssertValidField(0, "TRAILER", "TRAILER", actual.Trailer, actual.Trailer.Fields[0]);
             AssertValidField(1, "6000.00", 6000m, actual.Trailer, actual.Trailer.Fields[1]);
-            AssertValidField(2, "3", 3m, actual.Trailer, actual.Trailer.Fields[2]);
+            AssertValidField(2, "3", 3, actual.Trailer, actual.Trailer.Fields[2]);
         }
 
         [TestMethod]

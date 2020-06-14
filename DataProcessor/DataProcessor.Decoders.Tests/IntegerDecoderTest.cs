@@ -4,16 +4,17 @@ using System;
 
 namespace DataProcessor.Decoders.Tests
 {
+
     [TestClass]
-    public class NumberDecoderTest
+    public class IntegerDecoderTest
     {
-        private NumberDecoder target;
+        private IntegerDecoder target;
 
         [TestMethod]
         public void Decode_Given_that_property_pattern_is_not_set_Should_throw_an_exception()
         {
-            var field = new Field { Raw = "10.05" };
-            target = new NumberDecoder { FailValidationResult = ValidationResultType.InvalidFixable };
+            var field = new Field { Raw = "10" };
+            target = new IntegerDecoder { FailValidationResult = ValidationResultType.InvalidFixable };
 
             try
             {
@@ -31,8 +32,8 @@ namespace DataProcessor.Decoders.Tests
         [TestMethod]
         public void Decode_Given_that_property_validationResult_is_not_set_Should_throw_an_exception()
         {
-            var field = new Field { Raw = "10.05" };
-            target = new NumberDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}\.[0-9]{2}" };
+            var field = new Field { Raw = "10" };
+            target = new IntegerDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}" };
 
             try
             {
@@ -50,19 +51,19 @@ namespace DataProcessor.Decoders.Tests
         [TestMethod]
         public void Decode_Given_a_valid_number_Value_should_be_set_with_the_number()
         {
-            var field = new Field { Raw = "10.05" };
-            target = new NumberDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}\.[0-9]{2}", FailValidationResult = ValidationResultType.InvalidFixable };
+            var field = new Field { Raw = "10" };
+            target = new IntegerDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}", FailValidationResult = ValidationResultType.InvalidFixable };
 
             target.Decode(field);
 
-            Assert.AreEqual(10.05m, field.Value);
+            Assert.AreEqual(10, field.Value);
         }
 
         [TestMethod]
         public void Decode_Given_a_valid_number_ValidationResult_should_be_valid()
         {
-            var field = new Field { Raw = "10.05" };
-            target = new NumberDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}\.[0-9]{2}", FailValidationResult = ValidationResultType.InvalidFixable };
+            var field = new Field { Raw = "10" };
+            target = new IntegerDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}", FailValidationResult = ValidationResultType.InvalidFixable };
 
             target.Decode(field);
 
@@ -72,8 +73,8 @@ namespace DataProcessor.Decoders.Tests
         [TestMethod]
         public void Decode_Given_an_invalid_number_Value_should_be_null()
         {
-            var field = new Field { Raw = "10.ab" };
-            target = new NumberDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}\.[0-9]{2}", FailValidationResult = ValidationResultType.InvalidFixable };
+            var field = new Field { Raw = "10a" };
+            target = new IntegerDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}", FailValidationResult = ValidationResultType.InvalidFixable };
 
             target.Decode(field);
 
@@ -85,8 +86,8 @@ namespace DataProcessor.Decoders.Tests
         [DataRow(ValidationResultType.InvalidFixable)]
         public void Decode_Given_an_invalid_number_ValidationResult_should_be_set_with_the_value_assigned_to_the_decoder(ValidationResultType failValidationResult)
         {
-            var field = new Field { Raw = "10.ab" };
-            target = new NumberDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}\.[0-9]{2}", FailValidationResult = failValidationResult };
+            var field = new Field { Raw = "10a" };
+            target = new IntegerDecoder { Pattern = @"(?!0+)-?[0-9]{1,6}", FailValidationResult = failValidationResult };
 
             target.Decode(field);
 
