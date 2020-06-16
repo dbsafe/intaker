@@ -31,13 +31,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor", "DataProces
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Tests", "DataProcessor.Tests\DataProcessor.Tests.csproj", "{407B24DD-D84F-44FC-8620-C1F4AD1D20B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Rules", "DataProcessor.Rules\DataProcessor.Rules.csproj", "{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Rules", "DataProcessor.Rules\DataProcessor.Rules.csproj", "{65070F5E-FDC1-4289-B2CB-A1CB1D8F6B03}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Rules.Tests", "DataProcessor.Rules.Tests\DataProcessor.Rules.Tests.csproj", "{456057A3-34E4-46B4-A4F2-B0528DBA8337}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Rules.Tests", "DataProcessor.Rules.Tests\DataProcessor.Rules.Tests.csproj", "{456057A3-34E4-46B4-A4F2-B0528DBA8337}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Aggregators", "DataProcessor.Aggregators\DataProcessor.Aggregators.csproj", "{2F20167A-5421-406F-9136-70F9B3ABF89E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Aggregators", "DataProcessor.Aggregators\DataProcessor.Aggregators.csproj", "{2F20167A-5421-406F-9136-70F9B3ABF89E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.Aggregators.Tests", "DataProcessor.Aggregators.Tests\DataProcessor.Aggregators.Tests.csproj", "{A656591F-CE54-4A8A-A303-24001F3E9499}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Aggregators.Tests", "DataProcessor.Aggregators.Tests\DataProcessor.Aggregators.Tests.csproj", "{A656591F-CE54-4A8A-A303-24001F3E9499}"
+EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DataProcessor.Database.SqlServer", "DataProcessor.Database.SqlServer\DataProcessor.Database.SqlServer.sqlproj", "{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,12 @@ Global
 		{A656591F-CE54-4A8A-A303-24001F3E9499}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A656591F-CE54-4A8A-A303-24001F3E9499}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A656591F-CE54-4A8A-A303-24001F3E9499}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
