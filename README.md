@@ -82,5 +82,5 @@ The pattern attribute is used by TextDecoder when parsing and validating the val
 ```xml
 <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
 ```
-Defines the ` Sequence Number` field and the pattern is set with the regular expression ` (?!0{4})[0-9]{4}`. The regular expression is used to define the possible values from `0001` to `9999`.
+Defines the ` Sequence Number` field and the pattern is set with the regular expression ` (?!0{4})[0-9]{4}`. The regular expression defines that expected values are from `0001` to `9999`.
 
