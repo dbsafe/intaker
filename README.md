@@ -84,3 +84,4 @@ The pattern attribute is used by TextDecoder when parsing and validating the val
 ```
 Defines the ` Sequence Number` field and the pattern is set with the regular expression ` (?!0{4})[0-9]{4}`. The regular expression defines that expected values are from `0001` to `9999`.
 
+The `decoder` attribute specifies a `Decoder` class used for parsing the field value. The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and DateDecoder. You can define custom decoders and use them in the file definition.
