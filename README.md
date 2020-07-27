@@ -71,3 +71,16 @@ The element `<inputDataDefinition>` defines properties about the file. e.g.: Nam
 
 The elements `<header>`, `<data>`, and `<trailer>` define the fields in each line type.
 
+The elements `<field>` dfines a field in a the line.\
+e.g.:
+```xml
+<field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />
+```
+Defines the `Record Type` field instructing the file processor to use the type TextDecoder when parsing the value in the file. 
+The pattern attribute is used by TextDecoder when parsing and validating the value. In this case the expected value is `HEADER`
+
+```xml
+<field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
+```
+Defines the ` Sequence Number` field and the pattern is set with the regular expression ` (?!0{4})[0-9]{4}`. The regular expression is used to define the possible values from `0001` to `9999`.
+
