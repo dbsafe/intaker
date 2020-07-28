@@ -79,17 +79,31 @@ The element `<inputDataDefinition>` defines properties about the file. e.g.: Nam
 
 The elements `<header>`, `<data>`, and `<trailer>` define the fields in each line type.
 
-The elements `<field>` dfines a field in a the line.\
-e.g.:
+## `<field>` element
+  
+### Syntax
 ```xml
 <field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />
 ```
-Defines the `Record Type` field instructing the file processor to use the type TextDecoder when parsing the value in the file. 
-The pattern attribute is used by TextDecoder when parsing and validating the value. In this case the expected value is `HEADER`
 
+### Attributes
+**Attribute** | **Description**
+--- | ---
+name | Required attribute. Specifies the name of the field.
+description | Required attribute. Specifies the description of the field. Used as part of the message when field validation fails.
+decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
+pattern | Required attribute when `decoder` is assigned. It specifies the regular expression used to validate the field.
+
+## Field Decoders
+
+Field decoders are used to parse and perform format and type validation of a field. 
+You can specify the field decoder in the `decoder` attribute of the `<field>` element.
+
+e.g.:
 ```xml
 <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
 ```
-Defines the ` Sequence Number` field and the pattern is set with the regular expression ` (?!0{4})[0-9]{4}`. The regular expression defines that expected values are from `0001` to `9999`.
+defines the field `SequenceNumber` and assigns the field decoder `IntegerDecoder`. The `pattern` attrubute defines a regular expression used by the decoder, `(?!0{4})[0-9]{4}` 
+defines that expected values are from `0001` to `9999`.
 
-The `decoder` attribute specifies a `Decoder` class used for parsing the field value. The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and DateDecoder. You can define custom decoders and use them in the file definition.
+The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
