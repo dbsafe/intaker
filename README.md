@@ -79,6 +79,7 @@ The element `<inputDataDefinition>` defines properties about the file. e.g.: Nam
 
 The elements `<header>`, `<data>`, and `<trailer>` define the fields in each line type.
 
+
 ## `<field>` element
   
 ### Syntax
