@@ -8,7 +8,7 @@ It is not ready yet, but if you often implement new file specifications in your 
 Even more, if you have ideas that you feel could be part of this project and you want to share and/or contribute you are welcome to do so.
 
 ## Basic Idea
-The basic idea is that a file specification can be expressed in a declarative file.
+The basic idea is that a file specification can be declared in a file.
 
 Example:\
 This is a text file that contains balances.
