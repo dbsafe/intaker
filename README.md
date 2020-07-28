@@ -16,9 +16,9 @@ It contains one `HEADER` line, several `BALANCE` lines, and one `TRAILER` line.
 
 ```
 HEADER,09212013,ABCDCompLndn,0001
-BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00
-BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00
-BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00
+BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00,AA
+BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00,
+BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00,
 TRAILER,6000.00,3
 ```
 
@@ -34,11 +34,10 @@ The file specification can be defined in a XML file
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" />
       <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
         <rules>
-          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Minimum sequence number should be 10" args="{'ruleValue':'10'}" isFixable="true"/>
-          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" args="{'ruleValue':'100'}" />
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" args="{'ruleValue':'1'}" isFixable="true"/>
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" args="{'ruleValue':'100'}" />
         </rules>
       </field>
-      <field name="Optional" description="Optional Field" />
     </fields>
   </header>
   <data>
@@ -48,20 +47,29 @@ The file specification can be defined in a XML file
       <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" />
       <field name="FirstName" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" />
       <field name="LastName" description="LastName" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" />
-      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" />
+      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" isFixable="true"/>
       <field name="Balance" description="Amount" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}">
         <aggregators>
           <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
           <aggregator name="DataRowCountAggregator" description="Data row counter" aggregator="RowCountAggregator" />
         </aggregators>
       </field>
+      <field name="CustomField" description="Custom Field without validation" />
     </fields>
   </data>
   <trailer>
     <fields>
       <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" />
-      <field name="BalanceTotal" description="Sum of all balances" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" />
-      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" />
+      <field name="BalanceTotal" description="Balance Total" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}">
+        <rules>
+          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" isFixable="true"/>
+        </rules>
+      </field>
+      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}">
+        <rules>
+          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" args="{'ruleValue':'DataRowCountAggregator'}" />
+        </rules>
+      </field>
     </fields>
   </trailer>
 </inputDataDefinition>
