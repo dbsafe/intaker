@@ -93,7 +93,7 @@ The elements `<header>`, `<data>`, and `<trailer>` define the fields in each lin
 name | Required attribute. Specifies the name of the field.
 description | Required attribute. Specifies the description of the field. Used as part of the message when field validation fails.
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
-pattern | Required attribute when `decoder` is assigned. It specifies the regular expression used to validate the field.
+pattern | Required attribute when `decoder` has a value. It specifies the regular expression used to validate the field.
 
 ## Field Decoders
 
