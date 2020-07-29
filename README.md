@@ -97,7 +97,7 @@ pattern | Required attribute when `decoder` has a value. It specifies the regula
 
 ## Field Decoders
 
-Field decoders are used to parse and perform format and type validation of a field. 
+Field decoders are used to parse and to perform format and type validation of a field. 
 You can specify the field decoder in the `decoder` attribute of the `<field>` element.
 
 e.g.:
