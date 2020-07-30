@@ -108,3 +108,9 @@ defines the field `SequenceNumber` and assigns the field decoder `IntegerDecoder
 defines that expected values are from `0001` to `9999`.
 
 The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
+
+#### Child elements
+**Element** | **Description**
+--- | ---
+`<rules>` | Contains validation rules that are applied to a field.
+`<aggregators>` | Contains aggregators used for aggregating data or for counting all the lines or lines with a specific condition.
