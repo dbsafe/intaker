@@ -81,6 +81,7 @@ The elements `<header>`, `<data>`, and `<trailer>` define the fields in each lin
 
 
 ## `<field>` element
+Defines a field in a line in the file. Can be used to define fields in header, data, and trailer lines.
   
 #### Syntax
 ```xml
@@ -114,3 +115,6 @@ The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`,
 --- | ---
 `<rules>` | Contains validation rules that are applied to a field.
 `<aggregators>` | Contains aggregators used for aggregating data or for counting all the lines or lines with a specific condition.
+
+## `<aggregator>` element
+
