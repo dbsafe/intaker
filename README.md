@@ -81,13 +81,14 @@ The elements `<header>`, `<data>`, and `<trailer>` define the fields in each lin
 
 
 ## `<field>` element
+Defines a field in a line in the file. Can be used to define fields in header, data, and trailer lines.
   
-### Syntax
+#### Syntax
 ```xml
 <field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />
 ```
 
-### Attributes
+#### Attributes
 **Attribute** | **Description**
 --- | ---
 name | Required attribute. Specifies the name of the field.
@@ -95,9 +96,9 @@ description | Required attribute. Specifies the description of the field. Used a
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
 pattern | Required attribute when `decoder` has a value. It specifies the regular expression used to validate the field.
 
-## Field Decoders
+### Field Decoder Class
 
-Field decoders are used to parse and perform format and type validation of a field. 
+Field decoders are used to parse and to perform format and type validation of a field. 
 You can specify the field decoder in the `decoder` attribute of the `<field>` element.
 
 e.g.:
@@ -107,4 +108,36 @@ e.g.:
 defines the field `SequenceNumber` and assigns the field decoder `IntegerDecoder`. The `pattern` attrubute defines a regular expression used by the decoder, `(?!0{4})[0-9]{4}` 
 defines that expected values are from `0001` to `9999`.
 
-The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
+The library implements the standard decoders `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
+
+#### Child elements
+**Element** | **Description**
+--- | ---
+`<rules>` | Contains validation rules that are applied to a field.
+`<aggregators>` | Contains aggregators used for aggregating data or for counting all the lines or lines with a specific condition.
+
+## `<aggregator>` element
+Defines an aggregator used for aggregating data, for counting all the data lines in the file, or for counting the data lines with certain condition. The aggregator is applied to each line as the parsing process traverses the lines in the file.
+
+Aggregators support the validation of the integrity of the data. 
+
+e.g: An aggregator for a field that represents an amount can be used to validate the total amount in the trailer line.
+
+#### Syntax
+```xml
+<aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
+```
+
+#### Attributes
+**Attribute** | **Description**
+--- | ---
+name | Required attribute. Specifies the name of the aggregator.
+description | Specifies the description of the aggregator.
+aggregator | Name of the `FieldAggregator` class used when aggregating the data.
+
+### Field Aggregator Class
+Field aggregators are used to aggregate data or to count lines. 
+
+The library implements the standard aggregators `RowCountAggregator` and `SumAggregator`. You can define custom aggregators and use them in the file definition.
+
+
