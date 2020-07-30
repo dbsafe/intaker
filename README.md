@@ -108,7 +108,7 @@ e.g.:
 defines the field `SequenceNumber` and assigns the field decoder `IntegerDecoder`. The `pattern` attrubute defines a regular expression used by the decoder, `(?!0{4})[0-9]{4}` 
 defines that expected values are from `0001` to `9999`.
 
-The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
+The library implements the standard decoders `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
 
 #### Child elements
 **Element** | **Description**
@@ -134,4 +134,10 @@ e.g: An aggregator for a field that represents an amount can be used to validate
 name | Required attribute. Specifies the name of the aggregator.
 description | Specifies the description of the aggregator.
 aggregator | Name of the `FieldAggregator` class used when aggregating the data.
+
+### Field Aggregator Class
+Field aggregators are used to aggregate data or to count lines. 
+
+The library implements the standard aggregators `RowCountAggregator` and `SumAggregator`. You can define custom aggregators and use them in the file definition.
+
 
