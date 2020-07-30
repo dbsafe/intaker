@@ -96,7 +96,7 @@ description | Required attribute. Specifies the description of the field. Used a
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
 pattern | Required attribute when `decoder` has a value. It specifies the regular expression used to validate the field.
 
-### Field Decoders
+### Field Decoder Class
 
 Field decoders are used to parse and to perform format and type validation of a field. 
 You can specify the field decoder in the `decoder` attribute of the `<field>` element.
@@ -117,4 +117,13 @@ The library implements standard decoders, e.g.: `TextDecoder`, `IntegerDecoder`,
 `<aggregators>` | Contains aggregators used for aggregating data or for counting all the lines or lines with a specific condition.
 
 ## `<aggregator>` element
+Defines an aggregator used for aggregating data, for counting all the data lines in the file, or for counting the data lines with certain condition. The aggregator is applied to each line as the parsing process traverses the lines in the file.
 
+Aggregators support the validation of the integrity of the data. 
+
+e.g: An aggregator for a field that represents an amount can be used to validate the total amount in the trailer line.
+
+#### Syntax
+```xml
+<aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
+```
