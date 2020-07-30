@@ -127,3 +127,11 @@ e.g: An aggregator for a field that represents an amount can be used to validate
 ```xml
 <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
 ```
+
+#### Attributes
+**Attribute** | **Description**
+--- | ---
+name | Required attribute. Specifies the name of the aggregator.
+description | Specifies the description of the aggregator.
+aggregator | Name of the `FieldAggregator` class used when aggregating the data.
+
