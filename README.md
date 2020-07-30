@@ -82,12 +82,12 @@ The elements `<header>`, `<data>`, and `<trailer>` define the fields in each lin
 
 ## `<field>` element
   
-### Syntax
+#### Syntax
 ```xml
 <field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />
 ```
 
-### Attributes
+#### Attributes
 **Attribute** | **Description**
 --- | ---
 name | Required attribute. Specifies the name of the field.
@@ -95,7 +95,7 @@ description | Required attribute. Specifies the description of the field. Used a
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
 pattern | Required attribute when `decoder` has a value. It specifies the regular expression used to validate the field.
 
-## Field Decoders
+### Field Decoders
 
 Field decoders are used to parse and to perform format and type validation of a field. 
 You can specify the field decoder in the `decoder` attribute of the `<field>` element.
