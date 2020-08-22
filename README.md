@@ -113,8 +113,8 @@ The library implements the standard decoders `TextDecoder`, `IntegerDecoder`, `D
 #### Child elements
 **Element** | **Description**
 --- | ---
-`<rules>` | Contains validation rules that are applied to a field.
 `<aggregators>` | Contains aggregators used for aggregating data or for counting all the lines or lines with a specific condition.
+`<rules>` | Contains validation rules that are applied to a field.
 
 ## `<aggregator>` element
 Defines an aggregator used for aggregating data, for counting all the data lines in the file, or for counting the data lines with certain condition. The aggregator is applied to each line as the parsing process traverses the lines in the file.
@@ -140,4 +140,27 @@ Field aggregators are used to aggregate data or to count lines.
 
 The library implements the standard aggregators `RowCountAggregator` and `SumAggregator`. You can define custom aggregators and use them in the file definition.
 
+## `<rule>` element
+Defines a rule used to validate a field. A field can be validated using multiple rules.
 
+#### Syntax
+```xml
+<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" isFixable="true"/>
+```
+
+#### Attributes
+**Attribute** | **Description**
+--- | ---
+name | Required attribute. Specifies the name of the rule.
+description | Specifies the description of the rule.
+rule | Name of the `FieldRule` class used when validating the field.
+args | Data passed to the rule in a JSON format
+isFixable | Defines the level of the validation
+
+### Field Rule Class
+The library implements the standard rules `MinNumberFieldRule`, `MaxNumberFieldRule`, `MinDateFieldRule`, `MaxDateFieldRule`, and `MatchesAggregateRule`.
+
+`MatchesAggregateRule` can be used to validate whether a value in the header/trailer matches the value of an aggregator. The name of the aggregator must be passed in the `args` attribute.
+e.g.: `args="{'ruleValue':'BalanceAggregator'}"`
+
+You can define custom rules and use them in the file definition.
