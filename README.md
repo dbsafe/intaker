@@ -2,7 +2,7 @@
 
 This repository contains libraries that support parsing and validating data from a text file. 
 
-It started as a POC for some ideas about importing data using a declarative way of defining the file specs. 
+It started as a POC from some ideas about importing data using a declarative way of defining the file specs. 
 It is not ready yet, but if you often implement new file specifications in your projects and had asked whether there is a more productive way of doing it, you are not alone and I believe this is a good approach to consider, stay tuned. 
 
 Even more, if you have ideas that you feel could be part of this project and you want to share and/or contribute you are welcome to do so.
@@ -94,7 +94,7 @@ Defines a field in a line in the file. Can be used to define fields in header, d
 name | Required attribute. Specifies the name of the field.
 description | Required attribute. Specifies the description of the field. Used as part of the message when field validation fails.
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
-pattern | Required attribute when `decoder` has a value. It specifies the regular expression used to validate the field.
+pattern | Required attribute when `decoder` has a value. It specifies a regular expression used to validate the field.
 
 ### Field Decoder Class
 
@@ -105,7 +105,7 @@ e.g.:
 ```xml
 <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
 ```
-defines the field `SequenceNumber` and assigns the field decoder `IntegerDecoder`. The `pattern` attrubute defines a regular expression used by the decoder, `(?!0{4})[0-9]{4}` 
+The previous example defines the field `SequenceNumber` and assigns the field decoder `IntegerDecoder`. The `pattern` attribute defines a regular expression used by the decoder, `(?!0{4})[0-9]{4}` 
 defines that expected values are from `0001` to `9999`.
 
 The library implements the standard decoders `TextDecoder`, `IntegerDecoder`, `DecimalDecoder`, and `DateDecoder`. You can define custom decoders and use them in the file definition.
