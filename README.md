@@ -113,8 +113,8 @@ The library implements the standard decoders `TextDecoder`, `IntegerDecoder`, `D
 #### Child elements
 **Element** | **Description**
 --- | ---
-`<rules>` | Contains validation rules that are applied to a field.
 `<aggregators>` | Contains aggregators used for aggregating data or for counting all the lines or lines with a specific condition.
+`<rules>` | Contains validation rules that are applied to a field.
 
 ## `<aggregator>` element
 Defines an aggregator used for aggregating data, for counting all the data lines in the file, or for counting the data lines with certain condition. The aggregator is applied to each line as the parsing process traverses the lines in the file.
