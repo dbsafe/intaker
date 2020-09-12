@@ -167,7 +167,7 @@ namespace DataProcessor
 
         private void SourceProcessField(object sender, ProcessFieldEventArgs e)
         {
-            if (e.Field.Row.ValidationResult == ValidationResultType.InvalidCritical)
+            if (e.Field.Row.ValidationResult == ValidationResultType.Critical)
             {
                 return;
             }
@@ -287,7 +287,7 @@ namespace DataProcessor
 
             if (rowProcessorDefinition.FieldProcessorDefinitions.Length != row.RawFields.Length)
             {
-                row.ValidationResult = ValidationResultType.InvalidCritical;
+                row.ValidationResult = ValidationResultType.Critical;
                 var error = $"{lineType} - The expected number of fields {rowProcessorDefinition.FieldProcessorDefinitions.Length} is not equal to the actual number of fields {row.RawFields.Length}";
                 row.Errors.Add(error);
             }

@@ -29,7 +29,7 @@ namespace DataProcessor.Rules.Tests
                 }
             };
 
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidFixable);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.Warning);
             target.Initialize(config);
 
             var field = new Field { Value = 20, ValidationResult = ValidationResultType.Valid };
@@ -42,20 +42,20 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_field_value_does_not_matche_the_aggregate_ValidResult_should_be_invalid()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.Critical);
             target.Initialize(_config);
 
             var field = new Field { Value = "5", ValidationResult = ValidationResultType.Valid };
 
             target.Validate(field);
 
-            Assert.AreEqual(ValidationResultType.InvalidCritical, field.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Critical, field.ValidationResult);
         }
 
         [TestMethod]
         public void Initialize_Given_that_the_aggregator_is_not_found_Should_throw_an_exception()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'}", ValidationResultType.Critical);
 
             try
             {
@@ -73,7 +73,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Initialize_Given_an_invalid_args_Should_throw_an_exception()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'invalid-arg':'aggregate-3'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'invalid-arg':'aggregate-3'}", ValidationResultType.Critical);
             try
             {
                 target.Initialize(_config);
@@ -93,7 +93,7 @@ namespace DataProcessor.Rules.Tests
             var target = new MatchesAggregateRule
             {
                 Description = "rule-description",
-                FailValidationResult = ValidationResultType.InvalidCritical,
+                FailValidationResult = ValidationResultType.Critical,
                 Name = "rule-name"
             };
 
@@ -115,7 +115,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "", ValidationResultType.Warning);
             }
             catch (InvalidOperationException ex)
             {
@@ -131,7 +131,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'|", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'|", ValidationResultType.Warning);
             }
             catch (InvalidOperationException ex)
             {

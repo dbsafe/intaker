@@ -3,7 +3,6 @@ using DataProcessor.Decoders;
 using DataProcessor.Domain.Models;
 using DataProcessor.ProcessorDefinition.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace DataProcessor.Tests
 {
@@ -21,7 +20,7 @@ namespace DataProcessor.Tests
         {
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.csv", false);
 
-            _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
+            _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
             _fileProcessorDefinition = new FileProcessorDefinition
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition

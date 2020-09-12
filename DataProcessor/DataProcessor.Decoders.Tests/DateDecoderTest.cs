@@ -11,7 +11,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_that_property_pattern_is_not_set_Should_throw_an_exception()
         {
             var field = new Field { Raw = "2020-10-20" };
-            var target = new DateDecoder { FailValidationResult = ValidationResultType.InvalidFixable };
+            var target = new DateDecoder { FailValidationResult = ValidationResultType.Warning };
 
             try
             {
@@ -27,21 +27,21 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        public void Decode_Given_that_property_validationResult_is_not_set_Should_default_to_invalidCritical()
+        public void Decode_Given_that_property_validationResult_is_not_set_Should_default_to_Valid()
         {
             var field = new Field { Raw = "2020-10-aa", ValidationResult = ValidationResultType.Valid };
             var target = new DateDecoder { Pattern = "yyyy-MM-dd" };
 
             target.Decode(field);
 
-            Assert.AreEqual(ValidationResultType.InvalidCritical, field.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Valid, field.ValidationResult);
         }
 
         [TestMethod]
         public void Decode_Given_a_valid_date_Value_should_be_set_with_the_date()
         {
             var field = new Field { Raw = "2020-10-20" };
-            var target = new DateDecoder { Pattern = "yyyy-MM-dd", FailValidationResult = ValidationResultType.InvalidFixable };
+            var target = new DateDecoder { Pattern = "yyyy-MM-dd", FailValidationResult = ValidationResultType.Warning };
 
             target.Decode(field);
 
@@ -52,7 +52,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_a_valid_date_ValidationResult_should_be_valid()
         {
             var field = new Field { Raw = "2020-10-20" };
-            var target = new DateDecoder { Pattern = "yyyy-MM-dd", FailValidationResult = ValidationResultType.InvalidFixable };
+            var target = new DateDecoder { Pattern = "yyyy-MM-dd", FailValidationResult = ValidationResultType.Warning };
 
             target.Decode(field);
 
@@ -63,7 +63,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_an_invalid_date_Value_should_be_null()
         {
             var field = new Field { Raw = "2020-10-50" };
-            var target = new DateDecoder { Pattern = "yyyy-MM-dd", FailValidationResult = ValidationResultType.InvalidFixable };
+            var target = new DateDecoder { Pattern = "yyyy-MM-dd", FailValidationResult = ValidationResultType.Warning };
 
             target.Decode(field);
 
@@ -71,8 +71,8 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        [DataRow(ValidationResultType.InvalidCritical)]
-        [DataRow(ValidationResultType.InvalidFixable)]
+        [DataRow(ValidationResultType.Critical)]
+        [DataRow(ValidationResultType.Warning)]
         public void Decode_Given_an_invalid_date_ValidationResult_should_be_set_with_the_value_assigned_to_the_decoder(ValidationResultType failValidationResult)
         {
             var field = new Field { Raw = "2020-10-50" };

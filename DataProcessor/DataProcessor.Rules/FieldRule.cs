@@ -26,7 +26,7 @@ namespace DataProcessor.Rules
         protected TArgs DecodedArgs { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ValidationResultType FailValidationResult { get; set; }
+        public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Valid;
 
         protected TArgs GetArgs()
         {

@@ -42,7 +42,7 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
-            Assert.AreEqual(ValidationResultType.InvalidCritical, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
             Assert.AreEqual(4, actual.AllRows.Count);
             Assert.AreEqual(2, actual.DataRows.Count);
