@@ -27,14 +27,14 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        public void Decode_Given_that_property_validationResult_is_not_set_Should_default_to_invalidCritical()
+        public void Decode_Given_that_property_validationResult_is_not_set_Should_default_to_Valid()
         {
             var field = new Field { Raw = "2020-10-aa", ValidationResult = ValidationResultType.Valid };
             var target = new DateDecoder { Pattern = "yyyy-MM-dd" };
 
             target.Decode(field);
 
-            Assert.AreEqual(ValidationResultType.InvalidCritical, field.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Valid, field.ValidationResult);
         }
 
         [TestMethod]
