@@ -3,7 +3,6 @@ using DataProcessor.Decoders;
 using DataProcessor.Domain.Models;
 using DataProcessor.ProcessorDefinition.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace DataProcessor.Tests
 {
