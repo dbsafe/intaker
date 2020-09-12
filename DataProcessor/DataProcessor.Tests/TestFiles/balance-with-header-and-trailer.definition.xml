@@ -20,7 +20,7 @@
       <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" failValidationResult="Error" />
       <field name="FirstName" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
       <field name="LastName" description="LastName" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
-      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" isFixable="true" failValidationResult="Error" />
+      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
       <field name="Balance" description="Amount" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error">
         <aggregators>
           <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
@@ -35,12 +35,12 @@
       <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" failValidationResult="Error" />
       <field name="BalanceTotal" description="Balance Total" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error">
         <rules>
-          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" isFixable="true"/>
+          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning"/>
         </rules>
       </field>
       <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error">
         <rules>
-          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" args="{'ruleValue':'DataRowCountAggregator'}" />
+          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" args="{'ruleValue':'DataRowCountAggregator'}" failValidationResult="Error" />
         </rules>
       </field>
     </fields>

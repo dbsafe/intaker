@@ -39,7 +39,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         }
 
         [TestMethod]
-        public void CreateProcessorDefinition_Gien_an_input_definition_file_Decoders_should_be_created()
+        public void CreateProcessorDefinition_Given_an_input_definition_file_Decoders_should_be_created()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
 
@@ -81,7 +81,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         }
 
         [TestMethod]
-        public void CreateProcessorDefinition_Gien_an_input_definition_file_Rules_should_be_created()
+        public void CreateProcessorDefinition_Given_an_input_definition_file_Rules_should_be_created()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
 
@@ -108,13 +108,13 @@ namespace DataProcessor.ProcessorDefinition.Tests
             var rule1 = rules[1];
             Assert.AreEqual("{'ruleValue':'100'}", rule1.Args);
             Assert.AreEqual("Maximum sequence number should be 100", rule1.Description);
-            Assert.AreEqual(ValidationResultType.Critical, rule1.FailValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, rule1.FailValidationResult);
             Assert.AreEqual(typeof(MaxNumberFieldRule), rule1.GetType());
             Assert.AreEqual("SequenceNumber-MaxNumberFieldRule", rule1.Name);
         }
 
         [TestMethod]
-        public void CreateProcessorDefinition_Gien_an_input_definition_file_Aggregators_should_be_created()
+        public void CreateProcessorDefinition_Given_an_input_definition_file_Aggregators_should_be_created()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
 
