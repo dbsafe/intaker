@@ -13,7 +13,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_that_property_pattern_is_not_set_Should_throw_an_exception()
         {
             var field = new Field { Raw = "abc" };
-            target = new TextDecoder { FailValidationResult = ValidationResultType.InvalidWarning };
+            target = new TextDecoder { FailValidationResult = ValidationResultType.Warning };
 
             try
             {
@@ -32,7 +32,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_a_valid_text_Value_should_be_set_with_the_text()
         {
             var field = new Field { Raw = "BBB" };
-            target = new TextDecoder { Pattern = "(AAA|BBB)", FailValidationResult = ValidationResultType.InvalidWarning };
+            target = new TextDecoder { Pattern = "(AAA|BBB)", FailValidationResult = ValidationResultType.Warning };
 
             target.Decode(field);
 
@@ -43,7 +43,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_a_valid_text_ValidationResult_should_be_valid()
         {
             var field = new Field { Raw = "AAA" };
-            target = new TextDecoder { Pattern = "(AAA|BBB)", FailValidationResult = ValidationResultType.InvalidWarning };
+            target = new TextDecoder { Pattern = "(AAA|BBB)", FailValidationResult = ValidationResultType.Warning };
 
             target.Decode(field);
 
@@ -54,7 +54,7 @@ namespace DataProcessor.Decoders.Tests
         public void Decode_Given_an_invalid_text_Value_should_be_null()
         {
             var field = new Field { Raw = "ABC" };
-            target = new TextDecoder { Pattern = "(AAA|BBB)", FailValidationResult = ValidationResultType.InvalidWarning };
+            target = new TextDecoder { Pattern = "(AAA|BBB)", FailValidationResult = ValidationResultType.Warning };
 
             target.Decode(field);
 
@@ -62,8 +62,8 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        [DataRow(ValidationResultType.InvalidCritical)]
-        [DataRow(ValidationResultType.InvalidWarning)]
+        [DataRow(ValidationResultType.Critical)]
+        [DataRow(ValidationResultType.Warning)]
         public void Decode_Given_an_invalid_text_ValidationResult_should_be_set_with_the_value_assigned_to_the_decoder(ValidationResultType failValidationResult)
         {
             var field = new Field { Raw = "ABC" };

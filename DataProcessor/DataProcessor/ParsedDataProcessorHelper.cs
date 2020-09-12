@@ -11,10 +11,10 @@ namespace DataProcessor
             {
                 case ValidationResultType.Valid:
                     return value2 == ValidationResultType.Valid ? ValidationResultType.Valid : value2;
-                case ValidationResultType.InvalidWarning:
-                    return value2 == ValidationResultType.InvalidCritical ? ValidationResultType.InvalidCritical : ValidationResultType.InvalidWarning;
-                case ValidationResultType.InvalidCritical:
-                    return ValidationResultType.InvalidCritical;
+                case ValidationResultType.Warning:
+                    return value2 == ValidationResultType.Critical ? ValidationResultType.Critical : ValidationResultType.Warning;
+                case ValidationResultType.Critical:
+                    return ValidationResultType.Critical;
                 default:
                     throw new InvalidOperationException($"Invalid {nameof(ValidationResultType)} {value1}");
             }

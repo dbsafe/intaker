@@ -13,7 +13,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_greater_than_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidWarning);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.Warning);
             target.Initialize(_config);
 
             var field = new Field
@@ -30,7 +30,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_equal_to_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.Critical);
             target.Initialize(_config);
 
             var field = new Field
@@ -47,7 +47,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_smaller_than_ruleValue_ValidationResult_should_be_set_with_the_value_from_the_rule()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.Critical);
             target.Initialize(_config);
 
             var field = new Field
@@ -58,13 +58,13 @@ namespace DataProcessor.Rules.Tests
 
             target.Validate(field);
 
-            Assert.AreEqual(ValidationResultType.InvalidCritical, field.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Critical, field.ValidationResult);
         }
 
         [TestMethod]
         public void Initialize_Given_an_invalid_args_Should_throw_an_exception()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'invalid-arg':'2020-01-10'}", ValidationResultType.InvalidCritical);
+            var target = CreateRule("rule-name", "rule-description", "{'invalid-arg':'2020-01-10'}", ValidationResultType.Critical);
             try
             {
                 target.Initialize(_config);
@@ -84,7 +84,7 @@ namespace DataProcessor.Rules.Tests
             var target = new MinDateFieldRule
             {
                 Description = "rule-description",
-                FailValidationResult = ValidationResultType.InvalidCritical,
+                FailValidationResult = ValidationResultType.Critical,
                 Name = "rule-name"
             };
 
@@ -106,7 +106,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'|", ValidationResultType.InvalidWarning);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'|", ValidationResultType.Warning);
             }
             catch (InvalidOperationException ex)
             {
@@ -122,7 +122,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-0a-10'", ValidationResultType.InvalidWarning);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-0a-10'", ValidationResultType.Warning);
             }
             catch (InvalidOperationException ex)
             {

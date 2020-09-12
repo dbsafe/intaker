@@ -18,7 +18,7 @@ namespace DataProcessor.Tests
         {
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data-trailer.csv", false);
 
-            _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.InvalidCritical };
+            _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
             _fileProcessorDefinition = new FileProcessorDefinition
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition

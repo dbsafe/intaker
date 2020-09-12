@@ -29,7 +29,7 @@ namespace DataProcessor.Aggregators.Tests
             var aggregate = new Aggregate();
             var target = new RowCountAggregator { Aggregate = aggregate, Description = "Row Count", Name = "RowCount" };
 
-            var field = new Field { Raw = "abc", ValidationResult = ValidationResultType.InvalidCritical, Value = "abc" };
+            var field = new Field { Raw = "abc", ValidationResult = ValidationResultType.Critical, Value = "abc" };
 
             target.AggregateField(field);
 

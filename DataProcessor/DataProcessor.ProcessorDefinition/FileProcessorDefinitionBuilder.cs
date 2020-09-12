@@ -113,7 +113,7 @@ namespace DataProcessor.ProcessorDefinition
             var rule = StoreManager.RuleStore.CreateObject(ruleDefinition.Rule);
             rule.Args = ruleDefinition.Args;
             rule.Description = ruleDefinition.Description;
-            rule.FailValidationResult = ruleDefinition.IsFixable ? ValidationResultType.InvalidWarning : ValidationResultType.InvalidCritical;
+            rule.FailValidationResult = ruleDefinition.IsFixable ? ValidationResultType.Warning : ValidationResultType.Critical;
             rule.Name = ruleDefinition.Name;
             return rule;
         }
@@ -129,7 +129,7 @@ namespace DataProcessor.ProcessorDefinition
             {
                 decoder = StoreManager.DecoderStore.CreateObject(fieldDefinition.Decoder);
                 decoder.Pattern = fieldDefinition.Pattern;
-                decoder.FailValidationResult = fieldDefinition.IsFixable ? ValidationResultType.InvalidWarning : ValidationResultType.InvalidCritical;
+                decoder.FailValidationResult = fieldDefinition.IsFixable ? ValidationResultType.Warning : ValidationResultType.Critical;
             }
 
             return decoder;
