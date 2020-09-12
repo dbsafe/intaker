@@ -53,31 +53,31 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition);
             Assert.IsNotNull(actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
             Assert.AreEqual(5, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length);
-            AssertFieldProcessorDefinition("RecordType", "HEADER", typeof(TextDecoder), ValidationResultType.Critical, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[0]);
-            AssertFieldProcessorDefinition("CreationDate", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Critical, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[1]);
-            AssertFieldProcessorDefinition("LocationID", "[a-zA-Z]{12}", typeof(TextDecoder), ValidationResultType.Critical, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[2]);
-            AssertFieldProcessorDefinition("SequenceNumber", "(?!0{4})[0-9]{4}", typeof(IntegerDecoder), ValidationResultType.Critical, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[3]);
+            AssertFieldProcessorDefinition("RecordType", "HEADER", typeof(TextDecoder), ValidationResultType.Error, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[0]);
+            AssertFieldProcessorDefinition("CreationDate", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[1]);
+            AssertFieldProcessorDefinition("LocationID", "[a-zA-Z]{12}", typeof(TextDecoder), ValidationResultType.Error, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[2]);
+            AssertFieldProcessorDefinition("SequenceNumber", "(?!0{4})[0-9]{4}", typeof(IntegerDecoder), ValidationResultType.Error, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[3]);
             AssertFieldProcessorDefinition("Optional", null, typeof(BypassDecoder), ValidationResultType.Valid, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[4]);
 
             // Data definition
             Assert.IsNotNull(actual.DataRowProcessorDefinition);
             Assert.IsNotNull(actual.DataRowProcessorDefinition.FieldProcessorDefinitions);
             Assert.AreEqual(7, actual.DataRowProcessorDefinition.FieldProcessorDefinitions.Length);
-            AssertFieldProcessorDefinition("RecordType", "BALANCE", typeof(TextDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[0]);
-            AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[1]);
-            AssertFieldProcessorDefinition("SSN", @"\d{3}-\d{2}-\d{4}", typeof(TextDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[2]);
-            AssertFieldProcessorDefinition("FirstName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[3]);
-            AssertFieldProcessorDefinition("LastName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[4]);
-            AssertFieldProcessorDefinition("DOB", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[5]);
-            AssertFieldProcessorDefinition("Balance", @"-{0,1}[0-9]{1,10}\.[0-9]{2}", typeof(DecimalDecoder), ValidationResultType.Critical, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[6]);
+            AssertFieldProcessorDefinition("RecordType", "BALANCE", typeof(TextDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[0]);
+            AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[1]);
+            AssertFieldProcessorDefinition("SSN", @"\d{3}-\d{2}-\d{4}", typeof(TextDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[2]);
+            AssertFieldProcessorDefinition("FirstName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[3]);
+            AssertFieldProcessorDefinition("LastName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[4]);
+            AssertFieldProcessorDefinition("DOB", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[5]);
+            AssertFieldProcessorDefinition("Balance", @"-{0,1}[0-9]{1,10}\.[0-9]{2}", typeof(DecimalDecoder), ValidationResultType.Error, actual.DataRowProcessorDefinition.FieldProcessorDefinitions[6]);
 
             // Trailer definition
             Assert.IsNotNull(actual.TrailerRowProcessorDefinition);
             Assert.IsNotNull(actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
             Assert.AreEqual(3, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length);
-            AssertFieldProcessorDefinition("RecordType", "TRAILER", typeof(TextDecoder), ValidationResultType.Critical, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions[0]);
-            AssertFieldProcessorDefinition("BalanceTotal", @"-{0,1}[0-9]{1,10}\.[0-9]{2}", typeof(DecimalDecoder), ValidationResultType.Critical, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions[1]);
-            AssertFieldProcessorDefinition("RecordCount", @"\d{1,5}", typeof(IntegerDecoder), ValidationResultType.Critical, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions[2]);
+            AssertFieldProcessorDefinition("RecordType", "TRAILER", typeof(TextDecoder), ValidationResultType.Error, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions[0]);
+            AssertFieldProcessorDefinition("BalanceTotal", @"-{0,1}[0-9]{1,10}\.[0-9]{2}", typeof(DecimalDecoder), ValidationResultType.Error, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions[1]);
+            AssertFieldProcessorDefinition("RecordCount", @"\d{1,5}", typeof(IntegerDecoder), ValidationResultType.Error, actual.TrailerRowProcessorDefinition.FieldProcessorDefinitions[2]);
         }
 
         [TestMethod]

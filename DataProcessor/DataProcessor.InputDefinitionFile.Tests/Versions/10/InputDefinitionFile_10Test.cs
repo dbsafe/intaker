@@ -1,4 +1,5 @@
-﻿using DataProcessor.InputDefinitionFile.Models;
+﻿using DataProcessor.Domain.Models;
+using DataProcessor.InputDefinitionFile.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
@@ -13,6 +14,18 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
         [TestMethod]
         public void Serialize()
         {
+            var sequenceNumberFieldDefinition = CreateFieldDefinition("SequenceNumber", "Sequence Number", "IntegerDecoder", "(?!0{4})[0-9]{4}", ValidationResultType.Error);
+            sequenceNumberFieldDefinition.Rules = new RuleDefinition[]
+            {
+                new RuleDefinition("SequenceNumber-MinNumberFieldRule", "Sequence number should be greater or equal to 10", "MinNumberFieldRule", "{'min':'10'}")
+            };
+
+            var originatorName = CreateFieldDefinition("OriginatorName", "Originator Name", "TextDecoder", @"[a-zA-Z\s-']{2,35}", ValidationResultType.Error);
+            originatorName.Aggregators = new AggregatorDefinition[]
+            {
+                new AggregatorDefinition("BalanceAggregator", "Balance aggregator", "SumAggregator")
+            };
+
             var target = new InputDefinitionFile_10
             {
                 Name = "FXWDCSV",
@@ -25,17 +38,11 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             {
                 Fields = new FieldDefinition[]
                 {
-                    new FieldDefinition("FileType", "File Type", "TextDecoder", "PAYMENT"),
-                    new FieldDefinition("RecordType", "Record Type", "TextDecoder", "HEADER"),
-                    new FieldDefinition("CreationDate", "Creation Date", "DateDecoder", "MMddyyyy"),
-                    new FieldDefinition("LocationID", "Location ID", "TextDecoder", "[a-zA-Z]{12}"),
-                    new FieldDefinition("SequenceNumber", "Sequence Number", "IntegerDecoder", "(?!0{4})[0-9]{4}")
-                    {
-                        Rules = new RuleDefinition[]
-                        {
-                            new RuleDefinition("SequenceNumber-MinNumberFieldRule", "Sequence number should be greater or equal to 10", "MinNumberFieldRule", "{'min':'10'}")
-                        }
-                    }
+                    CreateFieldDefinition("FileType", "File Type", "TextDecoder", "PAYMENT", ValidationResultType.Error),
+                    CreateFieldDefinition("RecordType", "Record Type", "TextDecoder", "HEADER", ValidationResultType.Error),
+                    CreateFieldDefinition("CreationDate", "Creation Date", "DateDecoder", "MMddyyyy", ValidationResultType.Error),
+                    CreateFieldDefinition("LocationID", "Location ID", "TextDecoder", "[a-zA-Z]{12}", ValidationResultType.Warning),
+                    sequenceNumberFieldDefinition
                 }
             };
 
@@ -43,21 +50,15 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             {
                 Fields = new FieldDefinition[]
                 {
-                    new FieldDefinition("RecordType", "Record Type", "TextDecoder", "PAYMENT"),
-                    new FieldDefinition("PaymentType", "Payment Type", "TextDecoder", "(FXW|MBW)"),
-                    new FieldDefinition("SendersReferenceNumber", "Senders Reference Number", "TextDecoder", "[a-zA-Z0-9]{1,16}"),
-                    new FieldDefinition("RelatedReferenceNumber", "Related Reference Number", "TextDecoder", "[a-zA-Z0-9]{1,16}"),
-                    new FieldDefinition("ValueDate", "Value Date", "DateDecoder", "MMddyyyy"),
-                    new FieldDefinition("PaymentType", "Payment Type", "TextDecoder", "(DEBIT|CREDIT)"),
-                    new FieldDefinition("Amount", "Amount", "DecimalDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}"),
-                    new FieldDefinition("CreditCurrency", "Credit Currency", "TextDecoder", "[A-Z]{3}"),
-                    new FieldDefinition("OriginatorName", "Originator Name", "TextDecoder", @"[a-zA-Z\s-']{2,35}")
-                    {
-                        Aggregators = new AggregatorDefinition[]
-                        {
-                            new AggregatorDefinition("BalanceAggregator", "Balance aggregator", "SumAggregator")
-                        }
-                    }
+                    CreateFieldDefinition("RecordType", "Record Type", "TextDecoder", "PAYMENT", ValidationResultType.Error),
+                    CreateFieldDefinition("PaymentType", "Payment Type", "TextDecoder", "(FXW|MBW)", ValidationResultType.Error),
+                    CreateFieldDefinition("SendersReferenceNumber", "Senders Reference Number", "TextDecoder", "[a-zA-Z0-9]{1,16}", ValidationResultType.Error),
+                    CreateFieldDefinition("RelatedReferenceNumber", "Related Reference Number", "TextDecoder", "[a-zA-Z0-9]{1,16}", ValidationResultType.Error),
+                    CreateFieldDefinition("ValueDate", "Value Date", "DateDecoder", "MMddyyyy", ValidationResultType.Error),
+                    CreateFieldDefinition("PaymentType", "Payment Type", "TextDecoder", "(DEBIT|CREDIT)", ValidationResultType.Error),
+                    CreateFieldDefinition("Amount", "Amount", "DecimalDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}", ValidationResultType.Error),
+                    CreateFieldDefinition("CreditCurrency", "Credit Currency", "TextDecoder", "[A-Z]{3}", ValidationResultType.Error),
+                    originatorName
                 }
             };
 
@@ -65,10 +66,10 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             {
                 Fields = new FieldDefinition[]
                 {
-                    new FieldDefinition("FileType", "File Type", "TextDecoder", "PAYMENT"),
-                    new FieldDefinition("RecordType", "Record Type", "TextDecoder", "TRAILER"),
-                    new FieldDefinition("HashTotal", "Hash Total", "DecimalDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}"),
-                    new FieldDefinition("RecordCount", "Record Count", "IntegerDecoder", @"\d{1,5}")
+                    CreateFieldDefinition("FileType", "File Type", "TextDecoder", "PAYMENT", ValidationResultType.Error),
+                    CreateFieldDefinition("RecordType", "Record Type", "TextDecoder", "TRAILER", ValidationResultType.Error),
+                    CreateFieldDefinition("HashTotal", "Hash Total", "DecimalDecoder", @"(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}", ValidationResultType.Error),
+                    CreateFieldDefinition("RecordCount", "Record Count", "IntegerDecoder", @"\d{1,5}", ValidationResultType.Error)
                 }
             };
 
@@ -88,6 +89,18 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             TestContext.WriteLine(outputXml);
 
             Assert.AreEqual(inputXml, outputXml);
+        }
+
+        private FieldDefinition CreateFieldDefinition(string name, string description, string decoder, string pattern, ValidationResultType failValidationResult)
+        {
+            return new FieldDefinition
+            {
+                Name = name,
+                Description = description,
+                Decoder = decoder,
+                Pattern = pattern,
+                FailValidationResult = failValidationResult
+            };
         }
     }
 }

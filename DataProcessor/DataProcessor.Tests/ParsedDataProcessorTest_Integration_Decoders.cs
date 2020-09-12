@@ -171,7 +171,7 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
-            Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
@@ -181,7 +181,7 @@ namespace DataProcessor.Tests
 
             Assert.AreSame(actual.Header, actual.InvalidRows[0]);
             var invalidRow = actual.Header;
-            Assert.AreEqual(ValidationResultType.Critical, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
         }
@@ -196,7 +196,7 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
-            Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
@@ -207,7 +207,7 @@ namespace DataProcessor.Tests
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[0]);
             
             var invalidRow = actual.AllRows[2];
-            Assert.AreEqual(ValidationResultType.Warning, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }
@@ -222,7 +222,7 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
-            Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
@@ -232,7 +232,7 @@ namespace DataProcessor.Tests
 
             Assert.AreSame(actual.Trailer, actual.InvalidRows[0]);
             var invalidRow = actual.Trailer;
-            Assert.AreEqual(ValidationResultType.Critical, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid Balance Total '6000.oo'", invalidRow.Errors[0]);
         }
@@ -247,7 +247,7 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
-            Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
@@ -258,13 +258,13 @@ namespace DataProcessor.Tests
 
             Assert.AreSame(actual.Header, actual.InvalidRows[0]);
             var invalidRow = actual.Header;
-            Assert.AreEqual(ValidationResultType.Critical, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
             invalidRow = actual.AllRows[2];
-            Assert.AreEqual(ValidationResultType.Warning, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }

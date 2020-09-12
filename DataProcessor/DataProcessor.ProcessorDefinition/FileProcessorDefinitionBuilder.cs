@@ -64,7 +64,7 @@ namespace DataProcessor.ProcessorDefinition
                 Description = fieldDefinition.Description,
                 Decoder = CreateDecoder(fieldDefinition),
                 Rules = CreateRules(fieldDefinition),
-                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)
+                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)                
             };
         }
 
@@ -123,13 +123,17 @@ namespace DataProcessor.ProcessorDefinition
             IFieldDecoder decoder;
             if (string.IsNullOrEmpty(fieldDefinition.Decoder))
             {
-                decoder = new BypassDecoder();
+                decoder = new BypassDecoder
+                {
+                    FailValidationResult = ValidationResultType.Valid
+                };
             }
             else
             {
                 decoder = StoreManager.DecoderStore.CreateObject(fieldDefinition.Decoder);
                 decoder.Pattern = fieldDefinition.Pattern;
-                decoder.FailValidationResult = fieldDefinition.IsFixable ? ValidationResultType.Warning : ValidationResultType.Critical;
+                decoder.FailValidationResult = fieldDefinition.FailValidationResult;
+                decoder.FailValidationResult = fieldDefinition.FailValidationResult;
             }
 
             return decoder;
