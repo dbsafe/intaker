@@ -3,7 +3,8 @@
     public enum ValidationResultType
     {
         Valid = 1,
-        InvalidFixable = 2,
-        InvalidCritical = 3
+        InvalidWarning = 2,
+        InvalidError = 3,
+        InvalidCritical = 4
     }
 }

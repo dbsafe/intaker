@@ -13,7 +13,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_number_greater_than_ruleValue_ValidationResult_should_be_set_with_the_value_from_the_rule()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidFixable);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'10'}", ValidationResultType.InvalidWarning);
             target.Initialize(_config);
 
             var field = new Field
@@ -24,7 +24,7 @@ namespace DataProcessor.Rules.Tests
 
             target.Validate(field);
 
-            Assert.AreEqual(ValidationResultType.InvalidFixable, field.ValidationResult);
+            Assert.AreEqual(ValidationResultType.InvalidWarning, field.ValidationResult);
         }
 
         [TestMethod]

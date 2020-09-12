@@ -11,8 +11,8 @@ namespace DataProcessor
             {
                 case ValidationResultType.Valid:
                     return value2 == ValidationResultType.Valid ? ValidationResultType.Valid : value2;
-                case ValidationResultType.InvalidFixable:
-                    return value2 == ValidationResultType.InvalidCritical ? ValidationResultType.InvalidCritical : ValidationResultType.InvalidFixable;
+                case ValidationResultType.InvalidWarning:
+                    return value2 == ValidationResultType.InvalidCritical ? ValidationResultType.InvalidCritical : ValidationResultType.InvalidWarning;
                 case ValidationResultType.InvalidCritical:
                     return ValidationResultType.InvalidCritical;
                 default:

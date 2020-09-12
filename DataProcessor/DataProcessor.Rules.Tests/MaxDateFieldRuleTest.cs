@@ -13,7 +13,7 @@ namespace DataProcessor.Rules.Tests
         [TestMethod]
         public void Validate_Given_a_date_smaller_than_ruleValue_ValidationResult_should_be_valid()
         {
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidFixable);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'}", ValidationResultType.InvalidWarning);
             target.Initialize(_config);
 
             var field = new Field
@@ -106,7 +106,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidWarning);
             }
             catch (InvalidOperationException ex)
             {
@@ -122,7 +122,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'|", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-01-10'|", ValidationResultType.InvalidWarning);
             }
             catch (InvalidOperationException ex)
             {
@@ -138,7 +138,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-0a-10'", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'2020-0a-10'", ValidationResultType.InvalidWarning);
             }
             catch (InvalidOperationException ex)
             {

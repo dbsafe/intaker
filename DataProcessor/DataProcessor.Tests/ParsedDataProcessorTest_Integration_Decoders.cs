@@ -196,7 +196,7 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual.Errors);
             TestContext.PrintJson(actual.AllRows);
 
-            Assert.AreEqual(ValidationResultType.InvalidFixable, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.InvalidWarning, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual(5, actual.AllRows.Count);
             Assert.AreEqual(3, actual.DataRows.Count);
@@ -207,7 +207,7 @@ namespace DataProcessor.Tests
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[0]);
             
             var invalidRow = actual.AllRows[2];
-            Assert.AreEqual(ValidationResultType.InvalidFixable, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.InvalidWarning, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }
@@ -264,7 +264,7 @@ namespace DataProcessor.Tests
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
             invalidRow = actual.AllRows[2];
-            Assert.AreEqual(ValidationResultType.InvalidFixable, invalidRow.ValidationResult);
+            Assert.AreEqual(ValidationResultType.InvalidWarning, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }

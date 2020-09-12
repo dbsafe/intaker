@@ -29,7 +29,7 @@ namespace DataProcessor.Rules.Tests
                 }
             };
 
-            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidFixable);
+            var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.InvalidWarning);
             target.Initialize(config);
 
             var field = new Field { Value = 20, ValidationResult = ValidationResultType.Valid };
@@ -115,7 +115,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "", ValidationResultType.InvalidWarning);
             }
             catch (InvalidOperationException ex)
             {
@@ -131,7 +131,7 @@ namespace DataProcessor.Rules.Tests
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'|", ValidationResultType.InvalidFixable);
+                CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-3'|", ValidationResultType.InvalidWarning);
             }
             catch (InvalidOperationException ex)
             {

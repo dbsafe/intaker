@@ -8,15 +8,15 @@ namespace DataProcessor.Tests
     {
         [TestMethod]
         [DataRow(ValidationResultType.Valid, ValidationResultType.Valid, ValidationResultType.Valid)]
-        [DataRow(ValidationResultType.Valid, ValidationResultType.InvalidFixable, ValidationResultType.InvalidFixable)]
+        [DataRow(ValidationResultType.Valid, ValidationResultType.InvalidWarning, ValidationResultType.InvalidWarning)]
         [DataRow(ValidationResultType.Valid, ValidationResultType.InvalidCritical, ValidationResultType.InvalidCritical)]
 
-        [DataRow(ValidationResultType.InvalidFixable, ValidationResultType.Valid, ValidationResultType.InvalidFixable)]
-        [DataRow(ValidationResultType.InvalidFixable, ValidationResultType.InvalidFixable, ValidationResultType.InvalidFixable)]
-        [DataRow(ValidationResultType.InvalidFixable, ValidationResultType.InvalidCritical, ValidationResultType.InvalidCritical)]
+        [DataRow(ValidationResultType.InvalidWarning, ValidationResultType.Valid, ValidationResultType.InvalidWarning)]
+        [DataRow(ValidationResultType.InvalidWarning, ValidationResultType.InvalidWarning, ValidationResultType.InvalidWarning)]
+        [DataRow(ValidationResultType.InvalidWarning, ValidationResultType.InvalidCritical, ValidationResultType.InvalidCritical)]
 
         [DataRow(ValidationResultType.InvalidCritical, ValidationResultType.Valid, ValidationResultType.InvalidCritical)]
-        [DataRow(ValidationResultType.InvalidCritical, ValidationResultType.InvalidFixable, ValidationResultType.InvalidCritical)]
+        [DataRow(ValidationResultType.InvalidCritical, ValidationResultType.InvalidWarning, ValidationResultType.InvalidCritical)]
         [DataRow(ValidationResultType.InvalidCritical, ValidationResultType.InvalidCritical, ValidationResultType.InvalidCritical)]
         public void GetMaxValidationResult(ValidationResultType value1, ValidationResultType value2, ValidationResultType expected)
         {
