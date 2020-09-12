@@ -18,19 +18,7 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("args")]
         public string Args { get; set; }
 
-        [XmlAttribute("isFixable")]
-        public bool IsFixable { get; set; }
-
-        public RuleDefinition()
-        {
-        }
-
-        public RuleDefinition(string name, string description, string rule, string args)
-        {
-            Name = name;
-            Description = description;
-            Rule = rule;
-            Args = args;
-        }
+        [XmlAttribute("failValidationResult")]
+        public ValidationResultType FailValidationResult { get; set; }
     }
 }

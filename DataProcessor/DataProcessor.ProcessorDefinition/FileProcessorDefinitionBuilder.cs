@@ -113,7 +113,7 @@ namespace DataProcessor.ProcessorDefinition
             var rule = StoreManager.RuleStore.CreateObject(ruleDefinition.Rule);
             rule.Args = ruleDefinition.Args;
             rule.Description = ruleDefinition.Description;
-            rule.FailValidationResult = ruleDefinition.IsFixable ? ValidationResultType.Warning : ValidationResultType.Critical;
+            rule.FailValidationResult = ruleDefinition.FailValidationResult;
             rule.Name = ruleDefinition.Name;
             return rule;
         }

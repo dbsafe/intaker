@@ -17,7 +17,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             var sequenceNumberFieldDefinition = CreateFieldDefinition("SequenceNumber", "Sequence Number", "IntegerDecoder", "(?!0{4})[0-9]{4}", ValidationResultType.Error);
             sequenceNumberFieldDefinition.Rules = new RuleDefinition[]
             {
-                new RuleDefinition("SequenceNumber-MinNumberFieldRule", "Sequence number should be greater or equal to 10", "MinNumberFieldRule", "{'min':'10'}")
+                CreateRuleDefinition("SequenceNumber-MinNumberFieldRule", "Sequence number should be greater or equal to 10", "MinNumberFieldRule", "{'min':'10'}", ValidationResultType.Error)
             };
 
             var originatorName = CreateFieldDefinition("OriginatorName", "Originator Name", "TextDecoder", @"[a-zA-Z\s-']{2,35}", ValidationResultType.Error);
@@ -89,6 +89,18 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             TestContext.WriteLine(outputXml);
 
             Assert.AreEqual(inputXml, outputXml);
+        }
+
+        public RuleDefinition CreateRuleDefinition(string name, string description, string rule, string args, ValidationResultType failValidationResult)
+        {
+            return new RuleDefinition
+            {
+                Name = name,
+                Description = description,
+                Rule = rule,
+                Args = args,
+                FailValidationResult = failValidationResult
+            };
         }
 
         private FieldDefinition CreateFieldDefinition(string name, string description, string decoder, string pattern, ValidationResultType failValidationResult)
