@@ -13,8 +13,8 @@ namespace DataProcessor
     {
         private readonly IDataSource _source;
         private readonly FileProcessorDefinition _fileProcessorDefinition;
-        private bool _hasHeader;
-        private bool _hasTrailer;
+        private readonly bool _hasHeader;
+        private readonly bool _hasTrailer;
 
         public ParserContext ParserContext { get; private set; }
 
@@ -206,7 +206,7 @@ namespace DataProcessor
                     return;
                 }
 
-                ValidateFieldRules(description, field, fieldProcessorDefinition.Rules);
+                ValidateFieldRules(field, fieldProcessorDefinition.Rules);
 
                 if (field.ValidationResult != ValidationResultType.Valid)
                 {
@@ -236,7 +236,7 @@ namespace DataProcessor
             }
         }
 
-        private void ValidateFieldRules(string description, Field field, IFieldRule[] fieldRules)
+        private void ValidateFieldRules(Field field, IFieldRule[] fieldRules)
         {
             if (fieldRules == null || fieldRules.Length == 0)
             {
@@ -246,31 +246,39 @@ namespace DataProcessor
             var tempValidationResultType = field.ValidationResult;
             foreach (var fieldRule in fieldRules)
             {
-                DataProcessorGlobal.Debug($"Processing Field Rule: {fieldRule.Name}");
-                field.ValidationResult = ValidationResultType.Valid;
-                fieldRule.Validate(field);
+                ProcessRule(field, fieldRule);
                 tempValidationResultType = ParsedDataProcessorHelper.GetMaxValidationResult(tempValidationResultType, field.ValidationResult);
-                if (field.ValidationResult != ValidationResultType.Valid)
-                {
-                    DataProcessorGlobal.Debug($"Field Rule {fieldRule.Name} failed");
-                    field.Row.Errors.Add(fieldRule.Description);
-                }
             }
 
             field.ValidationResult = tempValidationResultType;
             field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult, field.ValidationResult);
         }
 
+        private void ProcessRule(Field field, IFieldRule fieldRule)
+        {
+            DataProcessorGlobal.Debug($"Processing Field Rule: {fieldRule.Name}");
+            field.ValidationResult = ValidationResultType.Valid;
+            fieldRule.Validate(field);
+            if (field.ValidationResult != ValidationResultType.Valid)
+            {
+                DataProcessorGlobal.Debug($"Field Rule {fieldRule.Name} failed");
+                field.Row.Errors.Add(fieldRule.Description);
+            }
+        }
+
         private void DecodeField(string fieldName, string description, Field field, IFieldDecoder fieldDecoder)
         {
             DataProcessorGlobal.Debug($"Decoding Field: {fieldName}, Raw Value: '{field.Raw}'");
             fieldDecoder.Decode(field);
-            if (field.ValidationResult != ValidationResultType.Valid)
+
+            if (field.ValidationResult == ValidationResultType.Valid)
             {
-                field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult, field.ValidationResult);
-                var error = $"Invalid {description} '{field.Raw}'";
-                field.Row.Errors.Add(error);
+                return;
             }
+
+            field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult, field.ValidationResult);
+            var error = $"Invalid {description} '{field.Raw}'";
+            field.Row.Errors.Add(error);
         }
 
         private void ValidateNumerOfFields(string lineType, Row row, RowProcessorDefinition rowProcessorDefinition)
