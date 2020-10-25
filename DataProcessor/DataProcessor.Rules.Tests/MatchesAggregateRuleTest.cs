@@ -40,6 +40,32 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
+        public void Validate_Given_that_property_failValidationResult_is_not_set_Should_throw_an_exception()
+        {
+            var config = new FieldRuleConfiguration
+            {
+                Aggregates = new Aggregate[]
+                {
+                    new Aggregate {Name = "aggregate-1", Value = 10},
+                    new Aggregate {Name = "aggregate-2", Value = 20}
+                }
+            };
+
+            var target = new MatchesAggregateRule { Description = "rule-description", Name = "rule-name", Args = "{'ruleValue':'aggregate-2'}" };
+
+
+            try
+            {
+                target.Initialize(config);
+                Assert.Fail("An exception was not thrown");
+            }
+            catch (InvalidOperationException e)
+            {
+                Assert.AreEqual("Property FailValidationResult must be set", e.Message);
+            }
+        }
+
+        [TestMethod]
         public void Validate_Given_field_value_does_not_matche_the_aggregate_ValidResult_should_be_invalid()
         {
             var target = CreateRule("rule-name", "rule-description", "{'ruleValue':'aggregate-2'}", ValidationResultType.Critical);

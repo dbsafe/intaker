@@ -26,7 +26,7 @@ namespace DataProcessor.Rules
         protected TArgs DecodedArgs { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Valid;
+        public ValidationResultType FailValidationResult { get; set; }
 
         protected TArgs GetArgs()
         {
@@ -59,11 +59,11 @@ namespace DataProcessor.Rules
             }
         }
 
-        protected void EnsureThatPropertyIsInitialized(string name, object value)
+        protected void EnsureThatPropertyIsInitialized(string name, ValidationResultType value)
         {
-            if (value == null)
+            if (value == 0)
             {
-                throw new InvalidOperationException($"Property {name} cannot be empty or null");
+                throw new InvalidOperationException($"Property {name} must be set");
             }
         }
 
