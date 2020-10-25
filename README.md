@@ -95,7 +95,7 @@ name | Required attribute. Specifies the name of the field.
 description | Required attribute. Specifies the description of the field. Used as part of the message when field validation fails.
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
 pattern | Required attribute when `decoder` has a value. It specifies a regular expression used to validate the field.
-failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error".
+failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error".  [See ValidationResultType](#validationresulttype)
 
 ### Field Decoder Class
 
@@ -177,7 +177,7 @@ public enum ValidationResultType
     Valid = 1,
 
     /// <summary>
-    /// Validation failed.
+    /// Validation failed. Adds flexibility by treating some validation fails as warnings.
     /// </summary>
     Warning = 2,
 
