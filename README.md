@@ -85,7 +85,7 @@ Defines a field in a line in the file. Can be used to define fields in header, d
   
 #### Syntax
 ```xml
-<field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />
+<field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" failValidationResult="Error" />
 ```
 
 #### Attributes
@@ -95,6 +95,7 @@ name | Required attribute. Specifies the name of the field.
 description | Required attribute. Specifies the description of the field. Used as part of the message when field validation fails.
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
 pattern | Required attribute when `decoder` has a value. It specifies a regular expression used to validate the field.
+failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error".
 
 ### Field Decoder Class
 
@@ -145,7 +146,7 @@ Defines a rule used to validate a field. A field can be validated using multiple
 
 #### Syntax
 ```xml
-<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" isFixable="true"/>
+<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning" />
 ```
 
 #### Attributes
@@ -155,7 +156,7 @@ name | Required attribute. Specifies the name of the rule.
 description | Specifies the description of the rule.
 rule | Name of the `FieldRule` class used when validating the field.
 args | Data passed to the rule in a JSON format
-isFixable | Defines the level of the validation
+failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error".
 
 ### Field Rule Class
 The library implements the standard rules `MinNumberFieldRule`, `MaxNumberFieldRule`, `MinDateFieldRule`, `MaxDateFieldRule`, and `MatchesAggregateRule`.
