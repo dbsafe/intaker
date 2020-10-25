@@ -24,7 +24,7 @@ namespace DataProcessor.Aggregators.Tests
         }
 
         [TestMethod]
-        public void AggregateField_Given_a_invalid_field_Agregate_shound_be_equal_to_the_number_of_calls()
+        public void AggregateField_Given_an_invalid_field_Agregate_shound_be_equal_to_the_number_of_calls()
         {
             var aggregate = new Aggregate();
             var target = new RowCountAggregator { Aggregate = aggregate, Description = "Row Count", Name = "RowCount" };
