@@ -1,5 +1,4 @@
 ﻿using DataProcessor.Domain.Models;
-using System.ComponentModel;
 using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile.Models
@@ -19,6 +18,6 @@ namespace DataProcessor.InputDefinitionFile.Models
         public string Args { get; set; }
 
         [XmlAttribute("failValidationResult")]
-        public ValidationResultType FailValidationResult { get; set; }
+        public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Error;
     }
 }

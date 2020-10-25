@@ -9,7 +9,7 @@
       <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
         <rules>
           <rule name="SequenceNumber-MinNumberFieldRule" description="Sequence number should equal or greater than 1" rule="MinNumberFieldRule" args="{'ruleValue':'1'}" failValidationResult="Warning" />
-          <rule name="SequenceNumber-MaxNumberFieldRule" description="Sequence number should be equal or less than 100" rule="MaxNumberFieldRule" args="{'ruleValue':'100'}" failValidationResult="Error" />
+          <rule name="SequenceNumber-MaxNumberFieldRule" description="Sequence number should be equal or less than 100" rule="MaxNumberFieldRule" args="{'ruleValue':'100'}" />
         </rules>
       </field>
     </fields>
