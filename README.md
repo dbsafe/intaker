@@ -34,7 +34,7 @@ The file specification can be defined in a XML file
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" />
       <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
         <rules>
-          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" args="{'ruleValue':'1'}" isFixable="true"/>
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" args="{'ruleValue':'1'}" failValidationResult="Warning" />
           <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" args="{'ruleValue':'100'}" />
         </rules>
       </field>
@@ -47,7 +47,7 @@ The file specification can be defined in a XML file
       <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" />
       <field name="FirstName" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" />
       <field name="LastName" description="LastName" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" />
-      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" isFixable="true"/>
+      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Warning" />
       <field name="Balance" description="Amount" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}">
         <aggregators>
           <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
@@ -62,7 +62,7 @@ The file specification can be defined in a XML file
       <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" />
       <field name="BalanceTotal" description="Balance Total" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}">
         <rules>
-          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" isFixable="true"/>
+          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning" />
         </rules>
       </field>
       <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}">
@@ -85,7 +85,7 @@ Defines a field in a line in the file. Can be used to define fields in header, d
   
 #### Syntax
 ```xml
-<field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" />
+<field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" failValidationResult="Error" />
 ```
 
 #### Attributes
@@ -95,6 +95,7 @@ name | Required attribute. Specifies the name of the field.
 description | Required attribute. Specifies the description of the field. Used as part of the message when field validation fails.
 decoder | Name of the `FieldDecoder` class used when parsing the field. When this value is not specified the field is read without performing any validation.
 pattern | Required attribute when `decoder` has a value. It specifies a regular expression used to validate the field.
+failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error".  [See ValidationResultType](#validationresulttype)
 
 ### Field Decoder Class
 
@@ -145,7 +146,7 @@ Defines a rule used to validate a field. A field can be validated using multiple
 
 #### Syntax
 ```xml
-<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" isFixable="true"/>
+<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning" />
 ```
 
 #### Attributes
@@ -155,7 +156,7 @@ name | Required attribute. Specifies the name of the rule.
 description | Specifies the description of the rule.
 rule | Name of the `FieldRule` class used when validating the field.
 args | Data passed to the rule in a JSON format
-isFixable | Defines the level of the validation
+failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error". [See ValidationResultType](#validationresulttype)
 
 ### Field Rule Class
 The library implements the standard rules `MinNumberFieldRule`, `MaxNumberFieldRule`, `MinDateFieldRule`, `MaxDateFieldRule`, and `MatchesAggregateRule`.
@@ -164,3 +165,32 @@ The library implements the standard rules `MinNumberFieldRule`, `MaxNumberFieldR
 e.g.: `args="{'ruleValue':'BalanceAggregator'}"`
 
 You can define custom rules and use them in the file definition.
+
+### ValidationResultType
+
+```cs
+public enum ValidationResultType
+{
+    /// <summary>
+    /// Validation succeed.
+    /// </summary>
+    Valid = 1,
+
+    /// <summary>
+    /// Validation failed. Adds flexibility by treating some validation fails as warnings.
+    /// </summary>
+    Warning = 2,
+
+    /// <summary>
+    /// Validation failed.
+    /// </summary>
+    Error = 3,
+
+    /// <summary>
+    /// Validation failed. Causes the decoding process to abort.
+    /// </summary>
+    Critical = 4
+}
+```
+
+When creating the definition file the ValidationResultType is used for setting the severity of a failed validation.
