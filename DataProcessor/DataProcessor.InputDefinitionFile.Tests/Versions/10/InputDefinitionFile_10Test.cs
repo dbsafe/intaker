@@ -91,6 +91,23 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             Assert.AreEqual(inputXml, outputXml);
         }
 
+        [TestMethod]
+        public void Deserialize_Given_an_input_file_that_uses_default_values_Should_deserialise()
+        {
+            var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            var path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV.definition.xml");
+            var inputXml = File.ReadAllText(path);
+
+            path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV-default-values.definition.xml");
+            var inputXmlWithDefaultValues = File.ReadAllText(path);
+
+            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_10>(inputXmlWithDefaultValues);
+            var outputXml = HelperXmlSerializer.Serialize(actual);
+            TestContext.WriteLine(outputXml);
+
+            Assert.AreEqual(inputXml, outputXml);
+        }
+
         public RuleDefinition CreateRuleDefinition(string name, string description, string rule, string args, ValidationResultType failValidationResult)
         {
             return new RuleDefinition

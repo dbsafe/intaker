@@ -7,10 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="TestFiles\FXWDCSV-default-values.definition.xml" />
     <None Remove="TestFiles\FXWDCSV.definition.xml" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestFiles\FXWDCSV-default-values.definition.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\FXWDCSV.definition.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
