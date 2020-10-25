@@ -18,7 +18,7 @@ namespace DataProcessor.InputDefinitionFile.Models
         public string Pattern { get; set; }
 
         [XmlAttribute("failValidationResult")]
-        public ValidationResultType FailValidationResult { get; set; }
+        public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Error;
 
         [XmlArray(ElementName = "rules")]
         [XmlArrayItem(ElementName = "rule")]

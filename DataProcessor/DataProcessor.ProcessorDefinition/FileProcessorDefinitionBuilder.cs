@@ -133,7 +133,6 @@ namespace DataProcessor.ProcessorDefinition
                 decoder = StoreManager.DecoderStore.CreateObject(fieldDefinition.Decoder);
                 decoder.Pattern = fieldDefinition.Pattern;
                 decoder.FailValidationResult = fieldDefinition.FailValidationResult;
-                decoder.FailValidationResult = fieldDefinition.FailValidationResult;
             }
 
             return decoder;

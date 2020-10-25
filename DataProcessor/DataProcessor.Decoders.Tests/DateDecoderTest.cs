@@ -27,14 +27,20 @@ namespace DataProcessor.Decoders.Tests
         }
 
         [TestMethod]
-        public void Decode_Given_that_property_validationResult_is_not_set_Should_default_to_Valid()
+        public void Decode_Given_that_property_failValidationResult_is_not_set_Should_throw_an_exception()
         {
             var field = new Field { Raw = "2020-10-aa", ValidationResult = ValidationResultType.Valid };
             var target = new DateDecoder { Pattern = "yyyy-MM-dd" };
 
-            target.Decode(field);
-
-            Assert.AreEqual(ValidationResultType.Valid, field.ValidationResult);
+            try
+            {
+                target.Decode(field);
+                Assert.Fail("An exception was not thrown");
+            }
+            catch (InvalidOperationException e)
+            {
+                Assert.AreEqual("Property FailValidationResult must be set", e.Message);
+            }            
         }
 
         [TestMethod]
