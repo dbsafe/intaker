@@ -156,7 +156,7 @@ name | Required attribute. Specifies the name of the rule.
 description | Specifies the description of the rule.
 rule | Name of the `FieldRule` class used when validating the field.
 args | Data passed to the rule in a JSON format
-failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error". [ValidationResultType](#anchor-links)
+failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error". [See ValidationResultType](#validation-result-type)
 
 ### Field Rule Class
 The library implements the standard rules `MinNumberFieldRule`, `MaxNumberFieldRule`, `MinDateFieldRule`, `MaxDateFieldRule`, and `MatchesAggregateRule`.
@@ -166,7 +166,7 @@ e.g.: `args="{'ruleValue':'BalanceAggregator'}"`
 
 You can define custom rules and use them in the file definition.
 
-### ValidationResultType
+### [ValidationResultType](#validation-result-type)
 
 ```cs
 public enum ValidationResultType
