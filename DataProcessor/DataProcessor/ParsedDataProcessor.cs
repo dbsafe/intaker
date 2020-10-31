@@ -259,9 +259,19 @@ namespace DataProcessor
             DataProcessorGlobal.Debug($"Processing Field Rule: {fieldRule.Name}");
             field.ValidationResult = ValidationResultType.Valid;
             fieldRule.Validate(field);
-            if (field.ValidationResult != ValidationResultType.Valid)
+
+            if (field.ValidationResult == ValidationResultType.Valid)
             {
-                DataProcessorGlobal.Debug($"Field Rule {fieldRule.Name} failed");
+                return;
+            }
+
+            DataProcessorGlobal.Debug($"Field Rule {fieldRule.Name} failed");
+            if (field.ValidationResult == ValidationResultType.Warning)
+            {
+                field.Row.Warnings.Add(fieldRule.Description);
+            }
+            else
+            {
                 field.Row.Errors.Add(fieldRule.Description);
             }
         }
