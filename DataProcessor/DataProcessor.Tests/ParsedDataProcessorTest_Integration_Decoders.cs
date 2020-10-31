@@ -65,6 +65,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("HEADER,09212013,ABCDCompLndn,0001", actual.Header.Raw);
             Assert.AreEqual("HEADER,09212013,ABCDCompLndn,0001", string.Join(',', actual.Header.RawFields));
             Assert.AreEqual(0, actual.Header.Errors.Count);
+            Assert.AreEqual(0, actual.Header.Warnings.Count);
             Assert.AreEqual("{\"RecordType\":\"HEADER\",\"CreationDate\":\"2013-09-21T00:00:00\",\"LocationID\":\"ABCDCompLndn\",\"SequenceNumber\":1}", actual.Header.Json);
 
             Assert.AreEqual(4, actual.Header.Fields.Count);
@@ -89,6 +90,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00,AA", dataRow0.Raw);
             Assert.AreEqual("BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00,AA", string.Join(',', dataRow0.RawFields));
             Assert.AreEqual(0, dataRow0.Errors.Count);
+            Assert.AreEqual(0, dataRow0.Warnings.Count);
             Assert.AreEqual("{\"RecordType\":\"BALANCE\",\"ConsumerID\":1001,\"SSN\":\"111-22-1001\",\"FirstName\":\"fname-01\",\"LastName\":\"lname-01\",\"DOB\":\"2000-10-21T00:00:00\",\"Balance\":1000.00,\"CustomField\":\"AA\"}", dataRow0.Json);
 
             Assert.AreEqual(8, dataRow0.Fields.Count);
@@ -107,6 +109,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00,", dataRow1.Raw);
             Assert.AreEqual("BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00,", string.Join(',', dataRow1.RawFields));
             Assert.AreEqual(0, dataRow1.Errors.Count);
+            Assert.AreEqual(0, dataRow1.Warnings.Count);
             Assert.AreEqual("{\"RecordType\":\"BALANCE\",\"ConsumerID\":1002,\"SSN\":\"111-22-1002\",\"FirstName\":\"fname-02\",\"LastName\":\"lname-02\",\"DOB\":\"2000-10-22T00:00:00\",\"Balance\":2000.00,\"CustomField\":\"\"}", dataRow1.Json);
 
             Assert.AreEqual(8, dataRow1.Fields.Count);
@@ -125,6 +128,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00,", dataRow2.Raw);
             Assert.AreEqual("BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00,", string.Join(',', dataRow2.RawFields));
             Assert.AreEqual(0, dataRow2.Errors.Count);
+            Assert.AreEqual(0, dataRow2.Warnings.Count);
             Assert.AreEqual("{\"RecordType\":\"BALANCE\",\"ConsumerID\":1003,\"SSN\":\"111-22-1003\",\"FirstName\":\"fname-03\",\"LastName\":\"lname-03\",\"DOB\":\"2000-10-23T00:00:00\",\"Balance\":3000.00,\"CustomField\":\"\"}", dataRow2.Json);
 
             Assert.AreEqual(8, dataRow2.Fields.Count);
@@ -153,6 +157,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("TRAILER,6000.00,3", actual.Trailer.Raw);
             Assert.AreEqual("TRAILER,6000.00,3", string.Join(',', actual.Trailer.RawFields));
             Assert.AreEqual(0, actual.Trailer.Errors.Count);
+            Assert.AreEqual(0, actual.Trailer.Warnings.Count);
             Assert.AreEqual("{\"RecordType\":\"TRAILER\",\"BalanceTotal\":6000.00,\"RecordCount\":3}", actual.Trailer.Json);
 
             Assert.AreEqual(3, actual.Trailer.Fields.Count);
@@ -183,7 +188,35 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual(0, invalidRow.Warnings.Count);
             Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_a_header_with_warning_Should_indicate_warning()
+        {
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-invalid-header.csv", false);
+
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+
+            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+
+            var actual = target.Process();
+            TestContext.PrintJson(actual);
+
+            Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
+            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(0, actual.InvalidRows.Count);
+
+            var rowWithWarning = actual.Header;
+            Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
+            Assert.AreEqual(0, rowWithWarning.Errors.Count);
+            Assert.AreEqual(1, rowWithWarning.Warnings.Count);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", rowWithWarning.Warnings[0]);
         }
 
         [TestMethod]
@@ -209,7 +242,36 @@ namespace DataProcessor.Tests
             var invalidRow = actual.AllRows[2];
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual(0, invalidRow.Warnings.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_an_data_row_with_warning_Should_indicate_warning()
+        {
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv", false);
+
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+
+            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+
+            var actual = target.Process();
+            TestContext.PrintJson(actual);
+            
+
+            Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
+            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(0, actual.InvalidRows.Count);
+
+            var rowWithWarning = actual.AllRows[2];
+            Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
+            Assert.AreEqual(0, rowWithWarning.Errors.Count);
+            Assert.AreEqual(1, rowWithWarning.Warnings.Count);
+            Assert.AreEqual("Invalid DOB '1022200a'", rowWithWarning.Warnings[0]);
         }
 
         [TestMethod]
@@ -234,7 +296,35 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Trailer;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual(0, invalidRow.Warnings.Count);
             Assert.AreEqual("Invalid Balance Total '6000.oo'", invalidRow.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_a_trailer_with_warning_Should_indicate_warning()
+        {
+            var fileDataSource = TestHelpers.CreateFileDataSource("balance-with-invalid-trailer.csv", false);
+
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+
+            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+
+            var actual = target.Process();
+            TestContext.PrintJson(actual);
+
+            Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
+            Assert.AreEqual(0, actual.Errors.Count);
+            Assert.AreEqual(5, actual.AllRows.Count);
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(0, actual.InvalidRows.Count);
+
+            var rowWithWarning = actual.Trailer;
+            Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
+            Assert.AreEqual(0, rowWithWarning.Errors.Count);
+            Assert.AreEqual(1, rowWithWarning.Warnings.Count);
+            Assert.AreEqual("Invalid Balance Total '6000.oo'", rowWithWarning.Warnings[0]);
         }
 
         [TestMethod]
@@ -260,12 +350,14 @@ namespace DataProcessor.Tests
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual(0, invalidRow.Warnings.Count);
             Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
             invalidRow = actual.AllRows[2];
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
+            Assert.AreEqual(0, invalidRow.Warnings.Count);
             Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
         }
 

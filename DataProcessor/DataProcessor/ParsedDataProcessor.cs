@@ -111,11 +111,11 @@ namespace DataProcessor
         private void SourceAfterProcessRow(object sender, ProcessRowEventArgs e)
         {
             e.Context.AllRows.Add(e.Row);
+            e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
 
-            if (e.Row.ValidationResult != ValidationResultType.Valid)
+            if (e.Row.ValidationResult != ValidationResultType.Valid && e.Row.ValidationResult != ValidationResultType.Warning)
             {
                 e.Context.InvalidRows.Add(e.Row);
-                e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
 
                 if (IsHeaderRow(e.Row))
                 {
@@ -277,8 +277,16 @@ namespace DataProcessor
             }
 
             field.Row.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(field.Row.ValidationResult, field.ValidationResult);
-            var error = $"Invalid {description} '{field.Raw}'";
-            field.Row.Errors.Add(error);
+            var message = $"Invalid {description} '{field.Raw}'";
+
+            if (field.ValidationResult == ValidationResultType.Warning)
+            {
+                field.Row.Warnings.Add(message);
+            }
+            else
+            {
+                field.Row.Errors.Add(message);
+            }
         }
 
         private void ValidateNumerOfFields(string lineType, Row row, RowProcessorDefinition rowProcessorDefinition)
