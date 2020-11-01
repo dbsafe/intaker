@@ -22,10 +22,12 @@ namespace DataProcessor.Tests
             DataProcessorGlobal.IsDebugEnabled = true;
             var assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Decoders.dll");
             StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
-            assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Rules.dll");
-            StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
-            assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Aggregators.dll");
-            StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
+            
+            var assemblyWithRules = Path.Combine(_testDirectory, "DataProcessor.Rules.dll");
+            StoreManager.RegisterObjectsFromAssembly(assemblyWithRules);
+            
+            var assemblyWithAggregators = Path.Combine(_testDirectory, "DataProcessor.Aggregators.dll");
+            StoreManager.RegisterObjectsFromAssembly(assemblyWithAggregators);
 
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
