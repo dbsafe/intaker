@@ -41,10 +41,9 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.Errors);
-            TestContext.PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual);
 
-            Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
+            Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
             Assert.AreEqual(4, actual.AllRows.Count);
             Assert.AreEqual(2, actual.DataRows.Count);
@@ -52,6 +51,48 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual("Header row is not valid", actual.Errors[0]);
             Assert.AreEqual("Trailer row is not valid", actual.Errors[1]);
+
+            Assert.IsNotNull(actual.Header);
+            Assert.AreEqual(ValidationResultType.Error, actual.Header.ValidationResult);
+            Assert.AreEqual(1, actual.Header.Errors.Count);
+            Assert.AreEqual("Header Row - The expected number of fields 4 is not equal to the actual number of fields 8", actual.Header.Errors[0]);
+            Assert.AreEqual(0, actual.Header.Warnings.Count);
+
+            Assert.IsNotNull(actual.Trailer);
+            Assert.AreEqual(ValidationResultType.Error, actual.Trailer.ValidationResult);
+            Assert.AreEqual(1, actual.Trailer.Errors.Count);
+            Assert.AreEqual("Record Count should match the number data row", actual.Trailer.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_a_decoder_with_critical_validation_result_Should_abort_the_process()
+        {
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-invalid-header.csv", false);
+
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-critical-decoder.definition.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var fileProcessorDefinitionWithCritical = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+
+            var target = new ParsedDataProcessor(fileDataSourceValidFile, fileProcessorDefinitionWithCritical);
+
+            var actual = target.Process();
+            TestContext.PrintJson(actual);
+
+            Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
+            Assert.AreEqual(1, actual.Errors.Count);
+            Assert.AreEqual(1, actual.AllRows.Count);
+            Assert.AreEqual(0, actual.DataRows.Count);
+            Assert.AreEqual(1, actual.InvalidRows.Count);
+
+            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
+
+            Assert.IsNotNull(actual.Header);
+            Assert.AreEqual(ValidationResultType.Critical, actual.Header.ValidationResult);
+            Assert.AreEqual(1, actual.Header.Errors.Count);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", actual.Header.Errors[0]);
+            Assert.AreEqual(0, actual.Header.Warnings.Count);
+
+            Assert.IsNull(actual.Trailer);
         }
     }
 }
