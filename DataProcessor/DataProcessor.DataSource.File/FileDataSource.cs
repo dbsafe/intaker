@@ -76,10 +76,13 @@ namespace DataProcessor.DataSource.File
                 return;
             }
 
-            CreateFieldsForRow(row, context);
-            if (context.IsAborted)
+            if (row.ValidationResult == ValidationResultType.Valid || row.ValidationResult == ValidationResultType.Warning)
             {
-                return;
+                CreateFieldsForRow(row, context);
+                if (context.IsAborted)
+                {
+                    return;
+                }
             }
 
             OnAfterProcessRow(processRowEventArgs);

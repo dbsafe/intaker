@@ -112,6 +112,10 @@ namespace DataProcessor
         {
             e.Context.AllRows.Add(e.Row);
             e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
+            if (e.Context.ValidationResult == ValidationResultType.Critical)
+            {
+                e.Context.IsAborted = true;
+            }
 
             if (e.Row.ValidationResult != ValidationResultType.Valid && e.Row.ValidationResult != ValidationResultType.Warning)
             {
@@ -313,7 +317,7 @@ namespace DataProcessor
 
             if (rowProcessorDefinition.FieldProcessorDefinitions.Length != row.RawFields.Length)
             {
-                row.ValidationResult = ValidationResultType.Critical;
+                row.ValidationResult = ValidationResultType.Error;
                 var error = $"{lineType} - The expected number of fields {rowProcessorDefinition.FieldProcessorDefinitions.Length} is not equal to the actual number of fields {row.RawFields.Length}";
                 row.Errors.Add(error);
             }
