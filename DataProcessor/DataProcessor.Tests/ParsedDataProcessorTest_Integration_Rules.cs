@@ -33,14 +33,13 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_rule_violation_Result_should_indicate_the_error()
+        public void Process_Given_a_rule_violation_Result_should_indicate_error_and_warning()
         {
             var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-rule-violations.csv", false);
             var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.Errors);
-            TestContext.PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
@@ -56,14 +55,16 @@ namespace DataProcessor.Tests
             Assert.AreEqual(ValidationResultType.Error, actual.Header.Fields[3].ValidationResult);
             Assert.AreEqual(1, actual.Header.Errors.Count);
             Assert.AreEqual("Sequence number should be equal or less than 100", actual.Header.Errors[0]);
+            Assert.AreEqual(0, actual.Header.Warnings.Count);
 
             Assert.AreSame(actual.Trailer, actual.InvalidRows[1]);
             Assert.AreEqual(ValidationResultType.Error, actual.Trailer.ValidationResult);
             Assert.AreEqual(ValidationResultType.Warning, actual.Trailer.Fields[1].ValidationResult);
             Assert.AreEqual(ValidationResultType.Error, actual.Trailer.Fields[2].ValidationResult);
-            Assert.AreEqual(2, actual.Trailer.Errors.Count);
-            Assert.AreEqual("Balance Total is incorrect", actual.Trailer.Errors[0]);
-            Assert.AreEqual("Record Count should match the number data row", actual.Trailer.Errors[1]);
+            Assert.AreEqual(1, actual.Trailer.Errors.Count);
+            Assert.AreEqual("Record Count should match the number data row", actual.Trailer.Errors[0]);
+            Assert.AreEqual(1, actual.Trailer.Warnings.Count);
+            Assert.AreEqual("Balance Total is incorrect", actual.Trailer.Warnings[0]);            
         }
     }
 }

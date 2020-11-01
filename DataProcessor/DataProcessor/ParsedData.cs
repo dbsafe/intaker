@@ -1,4 +1,6 @@
 ﻿using DataProcessor.Domain.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System.Collections.Generic;
 
 namespace DataProcessor
@@ -11,6 +13,7 @@ namespace DataProcessor
         public IList<Row> DataRows { get; set; }
         public IList<Row> InvalidRows { get; set; }
         public IList<string> Errors { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
         public ValidationResultType ValidationResult { get; set; }
     }
 }

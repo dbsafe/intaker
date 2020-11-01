@@ -13,6 +13,7 @@ namespace DataProcessor.Domain.Models
         public string[] RawFields { get; set; }
         public IList<Field> Fields { get; set; } = new List<Field>();
         public IList<string> Errors { get; set; } = new List<string>();
+        public IList<string> Warnings { get; set; } = new List<string>();
         [JsonIgnore]
         public string Json { get; set; }
     }
