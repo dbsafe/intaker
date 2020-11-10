@@ -41,6 +41,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Aggregators.T
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "DataProcessor.Database.SqlServer", "DataProcessor.Database.SqlServer\DataProcessor.Database.SqlServer.sqlproj", "{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.DataSource.InMemory", "DataProcessor.DataSource.InMemory\DataProcessor.DataSource.InMemory.csproj", "{CE6FDE9B-3967-48DC-884D-EA3F0072A83A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.DataSource", "DataProcessor.DataSource\DataProcessor.DataSource.csproj", "{BEC913DD-9E73-4E86-B35D-427A9D2777C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -125,6 +129,14 @@ Global
 		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4EDA8E2E-B89F-48C2-8B7E-CAA0AB01FB76}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{CE6FDE9B-3967-48DC-884D-EA3F0072A83A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE6FDE9B-3967-48DC-884D-EA3F0072A83A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE6FDE9B-3967-48DC-884D-EA3F0072A83A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE6FDE9B-3967-48DC-884D-EA3F0072A83A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEC913DD-9E73-4E86-B35D-427A9D2777C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEC913DD-9E73-4E86-B35D-427A9D2777C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEC913DD-9E73-4E86-B35D-427A9D2777C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEC913DD-9E73-4E86-B35D-427A9D2777C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

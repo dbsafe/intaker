@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DataProcessor.DataSource.File
+namespace DataProcessor.DataSource
 {
     public class LineParser
     {
