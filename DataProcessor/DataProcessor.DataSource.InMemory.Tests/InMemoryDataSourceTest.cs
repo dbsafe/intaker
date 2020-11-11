@@ -7,8 +7,6 @@ namespace DataProcessor.DataSource.InMemory.Tests
     [TestClass]
     public class InMemoryDataSourceTest
     {
-        private InMemoryDataSource _target;
-
         [TestMethod]
         public void Process_Given_a_file_ProcessField_event_should_be_raised_for_every_field()
         {
