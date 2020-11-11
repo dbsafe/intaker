@@ -1,10 +1,11 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.DataSource.File;
+using DataProcessor.Domain.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 
-namespace DataProcessor.DataSource.File.Tests
+namespace DataProcessor.DataSource.Tests
 {
     [TestClass]
     public class FileDataSourceTest
