@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace DataProcessor.DataSource.File.Tests
+namespace DataProcessor.DataSource.Tests
 {
     [TestClass]
     public class LineParserTest

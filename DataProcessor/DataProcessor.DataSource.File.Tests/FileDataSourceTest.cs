@@ -6,6 +6,9 @@ using System.Reflection;
 
 namespace DataProcessor.DataSource.File.Tests
 {
+    /// <summary>
+    /// Test for and the base class BaseDataSource
+    /// </summary>
     [TestClass]
     public class FileDataSourceTest
     {

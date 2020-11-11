@@ -5,7 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.DataSource\DataProcessor.DataSource.csproj" />
     <ProjectReference Include="..\DataProcessor.Domain\DataProcessor.Domain.csproj" />
   </ItemGroup>
 
