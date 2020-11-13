@@ -1,6 +1,6 @@
-﻿using DataProcessor.Domain.Contracts;
-using DataProcessor.Domain.Models;
-using DataProcessor.Domain.Utils;
+﻿using DataProcessor.Contracts;
+using DataProcessor.Models;
+using DataProcessor.Utils;
 using DataProcessor.ProcessorDefinition.Models;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj" />
-    <ProjectReference Include="..\DataProcessor.Domain\DataProcessor.Domain.csproj" />
-    <ProjectReference Include="..\DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
 </Project>

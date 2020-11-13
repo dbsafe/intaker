@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.DataSource.InMemory\DataProcessor.DataSource.InMemory.csproj" />
+    <ProjectReference Include="..\DataProcessor\DataProcessor.csproj" />
   </ItemGroup>
 
 </Project>

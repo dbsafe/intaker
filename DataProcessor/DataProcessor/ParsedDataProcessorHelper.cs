@@ -1,4 +1,4 @@
-﻿using DataProcessor.Domain.Models;
+﻿using DataProcessor.Models;
 
 namespace DataProcessor
 {

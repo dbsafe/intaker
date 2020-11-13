@@ -1,5 +1,5 @@
 ﻿using DataProcessor.DataSource.File;
-using DataProcessor.Domain.Models;
+using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 using System.Collections.Generic;

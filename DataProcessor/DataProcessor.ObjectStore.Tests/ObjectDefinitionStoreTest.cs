@@ -1,5 +1,5 @@
 using DataProcessor.Decoders;
-using DataProcessor.Domain.Contracts;
+using DataProcessor.Contracts;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;

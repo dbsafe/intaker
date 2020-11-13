@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.InputDefinitionFile\DataProcessor.InputDefinitionFile.csproj" />
+    <ProjectReference Include="..\DataProcessor\DataProcessor.csproj" />
   </ItemGroup>
 
 </Project>

@@ -18,13 +18,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Content Include="TestFiles\test-file-01.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataProcessor\DataProcessor.csproj" />
   </ItemGroup>
 
 </Project>
