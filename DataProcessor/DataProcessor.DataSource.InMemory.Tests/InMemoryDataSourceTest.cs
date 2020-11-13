@@ -1,4 +1,4 @@
-using DataProcessor.Domain.Models;
+using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 

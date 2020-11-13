@@ -1,5 +1,5 @@
-using DataProcessor.Domain.Contracts;
-using DataProcessor.Domain.Models;
+using DataProcessor.Contracts;
+using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

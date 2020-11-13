@@ -1,13 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.Domain\DataProcessor.Domain.csproj" />
-    <ProjectReference Include="..\DataProcessor.InputDefinitionFile\DataProcessor.InputDefinitionFile.csproj" />
-    <ProjectReference Include="..\DataProcessor.ObjectStore\DataProcessor.ObjectStore.csproj" />
-  </ItemGroup>
 
 </Project>

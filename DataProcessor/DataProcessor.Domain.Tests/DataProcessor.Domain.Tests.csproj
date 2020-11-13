@@ -13,10 +13,4 @@
     <PackageReference Include="coverlet.collector" Version="1.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj" />
-    <ProjectReference Include="..\DataProcessor.Decoders\DataProcessor.Decoders.csproj" />
-    <ProjectReference Include="..\DataProcessor.Domain\DataProcessor.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

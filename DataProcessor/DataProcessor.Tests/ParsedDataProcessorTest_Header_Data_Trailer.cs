@@ -1,6 +1,6 @@
 ﻿using DataProcessor.DataSource.File;
 using DataProcessor.Decoders;
-using DataProcessor.Domain.Models;
+using DataProcessor.Models;
 using DataProcessor.ProcessorDefinition.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

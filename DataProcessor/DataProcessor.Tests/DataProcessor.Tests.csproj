@@ -81,11 +81,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DataProcessor.Aggregators\DataProcessor.Aggregators.csproj" />
-    <ProjectReference Include="..\DataProcessor.DataSource.File\DataProcessor.DataSource.File.csproj" />
-    <ProjectReference Include="..\DataProcessor.Decoders\DataProcessor.Decoders.csproj" />
-    <ProjectReference Include="..\DataProcessor.ProcessorDefinition\DataProcessor.ProcessorDefinition.csproj" />
-    <ProjectReference Include="..\DataProcessor.Rules\DataProcessor.Rules.csproj" />
     <ProjectReference Include="..\DataProcessor\DataProcessor.csproj" />
   </ItemGroup>
 

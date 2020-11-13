@@ -1,11 +1,10 @@
 ﻿using DataProcessor.Aggregators;
 using DataProcessor.Decoders;
-using DataProcessor.Domain.Models;
-using DataProcessor.Domain.Utils;
 using DataProcessor.InputDefinitionFile;
-using DataProcessor.ObjectStore;
+using DataProcessor.Models;
 using DataProcessor.ProcessorDefinition.Models;
 using DataProcessor.Rules;
+using DataProcessor.Utils;
 using Microsoft.VisualStudio.TestPlatform.CoreUtilities.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -27,14 +26,6 @@ namespace DataProcessor.ProcessorDefinition.Tests
         public void Initialize()
         {
             DataProcessorGlobal.IsDebugEnabled = true;
-            
-            var assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Decoders.dll");
-            StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
-            assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Rules.dll");
-            StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
-            assemblyWithDecoders = Path.Combine(_testDirectory, "DataProcessor.Aggregators.dll");
-            StoreManager.RegisterObjectsFromAssembly(assemblyWithDecoders);
-
             PrintLoadedAssemblies();
         }
 
