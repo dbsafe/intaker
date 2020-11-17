@@ -27,9 +27,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.DataSource.Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.DataSource.InMemory.Tests", "DataProcessor.DataSource.InMemory.Tests\DataProcessor.DataSource.InMemory.Tests.csproj", "{93A459AC-446E-48C6-9B74-1A37ABC54FBE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.ObjectStore.Tests.Lib", "DataProcessor.ObjectStore.Tests.Lib\DataProcessor.ObjectStore.Tests.Lib.csproj", "{0D3F4737-9328-44BB-8DDE-7C65A1C6234F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.ObjectStore.Tests.Lib", "DataProcessor.ObjectStore.Tests.Lib\DataProcessor.ObjectStore.Tests.Lib.csproj", "{0D3F4737-9328-44BB-8DDE-7C65A1C6234F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F8E7641-B157-4F61-AABB-9AEAB66F138E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataProcessor.DataSource.Stream.Tests", "DataProcessor.DataSource.Stream.Tests\DataProcessor.DataSource.Stream.Tests.csproj", "{C29A5865-ED07-4C75-9616-2736AA4CD55A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -91,6 +93,10 @@ Global
 		{0D3F4737-9328-44BB-8DDE-7C65A1C6234F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D3F4737-9328-44BB-8DDE-7C65A1C6234F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D3F4737-9328-44BB-8DDE-7C65A1C6234F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -107,6 +113,7 @@ Global
 		{FE08B8A3-B18F-4895-AEE6-63FDFBDF6823} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
 		{93A459AC-446E-48C6-9B74-1A37ABC54FBE} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
 		{0D3F4737-9328-44BB-8DDE-7C65A1C6234F} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
+		{C29A5865-ED07-4C75-9616-2736AA4CD55A} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3265CF9F-BB9C-40FE-987F-2AC08AA4BF03}
