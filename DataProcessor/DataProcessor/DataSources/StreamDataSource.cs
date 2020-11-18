@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace DataProcessor.DataSource.InMemory
+namespace DataProcessor.DataSource.InStream
 {
     public class StreamDataSourceConfig : IDataSourceConfig
     {

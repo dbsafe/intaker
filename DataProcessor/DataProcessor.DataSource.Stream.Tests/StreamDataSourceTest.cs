@@ -1,4 +1,4 @@
-using DataProcessor.DataSource.InMemory;
+using DataProcessor.DataSource.InStream;
 using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
