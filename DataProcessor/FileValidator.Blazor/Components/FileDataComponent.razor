@@ -1,0 +1,22 @@
+﻿<div class="space-10 mat-subtitle2">Data</div>
+<MatDivider></MatDivider>
+
+<div class="mat-layout-grid-inner">
+    <div class="space-10 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+        <FileRowComponent ColumnHeaders="@ColumnHeaders" Rows="@Rows"></FileRowComponent>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public IEnumerable<string> ColumnHeaders { get; set; }
+
+    private IEnumerable<Row> _rows;
+
+    [Parameter]
+    public IEnumerable<Row> Rows
+    {
+        get { return _rows; }
+        set { _rows = value; }
+    }
+}

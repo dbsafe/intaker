@@ -1,0 +1,30 @@
+﻿<td colspan="@FieldCount">
+    @if (Row.Errors.Count > 0)
+    {
+        <div>Errors</div>
+        <MatDivider></MatDivider>
+        @foreach (var error in Row.Errors)
+        {
+            <div style="margin-left:20px">@error</div>
+        }
+    }
+
+    @if (Row.Warnings.Count > 0)
+    {
+        <div>Warnings</div>
+        <MatDivider></MatDivider>
+        @foreach (var warning in Row.Warnings)
+        {
+            <div style="margin-left:20px">@warning</div>
+        }
+    }
+
+</td>
+
+@code {
+    [Parameter]
+    public int FieldCount { get; set; }
+
+    [Parameter]
+    public Row Row { get; set; }
+}

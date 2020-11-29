@@ -1,0 +1,38 @@
+﻿<MatTable Items="@_displayData" class="nowrap margin-0 mat-elevation-z5" AllowSelection="true" ShowPaging="false" PageSize="100">
+    <MatTableHeader>
+        <th><strong>Validation</strong></th>
+        @foreach (var header in ColumnHeaders)
+        {
+            <th><strong>@header</strong></th>
+        }
+        <th><strong>Raw</strong></th>
+    </MatTableHeader>
+    <MatTableRow>
+        @if (context.IsRowData)
+        {
+            <td rowspan="@context.Rowspan">@context.Row.ValidationResult</td>
+
+            @switch (context.Row.ValidationResult)
+            {
+                case ValidationResultType.Valid:
+                case ValidationResultType.Warning:
+                    <FileRowValidComponent Row="@context.Row" />
+                    break;
+                case ValidationResultType.Error:
+                case ValidationResultType.Critical:
+                    <FileRowErrorsAndWarningsComponent Row="@context.Row" FieldCount="@ColumnHeaders.Count()" />
+                    break;
+                default:
+                    <td colspan="@ColumnHeaders.Count()"></td>
+                    break;
+            }
+
+            <td rowspan="@context.Rowspan" class="raw-data">@context.Row.Raw</td>
+        }
+        else
+        {
+            <FileRowErrorsAndWarningsComponent Row="@context.Row" FieldCount="@ColumnHeaders.Count()" />
+        }
+
+    </MatTableRow>
+</MatTable>

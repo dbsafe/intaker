@@ -1,0 +1,37 @@
+﻿<div class="space-10 mat-subtitle2">@Tittle</div>
+<MatDivider></MatDivider>
+
+<div class="mat-layout-grid-inner">
+    <div class="space-10 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+        <FileRowComponent ColumnHeaders="@ColumnHeaders" Rows="@_rows"></FileRowComponent>
+    </div>
+</div>
+
+@code {
+    private List<Row> _rows;
+    private Row _row;
+
+    [Parameter]
+    public string Tittle { get; set; }
+
+    [Parameter]
+    public Row Row
+    {
+        get
+        {
+            return _row;
+        }
+        set
+        {
+            _row = value;
+            _rows = new List<Row>();
+            if (_row != null)
+            {
+                _rows.Add(_row);
+            }
+        }
+    }
+
+    [Parameter]
+    public IEnumerable<string> ColumnHeaders { get; set; }
+}

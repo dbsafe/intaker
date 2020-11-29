@@ -1,0 +1,23 @@
+﻿@page "/loaded-file"
+
+<div class="mat-layout-grid">
+    <div class="mat-layout-grid-inner">
+        <div class="mat-layout-grid-cell-span-12">
+            <h6 class="mat-h6">Loaded File</h6>
+        </div>
+
+        <div class="mat-layout-grid-cell-span-12 mat-elevation-z5 index-row-item mdc-theme--surface">
+            @if (LoadedFilePageState.ParsedDataAndSpec == null)
+            {
+                <NoDecodedFileComponent />
+            }
+            else
+            {
+                <FileSummaryComponent ParsedDataAndSpec="@LoadedFilePageState.ParsedDataAndSpec"></FileSummaryComponent>
+                <FileRowSummaryComponent ColumnHeaders="_headerColumns" Tittle="Header" Row="@_headerRow"></FileRowSummaryComponent>
+                <FileRowSummaryComponent ColumnHeaders="_trailerColumns" Tittle="Trailer" Row="@_trailerRow"></FileRowSummaryComponent>
+                <FileDataComponent ColumnHeaders="_dataColumns" Rows="@_dataRows"></FileDataComponent>
+            }
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+﻿@using DataProcessor.Models;
+
+@foreach (var field in @Row.Fields)
+{
+    <td>@field.Value</td>
+}
+
+@code {
+    [Parameter]
+    public Row Row { get; set; }
+}
