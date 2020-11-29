@@ -172,7 +172,11 @@ namespace FileValidator.Blazor.Pages
             if (!string.IsNullOrEmpty(HomePageState.InputDataContent))
             {
                 _editorManager.SetValue(HomePageState.InputDataContent);
-                _editorManager.MoveCursorToPosition(HomePageState.CursorPosition);
+                if (HomePageState.CursorPosition != null)
+                {
+                    _editorManager.MoveCursorToPosition(HomePageState.CursorPosition);
+                }
+                
                 _editorManager.Focus();
             }
         }
