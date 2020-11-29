@@ -15,6 +15,12 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("description")]
         public string Description { get; set; }
 
+        [XmlAttribute("delimiter")]
+        public string Delimiter { get; set; }
+
+        [XmlAttribute("hasFieldsEnclosedInQuotes")]
+        public bool HasFieldsEnclosedInQuotes { get; set; }
+
         [XmlElement("header")]
         public RowDefinition Header { get; set; }
 

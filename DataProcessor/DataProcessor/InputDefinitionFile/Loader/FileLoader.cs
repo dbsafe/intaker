@@ -12,7 +12,12 @@ namespace DataProcessor.InputDefinitionFile
             }
 
             var inputXml = File.ReadAllText(path);
-            return HelperXmlSerializer.Deserialize<T>(inputXml);
+            return LoadFromXml<T>(inputXml);
+        }
+
+        public static T LoadFromXml<T>(string xml)
+        {
+            return HelperXmlSerializer.Deserialize<T>(xml);
         }
     }
 }
