@@ -140,7 +140,7 @@ namespace FileValidator.Blazor.Pages
                         break;
                     default:
                         Toaster.Add("Validation failed", MatToastType.Danger);
-                        return;
+                        break;
                 }
 
                 Closing();
