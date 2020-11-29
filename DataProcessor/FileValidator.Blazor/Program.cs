@@ -48,7 +48,7 @@ namespace FileValidator.Blazor
         private static AppState CreateAppState()
         {
             var appState = new AppState();
-            appState.HomePage.InputDataContent = @"HEADER,09212013,ABCDCompLndn,0011
+            appState.HomePage.InputDataContent = @"HEADER,09212013,ABCDCompLndn,0012
 BALANCE,1001,111-22-1001,Araceli,Larson,10212000,1000.00,AA
 BALANCE,1001,111-22-1002,Kate,Hoover,11252000,2000.00,AA
 BALANCE,1001,111-22-1003,Donald,Stephens,10261930,3000.00,AA
