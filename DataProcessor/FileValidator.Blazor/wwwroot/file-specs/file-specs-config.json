@@ -1,0 +1,12 @@
+[
+  {
+    "name": "Balance v1.0",
+    "description": "Balance file from 2000",
+    "path": "Balance10.xml"
+  },
+  {
+    "name": "Balance v1.1",
+    "description": "Balance file from 2001",
+    "path": "Balance11.xml"
+  }
+]

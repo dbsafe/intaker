@@ -1,0 +1,108 @@
+﻿body {
+    margin: 0px;
+}
+
+h6 {
+    margin: 0px;
+}
+
+.break-word {
+    word-wrap: break-word;
+}
+
+.raw-data {
+    font-family: Consolas;
+    font-size: small;
+}
+
+.file-rows-table {
+    font-size: small;
+}
+
+.margin-0 {
+    margin: 0px;
+}
+
+.space-10 {
+    margin-top: 10px;
+}
+
+.margin-10 {
+    margin: 10px;
+}
+
+.space-20 {
+    margin-top: 20px;
+}
+
+.page-tool-bar {
+    padding: 6px;
+    padding-left: 10px;
+}
+
+.page-tool-bar-with-icons {
+    padding: 14px;
+}
+
+.editor {
+    height: 500px;
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: lightgray
+}
+
+tr.mdc-table-header-row {
+    height: 40px;
+}
+
+tr.mdc-table-row {
+    height: 40px;
+}
+
+tr[class~="mdc-table-header-row"] > th {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: small;
+}
+
+tr[class~="mdc-table-row"] > td {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    font-size: small;
+}
+
+.mat-file-upload {
+    padding: 1rem;
+}
+
+.blazor-fiddle {
+    overflow-wrap: break-word;
+}
+
+.index-row-item {
+    padding: 24px;
+}
+
+html, body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }

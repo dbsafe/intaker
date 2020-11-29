@@ -1,0 +1,87 @@
+﻿@inherits LayoutComponentBase
+
+<MatAppBar Style="z-index: 100;" Class="mat">
+    <MatAppBarRow>
+        <MatAppBarSection>
+            <MatIconButton Icon="menu" OnClick="@((e) => MenuButtonClicked())"></MatIconButton>
+            <MatHidden BreakPoint="@MatBreakpoint.XS" Direction="@MatHiddenDirection.Down">
+                <MatAppBarTitle>File Validation</MatAppBarTitle>
+            </MatHidden>
+            <MatHidden BreakPoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up">
+                <MatAppBarTitle>File Validation</MatAppBarTitle>
+            </MatHidden>
+        </MatAppBarSection>
+    </MatAppBarRow>
+</MatAppBar>
+
+<MatDrawerContainer Style="width: 100vw; height: 100vh;" Class="mat">
+    <MatHidden Breakpoint="@MatBreakpoint.SM" Direction="@MatHiddenDirection.Up" HiddenChanged="@ModelDrawerHiddenChanged">
+        <ChildContent>
+            <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Modal">
+                <MatAppBarAdjust></MatAppBarAdjust>
+                <DrawerContent></DrawerContent>
+            </MatDrawer>
+        </ChildContent>
+        <ElseContent>
+            <MatDrawer @bind-Opened="@_navMenuOpened" Mode="@MatDrawerMode.Dismissible">
+                <MatAppBarAdjust></MatAppBarAdjust>
+                <DrawerContent></DrawerContent>
+            </MatDrawer>
+        </ElseContent>
+    </MatHidden>
+
+    <MatDrawerContent Class="mdc-theme--background">
+        <MatAppBarAdjust></MatAppBarAdjust>
+        <div class="break-word body-wrapper">
+            @Body
+        </div>
+    </MatDrawerContent>
+
+</MatDrawerContainer>
+<MatToastContainer />
+
+@code {
+    private bool _matHidden = false;
+    private bool _navMenuOpenedWhenMatHiden = true;
+    private bool _navMenuOpenedWhenNotMatHiden = false;
+
+    private bool _navMenuOpened = true;
+
+    private void MenuButtonClicked()
+    {
+        ToggleNavMenuOpened();
+        SetNavMenuOpened();
+        StateHasChanged();
+    }
+
+    protected void ModelDrawerHiddenChanged(bool hidden)
+    {
+        _matHidden = hidden;
+        SetNavMenuOpened();
+    }
+
+    private void SetNavMenuOpened()
+    {
+        if (_matHidden)
+        {
+            _navMenuOpened = _navMenuOpenedWhenMatHiden;
+            _navMenuOpenedWhenNotMatHiden = false;
+        }
+        else
+        {
+            _navMenuOpened = _navMenuOpenedWhenNotMatHiden;
+        }
+    }
+
+    private void ToggleNavMenuOpened()
+    {
+        if (_matHidden)
+        {
+            _navMenuOpenedWhenMatHiden = !_navMenuOpenedWhenMatHiden;
+        }
+        else
+        {
+            _navMenuOpenedWhenNotMatHiden = !_navMenuOpenedWhenNotMatHiden;
+        }
+    }
+}

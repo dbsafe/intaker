@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<inputDataDefinition name="Balance" version="1.1" description="Demo file" delimiter="," hasFieldsEnclosedInQuotes="false" frameworkVersion="1.0" createRowJsonEnabled="true">
+  <header>
+    <fields>
+      <field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" failValidationResult="Error" />
+      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+      <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" failValidationResult="Error" />
+      <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
+        <rules>
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" args="{'ruleValue':'1'}" failValidationResult="Warning" />
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" args="{'ruleValue':'100'}" failValidationResult="Error" />
+        </rules>
+      </field>
+    </fields>
+  </header>
+  <data>
+    <fields>
+      <field name="RecordType" description="Record Type (Data Row)" decoder="TextDecoder" pattern="BALANCE" failValidationResult="Error" />
+      <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" failValidationResult="Error" />
+      <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" failValidationResult="Error" />
+      <field name="FirstName" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
+      <field name="LastName" description="LastName" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
+      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Warning" />
+      <field name="Balance" description="Amount" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error">
+        <aggregators>
+          <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
+          <aggregator name="DataRowCountAggregator" description="Data row counter" aggregator="RowCountAggregator" />
+        </aggregators>
+      </field>
+      <field name="CustomField" description="Custom Field without validation" />
+    </fields>
+  </data>
+  <trailer>
+    <fields>
+      <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" failValidationResult="Error" />
+      <field name="BalanceTotal" description="Balance Total" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Warning">
+        <rules>
+          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning"/>
+        </rules>
+      </field>
+      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error">
+        <rules>
+          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" args="{'ruleValue':'DataRowCountAggregator'}" failValidationResult="Error" />
+        </rules>
+      </field>
+    </fields>
+  </trailer>
+</inputDataDefinition>

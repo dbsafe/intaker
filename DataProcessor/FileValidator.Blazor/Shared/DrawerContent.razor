@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Components
+@inject NavigationManager Url
+@inject ApplicationsEvents ApplicationsEvents
+
+<style>
+    .mdc-drawer {
+        box-shadow: 2px 0px 2px 0px rgba(199, 199, 199, 0.29);
+    }
+</style>
+
+<MatNavMenu Multi="true">
+    <MatNavItem OnClick="HomeClick" NavLinkMatch="NavLinkMatch.All"><MatIcon Icon="home"></MatIcon>&nbsp; Home</MatNavItem>
+    <MatNavItem OnClick="LoadFileClick" NavLinkMatch="NavLinkMatch.All"><MatIcon Icon="table_chart"></MatIcon>&nbsp; Loaded File</MatNavItem>
+    <MatNavItem OnClick="LoadFileAsJsonClick" NavLinkMatch="NavLinkMatch.All"><MatIcon Icon="search"></MatIcon>&nbsp; Loaded File as JSON</MatNavItem>
+    <MatNavItem OnClick="FileSpecificationsClick" NavLinkMatch="NavLinkMatch.All"><MatIcon Icon="settings"></MatIcon>&nbsp; File Specifications</MatNavItem>
+</MatNavMenu>
+
+@code {
+    private void HomeClick()
+    {
+        NavigateTo("");
+    }
+
+    private void LoadFileClick()
+    {
+        NavigateTo("loaded-file");
+    }
+
+    private void LoadFileAsJsonClick()
+    {
+        NavigateTo("loaded-file-json");
+    }
+
+    private void FileSpecificationsClick()
+    {
+        NavigateTo("file-specs");
+    }
+
+    private void NavigateTo(string url)
+    {
+        ApplicationsEvents.PublichItemClicked(url);
+        Url.NavigateTo(url);
+    }
+}
