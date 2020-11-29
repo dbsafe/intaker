@@ -123,13 +123,13 @@ namespace DataProcessor
 
                 if (IsHeaderRow(e.Row))
                 {
-                    e.Context.Errors.Add("Header row is not valid");
+                    e.Context.Errors.Add("Header row is invalid");
                     return;
                 }
 
                 if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
                 {
-                    e.Context.Errors.Add("Trailer row is not valid");
+                    e.Context.Errors.Add("Trailer row is invalid");
                     return;
                 }
 

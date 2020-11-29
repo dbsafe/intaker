@@ -39,8 +39,8 @@ namespace DataProcessor.Tests
             Assert.AreEqual(2, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidRows.Count);
 
-            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
-            Assert.AreEqual("Trailer row is not valid", actual.Errors[1]);
+            Assert.AreEqual("Header row is invalid", actual.Errors[0]);
+            Assert.AreEqual("Trailer row is invalid", actual.Errors[1]);
 
             Assert.IsNotNull(actual.Header);
             Assert.AreEqual(ValidationResultType.Error, actual.Header.ValidationResult);
@@ -74,7 +74,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(0, actual.DataRows.Count);
             Assert.AreEqual(1, actual.InvalidRows.Count);
 
-            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
+            Assert.AreEqual("Header row is invalid", actual.Errors[0]);
 
             Assert.IsNotNull(actual.Header);
             Assert.AreEqual(ValidationResultType.Critical, actual.Header.ValidationResult);

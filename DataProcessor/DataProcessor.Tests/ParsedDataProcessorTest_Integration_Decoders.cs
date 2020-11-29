@@ -176,7 +176,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(1, actual.InvalidRows.Count);
 
-            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
+            Assert.AreEqual("Header row is invalid", actual.Errors[0]);
 
             Assert.AreSame(actual.Header, actual.InvalidRows[0]);
             var invalidRow = actual.Header;
@@ -284,7 +284,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(1, actual.InvalidRows.Count);
 
-            Assert.AreEqual("Trailer row is not valid", actual.Errors[0]);
+            Assert.AreEqual("Trailer row is invalid", actual.Errors[0]);
 
             Assert.AreSame(actual.Trailer, actual.InvalidRows[0]);
             var invalidRow = actual.Trailer;
@@ -337,7 +337,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(3, actual.InvalidRows.Count);
 
-            Assert.AreEqual("Header row is not valid", actual.Errors[0]);
+            Assert.AreEqual("Header row is invalid", actual.Errors[0]);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[1]);
 
             Assert.AreSame(actual.Header, actual.InvalidRows[0]);
