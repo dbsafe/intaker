@@ -15,6 +15,10 @@ h6 {
     font-size: small;
 }
 
+.nowrap td {
+    white-space: nowrap
+}
+
 .file-rows-table {
     font-size: small;
 }
