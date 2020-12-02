@@ -1,4 +1,5 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile.Models
 {
@@ -44,8 +45,14 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("createRowJsonEnabled")]
         public bool CreateRowJsonEnabled { get; set; }
 
-        protected virtual void OnFrameworkVersionSet(string frameworkVersion)
+        private void OnFrameworkVersionSet(string frameworkVersion)
         {
+            if (frameworkVersion != ExpectedVersion)
+            {
+                throw new InvalidOperationException($"Invalid Framework Version '{frameworkVersion}'. Expected {ExpectedVersion}");
+            }
         }
+
+        protected abstract string ExpectedVersion { get; }
     }
 }
