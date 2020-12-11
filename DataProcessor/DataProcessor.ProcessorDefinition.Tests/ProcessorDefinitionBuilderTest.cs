@@ -30,7 +30,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         }
 
         [TestMethod]
-        public void CreateProcessorDefinition_Given_an_input_definition_file_Decoders_should_be_created()
+        public void CreateProcessorDefinition10_Given_an_input_definition_file_Decoders_should_be_created()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
 
@@ -72,7 +72,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         }
 
         [TestMethod]
-        public void CreateProcessorDefinition_Given_an_input_definition_file_Rules_should_be_created()
+        public void CreateProcessorDefinition10_Given_an_input_definition_file_Rules_should_be_created()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
 
@@ -105,7 +105,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         }
 
         [TestMethod]
-        public void CreateProcessorDefinition_Given_an_input_definition_file_Aggregators_should_be_created()
+        public void CreateProcessorDefinition10_Given_an_input_definition_file_Aggregators_should_be_created()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
 
