@@ -3,6 +3,12 @@ using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile.Models
 {
+    public class InputDefinitionFileVersion
+    {
+        [XmlAttribute("version")]
+        public string Version { get; set; }
+    }
+
     public abstract class InputDefinitionFile
     {
         private string frameworkVersion;
@@ -24,9 +30,6 @@ namespace DataProcessor.InputDefinitionFile.Models
 
         [XmlElement("header")]
         public RowDefinition Header { get; set; }
-
-        [XmlElement("data")]
-        public RowDefinition Data { get; set; }
 
         [XmlElement("trailer")]
         public RowDefinition Trailer { get; set; }

@@ -2,28 +2,35 @@
 using DataProcessor.DataSource.InStream;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.InputDefinitionFile.Models;
+using System;
 using System.IO;
 
 namespace FileValidator.Domain.Services
 {
     public interface IFileDecoder
     {
-        ParsedDataAndSpec Load(string content, string fileSpecXml);
+        ParsedDataAndSpec LoadVersion10(string content, string fileSpecXml);
     }
 
     public class ParsedDataAndSpec
     {
         public ParsedData ParsedData { get; set; }
-        public InputDefinitionFile InputDefinitionFile { get; set; }
+        public InputDefinitionFile_10 InputDefinitionFile { get; set; }
     }
 
     public class FileDecoder : IFileDecoder
     {
-        public ParsedDataAndSpec Load(string content, string fileSpecXml)
+        public ParsedDataAndSpec LoadVersion10(string content, string fileSpecXml)
         {
+            var inputDefinitionFileVersion = HelperXmlSerializer.Deserialize<InputDefinitionFileVersion>(fileSpecXml);
+            if (inputDefinitionFileVersion.Version != "10")
+            {
+                throw new Exception($"Invalid Version '{inputDefinitionFileVersion.Version}'");
+            }
+
             var inputDefinitionFile = FileLoader.LoadFromXml<InputDefinitionFile_10>(fileSpecXml);
             var fileProcessorDefinition = DataProcessor.ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
-
+            
             var result = new ParsedDataAndSpec { InputDefinitionFile = inputDefinitionFile };
 
             var config = new StreamDataSourceConfig

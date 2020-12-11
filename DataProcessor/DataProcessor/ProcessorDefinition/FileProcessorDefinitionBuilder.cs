@@ -1,8 +1,10 @@
 ﻿using DataProcessor.Contracts;
-using DataProcessor.Models;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.InputDefinitionFile.Models;
+using DataProcessor.Models;
 using DataProcessor.ObjectStore;
+using DataProcessor.ProcessorDefinition.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,20 +12,43 @@ namespace DataProcessor.ProcessorDefinition
 {
     public static class FileProcessorDefinitionBuilder
     {
-        public static Models.FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
+        public static FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
         {
             var aggregateManager = new AggregateManager();
-            var processorDefinition = new Models.FileProcessorDefinition
+            var processorDefinition = CommonCreateFileProcessorDefinition(inputDefinitionFile_10, aggregateManager);
+            processorDefinition.DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager);
+
+            InitializeRules(processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+            InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+            
+            return processorDefinition;
+        }
+
+        public static FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_20 inputDefinitionFile_20)
+        {
+            var aggregateManager = new AggregateManager();
+            var processorDefinition = CommonCreateFileProcessorDefinition(inputDefinitionFile_20, aggregateManager);
+            processorDefinition.DataRowProcessorDefinitions = LoadRowProcessorDefinitions(inputDefinitionFile_20.Datas, aggregateManager);
+
+            var fieldProcessorDefinitionsInDataRows = processorDefinition.DataRowProcessorDefinitions.SelectMany(a => a.Value.FieldProcessorDefinitions);
+            InitializeRules(fieldProcessorDefinitionsInDataRows.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+            InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+
+            return processorDefinition;
+        }
+
+        private static FileProcessorDefinition CommonCreateFileProcessorDefinition(
+            InputDefinitionFile.Models.InputDefinitionFile inputDefinitionFile, 
+            AggregateManager aggregateManager)
+        {
+            var processorDefinition = new FileProcessorDefinition
             {
-                CreateRowJsonEnabled = inputDefinitionFile_10.CreateRowJsonEnabled,
-                HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Header, aggregateManager),
-                DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager),
-                TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Trailer, aggregateManager)
+                CreateRowJsonEnabled = inputDefinitionFile.CreateRowJsonEnabled,
+                HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Header, aggregateManager),
+                TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Trailer, aggregateManager)
             };
 
             InitializeRules(processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
-            InitializeRules(processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
-            InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
 
             return processorDefinition;
         }
@@ -37,9 +62,27 @@ namespace DataProcessor.ProcessorDefinition
             }
         }
 
-        private static Models.RowProcessorDefinition LoadRowProcessorDefinition(RowDefinition rowDefinition, AggregateManager aggregateManager)
+        private static Dictionary<string, RowProcessorDefinition> LoadRowProcessorDefinitions(IEnumerable<RowDefinition> rowDefinitions, AggregateManager aggregateManager)
         {
-            var fieldProcessorDefinitions = new List<Models.FieldProcessorDefinition>();
+            var result = new Dictionary<string, RowProcessorDefinition>();
+
+            foreach(var rowDefinition in rowDefinitions)
+            {
+                var fieldProcessorDefinitions = LoadRowProcessorDefinition(rowDefinition, aggregateManager);
+                if (result.ContainsKey(rowDefinition.DataType))
+                {
+                    throw new InvalidOperationException($"DataType '{rowDefinition.DataType}' is duplicated");
+                }
+
+                result[rowDefinition.DataType] = fieldProcessorDefinitions;
+            }
+
+            return result;
+        }
+
+        private static RowProcessorDefinition LoadRowProcessorDefinition(RowDefinition rowDefinition, AggregateManager aggregateManager)
+        {
+            var fieldProcessorDefinitions = new List<FieldProcessorDefinition>();
 
             if (rowDefinition != null)
             {
@@ -56,9 +99,9 @@ namespace DataProcessor.ProcessorDefinition
             };
         }
 
-        private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition, AggregateManager aggregateManager)
+        private static FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition, AggregateManager aggregateManager)
         {
-            return new Models.FieldProcessorDefinition
+            return new FieldProcessorDefinition
             {
                 FieldName = fieldDefinition.Name,
                 Description = fieldDefinition.Description,
