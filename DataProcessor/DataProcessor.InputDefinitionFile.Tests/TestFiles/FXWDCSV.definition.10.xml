@@ -2,11 +2,11 @@
 <inputDataDefinition name="FXWDCSV" version="1.0" description="Demo defining part of FXWDCSV" hasFieldsEnclosedInQuotes="false" frameworkVersion="1.0" createRowJsonEnabled="false">
   <header>
     <fields>
-      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" failValidationResult="Error" />
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="HEADER" failValidationResult="Error" />
-      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
-      <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" failValidationResult="Warning" />
-      <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
+      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" isKey="false" failValidationResult="Error" />
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="HEADER" isKey="false" failValidationResult="Error" />
+      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" isKey="false" failValidationResult="Error" />
+      <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" isKey="false" failValidationResult="Warning" />
+      <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" isKey="false" failValidationResult="Error">
         <rules>
           <rule name="SequenceNumber-MinNumberFieldRule" description="Sequence number should equal or greater than 1" rule="MinNumberFieldRule" args="{'ruleValue':'1'}" failValidationResult="Warning" />
           <rule name="SequenceNumber-MaxNumberFieldRule" description="Sequence number should be equal or less than 100" rule="MaxNumberFieldRule" args="{'ruleValue':'100'}" failValidationResult="Error" />
@@ -16,27 +16,27 @@
   </header>
   <trailer>
     <fields>
-      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" failValidationResult="Error" />
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="TRAILER" failValidationResult="Error" />
-      <field name="HashTotal" description="Hash Total" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" failValidationResult="Error" />
-      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error" />
+      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" isKey="false" failValidationResult="Error" />
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="TRAILER" isKey="false" failValidationResult="Error" />
+      <field name="HashTotal" description="Hash Total" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" isKey="false" failValidationResult="Error" />
+      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" isKey="false" failValidationResult="Error" />
     </fields>
   </trailer>
   <data>
     <fields>
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="PAYMENT" failValidationResult="Error" />
-      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(FXW|MBW)" failValidationResult="Error" />
-      <field name="SendersReferenceNumber" description="Senders Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" failValidationResult="Error" />
-      <field name="RelatedReferenceNumber" description="Related Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" failValidationResult="Error" />
-      <field name="ValueDate" description="Value Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
-      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(DEBIT|CREDIT)" failValidationResult="Error" />
-      <field name="Amount" description="Amount" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" failValidationResult="Error">
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="PAYMENT" isKey="false" failValidationResult="Error" />
+      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(FXW|MBW)" isKey="false" failValidationResult="Error" />
+      <field name="SendersReferenceNumber" description="Senders Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" isKey="false" failValidationResult="Error" />
+      <field name="RelatedReferenceNumber" description="Related Reference Number" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" isKey="false" failValidationResult="Error" />
+      <field name="ValueDate" description="Value Date" decoder="DateDecoder" pattern="MMddyyyy" isKey="false" failValidationResult="Error" />
+      <field name="PaymentType" description="Payment Type" decoder="TextDecoder" pattern="(DEBIT|CREDIT)" isKey="false" failValidationResult="Error" />
+      <field name="Amount" description="Amount" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" isKey="false" failValidationResult="Error">
         <aggregators>
           <aggregator name="AmountAggregator" description="Amount aggregator" aggregator="SumAggregator" />
         </aggregators>
       </field>
-      <field name="CreditCurrency" description="Credit Currency" decoder="TextDecoder" pattern="[A-Z]{3}" failValidationResult="Error" />
-      <field name="OriginatorName" description="Originator Name" decoder="TextDecoder" pattern="[a-zA-Z\s-']{2,35}" failValidationResult="Error">
+      <field name="CreditCurrency" description="Credit Currency" decoder="TextDecoder" pattern="[A-Z]{3}" isKey="false" failValidationResult="Error" />
+      <field name="OriginatorName" description="Originator Name" decoder="TextDecoder" pattern="[a-zA-Z\s-']{2,35}" isKey="false" failValidationResult="Error">
         <aggregators>
           <aggregator name="DataRowCountAggregator" description="Data row counter" aggregator="RowCountAggregator" />
         </aggregators>

@@ -2,34 +2,34 @@
 <inputDataDefinition name="TestFile" version="1.0" description="Demo definition file with two data types" hasFieldsEnclosedInQuotes="false" frameworkVersion="2.0" createRowJsonEnabled="false">
   <header>
     <fields>
-      <field name="RecordType" description="Record Type Header" decoder="TextDecoder" pattern="HD" failValidationResult="Error" />
-      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+      <field name="RecordType" description="Record Type Header" decoder="TextDecoder" pattern="HD" isKey="false" failValidationResult="Error" />
+      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" isKey="false" failValidationResult="Error" />
     </fields>
   </header>
   <trailer>
     <fields>
-      <field name="RecordType" description="Record Type Tariler" decoder="TextDecoder" pattern="TR" failValidationResult="Error" />
-      <field name="DepositCount" description="Record Count for Deposit" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error" />
-      <field name="ChangeCount" description="Record Count for Change" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error" />
-      <field name="DepositTotal" description="Total deposit amounts" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" failValidationResult="Error" />
+      <field name="RecordType" description="Record Type Tariler" decoder="TextDecoder" pattern="TR" isKey="false" failValidationResult="Error" />
+      <field name="DepositCount" description="Record Count for Deposit" decoder="IntegerDecoder" pattern="\d{1,5}" isKey="false" failValidationResult="Error" />
+      <field name="ChangeCount" description="Record Count for Change" decoder="IntegerDecoder" pattern="\d{1,5}" isKey="false" failValidationResult="Error" />
+      <field name="DepositTotal" description="Total deposit amounts" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" isKey="false" failValidationResult="Error" />
     </fields>
   </trailer>
   <datas>
     <data dataType="DP">
       <fields>
-        <field name="RecordType" description="Record Type Deposit" decoder="TextDecoder" pattern="DP" failValidationResult="Error" />
-        <field name="ConsumerId" description="Consumer Id" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" failValidationResult="Error" />
-        <field name="Date" description="Date of deposit" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
-        <field name="Amount" description="Amount" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" failValidationResult="Error" />
+        <field name="RecordType" description="Record Type Deposit" decoder="TextDecoder" pattern="DP" isKey="false" failValidationResult="Error" />
+        <field name="ConsumerId" description="Consumer Id" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" isKey="false" failValidationResult="Error" />
+        <field name="Date" description="Date of deposit" decoder="DateDecoder" pattern="MMddyyyy" isKey="false" failValidationResult="Error" />
+        <field name="Amount" description="Amount" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" isKey="false" failValidationResult="Error" />
       </fields>
     </data>
     <data dataType="CH">
       <fields>
-        <field name="RecordType" description="Record Type Change" decoder="TextDecoder" pattern="CH" failValidationResult="Error" />
-        <field name="ConsumerId" description="Consumer Id" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" failValidationResult="Error" />
-        <field name="Date" description="Date of change" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
-        <field name="AddressLine1" description="Street address" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
-        <field name="AddressLine2" description="Apartment or suite" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
+        <field name="RecordType" description="Record Type Change" decoder="TextDecoder" pattern="CH" isKey="false" failValidationResult="Error" />
+        <field name="ConsumerId" description="Consumer Id" decoder="TextDecoder" pattern="[a-zA-Z0-9]{1,16}" isKey="false" failValidationResult="Error" />
+        <field name="Date" description="Date of change" decoder="DateDecoder" pattern="MMddyyyy" isKey="false" failValidationResult="Error" />
+        <field name="AddressLine1" description="Street address" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" isKey="false" failValidationResult="Error" />
+        <field name="AddressLine2" description="Apartment or suite" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" isKey="false" failValidationResult="Error" />
       </fields>
     </data>
   </datas>
