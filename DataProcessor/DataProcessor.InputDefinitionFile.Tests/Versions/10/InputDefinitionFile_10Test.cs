@@ -9,6 +9,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
     [TestClass]
     public class InputDefinitionFile_10Test
     {
+        private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public TestContext TestContext { get; set; }
 
         [TestMethod]
@@ -80,9 +81,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
         [TestMethod]
         public void Deserialize()
         {
-            var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV.definition.xml");
-            var inputXml = File.ReadAllText(path);
+            var inputXml = LoadInputXml10();
 
             var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_10>(inputXml);
             var outputXml = HelperXmlSerializer.Serialize(actual);
@@ -94,11 +93,8 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
         [TestMethod]
         public void Deserialize_Given_an_input_file_that_uses_default_values_Should_deserialise()
         {
-            var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            var path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV.definition.xml");
-            var inputXml = File.ReadAllText(path);
-
-            path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV-default-values.definition.xml");
+            var inputXml = LoadInputXml10();
+            var path = Path.Combine(_testDirectory, "TestFiles", "FXWDCSV-default-values.definition.xml");
             var inputXmlWithDefaultValues = File.ReadAllText(path);
 
             var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_10>(inputXmlWithDefaultValues);
@@ -108,7 +104,13 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             Assert.AreEqual(inputXml, outputXml);
         }
 
-        public RuleDefinition CreateRuleDefinition(string name, string description, string rule, string args, ValidationResultType failValidationResult)
+        private string LoadInputXml10()
+        {
+            var path = Path.Combine(_testDirectory, "TestFiles", "FXWDCSV.definition.10.xml");
+            return File.ReadAllText(path);
+        }
+
+        private RuleDefinition CreateRuleDefinition(string name, string description, string rule, string args, ValidationResultType failValidationResult)
         {
             return new RuleDefinition
             {
