@@ -17,9 +17,6 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("pattern")]
         public string Pattern { get; set; }
 
-        [XmlAttribute("isKey")]
-        public bool IsKey { get; set; }
-
         [XmlAttribute("failValidationResult")]
         public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Error;
 

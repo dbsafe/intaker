@@ -107,8 +107,7 @@ namespace DataProcessor.ProcessorDefinition
                 Description = fieldDefinition.Description,
                 Decoder = CreateDecoder(fieldDefinition),
                 Rules = CreateRules(fieldDefinition),
-                Aggregators = CreateAggregators(fieldDefinition, aggregateManager),
-                IsKey = fieldDefinition.IsKey
+                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)
             };
         }
 
