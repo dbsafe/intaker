@@ -20,7 +20,7 @@ namespace DataProcessor.ProcessorDefinition
 
             InitializeRules(processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
             InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
-            
+
             return processorDefinition;
         }
 
@@ -38,7 +38,7 @@ namespace DataProcessor.ProcessorDefinition
         }
 
         private static FileProcessorDefinition CommonCreateFileProcessorDefinition(
-            InputDefinitionFile.Models.InputDefinitionFile inputDefinitionFile, 
+            InputDefinitionFile.Models.InputDefinitionFile inputDefinitionFile,
             AggregateManager aggregateManager)
         {
             var processorDefinition = new FileProcessorDefinition
@@ -66,7 +66,7 @@ namespace DataProcessor.ProcessorDefinition
         {
             var result = new Dictionary<string, RowProcessorDefinition>();
 
-            foreach(var rowDefinition in rowDefinitions)
+            foreach (var rowDefinition in rowDefinitions)
             {
                 var fieldProcessorDefinitions = LoadRowProcessorDefinition(rowDefinition, aggregateManager);
                 if (result.ContainsKey(rowDefinition.DataType))
@@ -107,7 +107,8 @@ namespace DataProcessor.ProcessorDefinition
                 Description = fieldDefinition.Description,
                 Decoder = CreateDecoder(fieldDefinition),
                 Rules = CreateRules(fieldDefinition),
-                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)                
+                Aggregators = CreateAggregators(fieldDefinition, aggregateManager),
+                IsKey = fieldDefinition.IsKey
             };
         }
 

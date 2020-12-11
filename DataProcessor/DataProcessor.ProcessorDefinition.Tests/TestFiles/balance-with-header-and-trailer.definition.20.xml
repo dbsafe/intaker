@@ -19,7 +19,7 @@
     <data dataType="BL">
       <fields>
         <field name="RecordType" description="Record Type (Data Row)" decoder="TextDecoder" pattern="BL" failValidationResult="Error" />
-        <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" failValidationResult="Error" />
+        <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" isKey="true" failValidationResult="Error" />
         <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" failValidationResult="Error" />
         <field name="FirstName" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
         <field name="LastName" description="LastName" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
@@ -35,7 +35,7 @@
     <data dataType="CH">
       <fields>
         <field name="RecordType" description="Record Type Change" decoder="TextDecoder" pattern="CH" failValidationResult="Error" />
-        <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" failValidationResult="Error" />
+        <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" isKey="true" failValidationResult="Error" />
         <field name="Date" description="Date of change" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
         <field name="AddressLine1" description="Street address" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
         <field name="AddressLine2" description="Apartment or suite" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />

@@ -157,7 +157,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
                 var dataBL = actual.DataRowProcessorDefinitions["BL"];
                 Assert.AreEqual(7, dataBL.FieldProcessorDefinitions.Length);
                 AssertFieldProcessorDefinition("RecordType", "BL", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[0]);
-                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[1]);
+                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, true, dataBL.FieldProcessorDefinitions[1]);
                 AssertFieldProcessorDefinition("SSN", @"\d{3}-\d{2}-\d{4}", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[2]);
                 AssertFieldProcessorDefinition("FirstName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[3]);
                 AssertFieldProcessorDefinition("LastName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[4]);
@@ -170,7 +170,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
                 var dataCH = actual.DataRowProcessorDefinitions["CH"];
                 Assert.AreEqual(5, dataCH.FieldProcessorDefinitions.Length);
                 AssertFieldProcessorDefinition("RecordType", "CH", typeof(TextDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[0]);
-                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[1]);
+                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, true, dataCH.FieldProcessorDefinitions[1]);
                 AssertFieldProcessorDefinition("Date", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[2]);
                 AssertFieldProcessorDefinition("AddressLine1", @"\s*(?:\S\s*){3,100}", typeof(TextDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[3]);
                 AssertFieldProcessorDefinition("AddressLine2", @"\s*(?:\S\s*){3,100}", typeof(TextDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[4]);
@@ -222,15 +222,15 @@ namespace DataProcessor.ProcessorDefinition.Tests
             var inputDefinitionFile = BuildInputDefinitionFile20();
 
             var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
-            
+
             Assert.IsNotNull(actual.DataRowProcessorDefinitions);
             Assert.IsTrue(actual.DataRowProcessorDefinitions.ContainsKey("BL"));
-            
+
             var dataBL = actual.DataRowProcessorDefinitions["BL"];
             Assert.IsNotNull(dataBL.FieldProcessorDefinitions);
             Assert.AreEqual(7, dataBL.FieldProcessorDefinitions.Length);
             Assert.AreEqual("Balance", dataBL.FieldProcessorDefinitions[6].FieldName);
-            
+
             var aggregators = actual.DataRowProcessorDefinitions["BL"].FieldProcessorDefinitions[6].Aggregators;
             Assert.IsNotNull(aggregators);
             Assert.AreEqual(2, aggregators.Length);
@@ -253,11 +253,29 @@ namespace DataProcessor.ProcessorDefinition.Tests
             ValidationResultType expectedFailValidationResult,
             FieldProcessorDefinition fieldProcessorDefinition)
         {
+            AssertFieldProcessorDefinition(
+                expectedFieldName,
+                expectedPattern,
+                expectedType,
+                expectedFailValidationResult,
+                false,
+                fieldProcessorDefinition);
+        }
+
+        private void AssertFieldProcessorDefinition(
+                    string expectedFieldName,
+                    string expectedPattern,
+                    Type expectedType,
+                    ValidationResultType expectedFailValidationResult,
+                    bool expectedIsKey,
+                    FieldProcessorDefinition fieldProcessorDefinition)
+        {
             Assert.AreEqual(expectedFieldName, fieldProcessorDefinition.FieldName);
             Assert.IsNotNull(fieldProcessorDefinition.Decoder);
             Assert.AreEqual(expectedPattern, fieldProcessorDefinition.Decoder.Pattern);
             Assert.AreEqual(expectedType, fieldProcessorDefinition.Decoder.GetType());
             Assert.AreEqual(expectedFailValidationResult, fieldProcessorDefinition.Decoder.FailValidationResult);
+            Assert.AreEqual(expectedIsKey, fieldProcessorDefinition.IsKey);
         }
 
         private void PrintLoadedAssemblies()
