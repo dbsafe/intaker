@@ -29,12 +29,16 @@ namespace DataProcessor.ProcessorDefinition.Tests
             PrintLoadedAssemblies();
         }
 
+        private InputDefinitionFile_10 BuildInputDefinitionFile()
+        {
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
+            return FileLoader.Load<InputDefinitionFile_10>(path);
+        }
+
         [TestMethod]
         public void CreateProcessorDefinition10_Given_an_input_definition_file_Decoders_should_be_created()
         {
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
-
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var inputDefinitionFile = BuildInputDefinitionFile();
 
             var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
@@ -74,9 +78,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         [TestMethod]
         public void CreateProcessorDefinition10_Given_an_input_definition_file_Rules_should_be_created()
         {
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
-
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var inputDefinitionFile = BuildInputDefinitionFile();
 
             var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
@@ -107,9 +109,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         [TestMethod]
         public void CreateProcessorDefinition10_Given_an_input_definition_file_Aggregators_should_be_created()
         {
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
-
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var inputDefinitionFile = BuildInputDefinitionFile();
 
             var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 

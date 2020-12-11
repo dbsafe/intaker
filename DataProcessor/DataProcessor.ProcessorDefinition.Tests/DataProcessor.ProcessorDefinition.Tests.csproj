@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <None Remove="TestFiles\balance-with-header-and-trailer.csv" />
-    <None Remove="TestFiles\balance-with-header-and-trailer.definition.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.definition.10.xml" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,7 +22,7 @@
     <Content Include="TestFiles\balance-with-header-and-trailer.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-header-and-trailer.definition.xml">
+    <Content Include="TestFiles\balance-with-header-and-trailer.definition.10.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -40,7 +40,7 @@
 
   <ItemGroup>
     <Resource Include="TestFiles\balance-with-header-and-trailer.csv" />
-    <Resource Include="TestFiles\balance-with-header-and-trailer.definition.xml" />
+    <Resource Include="TestFiles\balance-with-header-and-trailer.definition.10.xml" />
   </ItemGroup>
 
 </Project>
