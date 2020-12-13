@@ -69,7 +69,7 @@ namespace FileValidator.Domain.Services
 
                 var newFileSpecification = new FileSpecification
                 {
-                    Id = _lastGeneratedId++,
+                    Id = ++_lastGeneratedId,
                     Name = fileSpecification.Name,
                     Description = fileSpecification.Description,
                     Content = fileSpecification.Content

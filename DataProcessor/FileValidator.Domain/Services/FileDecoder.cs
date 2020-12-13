@@ -22,15 +22,15 @@ namespace FileValidator.Domain.Services
     {
         public ParsedDataAndSpec LoadVersion10(string content, string fileSpecXml)
         {
-            var inputDefinitionFileVersion = HelperXmlSerializer.Deserialize<InputDefinitionFileVersion>(fileSpecXml);
-            if (inputDefinitionFileVersion.Version != "10")
+            var inputDefinitionFileVersion = HelperXmlSerializer.Deserialize<InputDefinitionFrameworkVersion>(fileSpecXml);
+            if (inputDefinitionFileVersion.FrameworkVersion != "1.0")
             {
-                throw new Exception($"Invalid Version '{inputDefinitionFileVersion.Version}'");
+                throw new Exception($"Invalid Version '{inputDefinitionFileVersion.FrameworkVersion}'");
             }
 
             var inputDefinitionFile = FileLoader.LoadFromXml<InputDefinitionFile_10>(fileSpecXml);
             var fileProcessorDefinition = DataProcessor.ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
-            
+
             var result = new ParsedDataAndSpec { InputDefinitionFile = inputDefinitionFile };
 
             var config = new StreamDataSourceConfig

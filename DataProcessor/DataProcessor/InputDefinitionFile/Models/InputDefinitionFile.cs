@@ -3,10 +3,11 @@ using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile.Models
 {
-    public class InputDefinitionFileVersion
+    [XmlRoot("inputDataDefinition")]
+    public class InputDefinitionFrameworkVersion
     {
-        [XmlAttribute("version")]
-        public string Version { get; set; }
+        [XmlAttribute("frameworkVersion")]
+        public string FrameworkVersion { get; set; }
     }
 
     public abstract class InputDefinitionFile
