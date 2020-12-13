@@ -8,8 +8,25 @@ namespace DataProcessor.InputDefinitionFile
     {
         protected override string ExpectedVersion { get; } = "2.0";
 
-        [XmlArray(ElementName = "datas")]
-        [XmlArrayItem(ElementName = "data")]
-        public RowDefinition[] Datas { get; set; }
+        [XmlElement(ElementName = "datas")]
+        public Datas Datas { get; set; }
+    }
+
+    public class Datas
+    {
+        [XmlAttribute("keyField")]
+        public string KeyField { get; set; }
+
+        [XmlElement("data")]
+        public RowDefinition[] Rows { get; set; }
+    }
+
+    public class Data
+    {
+        [XmlAttribute("dataType")]
+        public string DataType { get; set; }
+
+        [XmlArrayItem(ElementName = "fields")]
+        public RowDefinition[] Rows { get; set; }
     }
 }

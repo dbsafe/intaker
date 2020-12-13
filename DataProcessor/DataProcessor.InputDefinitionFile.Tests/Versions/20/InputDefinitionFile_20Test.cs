@@ -56,10 +56,10 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
                 }
             };
 
-            target.Datas = new RowDefinition[]
+            target.Datas = new Datas
             {
-                depositRow,
-                changeRow
+                KeyField = "ConsumerId",
+                Rows = new RowDefinition[] { depositRow, changeRow }
             };
 
             target.Trailer = new RowDefinition

@@ -62,11 +62,11 @@ namespace DataProcessor.ProcessorDefinition
             }
         }
 
-        private static Dictionary<string, RowProcessorDefinition> LoadRowProcessorDefinitions(IEnumerable<RowDefinition> rowDefinitions, AggregateManager aggregateManager)
+        private static Dictionary<string, RowProcessorDefinition> LoadRowProcessorDefinitions(Datas datasDefinitions, AggregateManager aggregateManager)
         {
             var result = new Dictionary<string, RowProcessorDefinition>();
 
-            foreach (var rowDefinition in rowDefinitions)
+            foreach (var rowDefinition in datasDefinitions.Rows)
             {
                 var fieldProcessorDefinitions = LoadRowProcessorDefinition(rowDefinition, aggregateManager);
                 if (result.ContainsKey(rowDefinition.DataType))
