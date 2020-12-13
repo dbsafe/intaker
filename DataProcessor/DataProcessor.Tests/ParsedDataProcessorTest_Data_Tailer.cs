@@ -9,7 +9,7 @@ namespace DataProcessor.Tests
     [TestClass]
     public class ParsedDataProcessorTest_Data_Tailer
     {
-        private FileProcessorDefinition _fileProcessorDefinition;
+        private FileProcessorDefinition10 _fileProcessorDefinition;
         private TextDecoder _textDecoder;
         private FileDataSource _fileDataSource;
 
@@ -19,7 +19,7 @@ namespace DataProcessor.Tests
             _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data-trailer.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
-            _fileProcessorDefinition = new FileProcessorDefinition
+            _fileProcessorDefinition = new FileProcessorDefinition10
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition
                 {

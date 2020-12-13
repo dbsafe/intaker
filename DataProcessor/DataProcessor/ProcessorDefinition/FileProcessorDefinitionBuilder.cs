@@ -12,10 +12,11 @@ namespace DataProcessor.ProcessorDefinition
 {
     public static class FileProcessorDefinitionBuilder
     {
-        public static FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
+        public static FileProcessorDefinition10 CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
         {
             var aggregateManager = new AggregateManager();
-            var processorDefinition = CommonCreateFileProcessorDefinition(inputDefinitionFile_10, aggregateManager);
+            var processorDefinition = new FileProcessorDefinition10();
+            InitializeFileProcessorDefinition(processorDefinition, inputDefinitionFile_10, aggregateManager);
             processorDefinition.DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager);
 
             InitializeRules(processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
@@ -24,10 +25,11 @@ namespace DataProcessor.ProcessorDefinition
             return processorDefinition;
         }
 
-        public static FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_20 inputDefinitionFile_20)
+        public static FileProcessorDefinition20 CreateFileProcessorDefinition(InputDefinitionFile_20 inputDefinitionFile_20)
         {
             var aggregateManager = new AggregateManager();
-            var processorDefinition = CommonCreateFileProcessorDefinition(inputDefinitionFile_20, aggregateManager);
+            var processorDefinition = new FileProcessorDefinition20();
+            InitializeFileProcessorDefinition(processorDefinition, inputDefinitionFile_20, aggregateManager);
             processorDefinition.DataRowProcessorDefinitions = LoadRowProcessorDefinitions(inputDefinitionFile_20.Datas, aggregateManager);
 
             var fieldProcessorDefinitionsInDataRows = processorDefinition.DataRowProcessorDefinitions.SelectMany(a => a.Value.FieldProcessorDefinitions);
@@ -37,20 +39,16 @@ namespace DataProcessor.ProcessorDefinition
             return processorDefinition;
         }
 
-        private static FileProcessorDefinition CommonCreateFileProcessorDefinition(
+        private static void InitializeFileProcessorDefinition(
+            FileProcessorDefinition fileProcessorDefinition,
             InputDefinitionFile.Models.InputDefinitionFile inputDefinitionFile,
             AggregateManager aggregateManager)
         {
-            var processorDefinition = new FileProcessorDefinition
-            {
-                CreateRowJsonEnabled = inputDefinitionFile.CreateRowJsonEnabled,
-                HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Header, aggregateManager),
-                TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Trailer, aggregateManager)
-            };
+            fileProcessorDefinition.CreateRowJsonEnabled = inputDefinitionFile.CreateRowJsonEnabled;
+            fileProcessorDefinition.HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Header, aggregateManager);
+            fileProcessorDefinition.TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Trailer, aggregateManager);
 
-            InitializeRules(processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
-
-            return processorDefinition;
+            InitializeRules(fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
         }
 
         private static void InitializeRules(IEnumerable<IFieldRule> rules, IEnumerable<Aggregate> aggregates)

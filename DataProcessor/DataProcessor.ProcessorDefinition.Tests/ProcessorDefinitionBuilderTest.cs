@@ -49,7 +49,6 @@ namespace DataProcessor.ProcessorDefinition.Tests
             AssertFieldProcessorDefinition("Optional", null, typeof(BypassDecoder), ValidationResultType.Valid, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[4]);
 
             // Data definition
-            Assert.IsNull(actual.DataRowProcessorDefinitions);
             Assert.IsNotNull(actual.DataRowProcessorDefinition);
             Assert.IsNotNull(actual.DataRowProcessorDefinition.FieldProcessorDefinitions);
             Assert.AreEqual(7, actual.DataRowProcessorDefinition.FieldProcessorDefinitions.Length);
@@ -148,7 +147,6 @@ namespace DataProcessor.ProcessorDefinition.Tests
             AssertFieldProcessorDefinition("Optional", null, typeof(BypassDecoder), ValidationResultType.Valid, actual.HeaderRowProcessorDefinition.FieldProcessorDefinitions[4]);
 
             // Data definition
-            Assert.IsNull(actual.DataRowProcessorDefinition);
             Assert.IsNotNull(actual.DataRowProcessorDefinitions);
             Assert.AreEqual(2, actual.DataRowProcessorDefinitions.Keys.Count);
 

@@ -12,13 +12,13 @@ namespace DataProcessor
     public class ParsedDataProcessor
     {
         private readonly IDataSource _source;
-        private readonly FileProcessorDefinition _fileProcessorDefinition;
+        private readonly FileProcessorDefinition10 _fileProcessorDefinition;
         private readonly bool _hasHeader;
         private readonly bool _hasTrailer;
 
         public ParserContext ParserContext { get; private set; }
 
-        public ParsedDataProcessor(IDataSource source, FileProcessorDefinition fileProcessorDefinition)
+        public ParsedDataProcessor(IDataSource source, FileProcessorDefinition10 fileProcessorDefinition)
         {
             ValidateProcessorDefinition(fileProcessorDefinition);
 
@@ -33,7 +33,7 @@ namespace DataProcessor
             _source.ProcessField += SourceProcessField;
         }
 
-        private static void ValidateProcessorDefinition(FileProcessorDefinition processorDefinition)
+        private static void ValidateProcessorDefinition(FileProcessorDefinition10 processorDefinition)
         {
             if (processorDefinition is null)
             {

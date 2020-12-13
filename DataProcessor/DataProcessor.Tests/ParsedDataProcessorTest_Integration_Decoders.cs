@@ -12,7 +12,7 @@ namespace DataProcessor.Tests
     [TestClass]
     public class ParsedDataProcessorTest_Integration_Decoders
     {
-        private ProcessorDefinition.Models.FileProcessorDefinition _fileProcessorDefinition;
+        private ProcessorDefinition.Models.FileProcessorDefinition10 _fileProcessorDefinition;
         private InputDefinitionFile_10 _inputDefinitionFile;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
