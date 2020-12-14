@@ -47,7 +47,7 @@ namespace FileValidator.Domain.Services
                     writer.Flush();
 
                     var source = new StreamDataSource(config, stream);
-                    var processor = new ParsedDataProcessor(source, fileProcessorDefinition);
+                    var processor = new ParsedDataProcessor10(source, fileProcessorDefinition);
                     result.ParsedData = processor.Process();
                 }
             }

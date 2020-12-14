@@ -10,7 +10,7 @@ using System.Reflection;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Integration_Decoders
+    public class ParsedDataProcessor10Test_Integration_Decoders
     {
         private ProcessorDefinition.Models.FileProcessorDefinition10 _fileProcessorDefinition;
         private InputDefinitionFile_10 _inputDefinitionFile;
@@ -31,7 +31,7 @@ namespace DataProcessor.Tests
         public void Process_Given_a_valid_file_There_should_no_be_errors()
         {
             var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -47,7 +47,7 @@ namespace DataProcessor.Tests
         public void Process_Given_a_valid_file_Header_should_be_decoded()
         {
             var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -73,7 +73,7 @@ namespace DataProcessor.Tests
         public void Process_Given_a_valid_file_Data_rows_should_be_decoded()
         {
             var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -140,7 +140,7 @@ namespace DataProcessor.Tests
         public void Process_Given_a_valid_file_Trailer_should_be_decoded()
         {
             var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -164,7 +164,7 @@ namespace DataProcessor.Tests
         public void Process_Given_an_invalid_header_Should_indicate_error()
         {
             var fileDataSource = CreateFileDataSource("balance-with-invalid-header.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -195,7 +195,7 @@ namespace DataProcessor.Tests
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+            var target = new ParsedDataProcessor10(fileDataSource, fileProcessorDefinitionWithWarnings);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -217,7 +217,7 @@ namespace DataProcessor.Tests
         public void Process_Given_an_invalid_data_row_Should_indicate_error()
         {
             var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -249,7 +249,7 @@ namespace DataProcessor.Tests
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+            var target = new ParsedDataProcessor10(fileDataSource, fileProcessorDefinitionWithWarnings);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -272,7 +272,7 @@ namespace DataProcessor.Tests
         public void Process_Given_an_invalid_trailer_Should_indicate_error()
         {
             var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -303,7 +303,7 @@ namespace DataProcessor.Tests
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+            var target = new ParsedDataProcessor10(fileDataSource, fileProcessorDefinitionWithWarnings);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -325,7 +325,7 @@ namespace DataProcessor.Tests
         public void Process_Given_multiple_rows_with_errors_Should_indicate_the_errors()
         {
             var fileDataSource = CreateFileDataSource("balance-with-multiple-errors.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);

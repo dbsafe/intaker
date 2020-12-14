@@ -8,7 +8,7 @@ using System.Reflection;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Integration_File_Errors
+    public class ParsedDataProcessor10Test_Integration_File_Errors
     {
         private ProcessorDefinition.Models.FileProcessorDefinition10 _fileProcessorDefinition;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -28,7 +28,7 @@ namespace DataProcessor.Tests
         public void Process_Given_a_file_with_a_missing_header_Should_indicate_the_error()
         {
             var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-missing-header.csv", false);
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -63,7 +63,7 @@ namespace DataProcessor.Tests
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithCritical = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, fileProcessorDefinitionWithCritical);
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, fileProcessorDefinitionWithCritical);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);

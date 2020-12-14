@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace DataProcessor
 {
-    public class ParsedDataProcessor
+    public class ParsedDataProcessor10
     {
         private readonly IDataSource _source;
         private readonly FileProcessorDefinition10 _fileProcessorDefinition;
@@ -18,7 +18,7 @@ namespace DataProcessor
 
         public ParserContext ParserContext { get; private set; }
 
-        public ParsedDataProcessor(IDataSource source, FileProcessorDefinition10 fileProcessorDefinition)
+        public ParsedDataProcessor10(IDataSource source, FileProcessorDefinition10 fileProcessorDefinition)
         {
             ValidateProcessorDefinition(fileProcessorDefinition);
 
