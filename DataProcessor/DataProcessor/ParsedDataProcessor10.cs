@@ -2,30 +2,23 @@
 using DataProcessor.Models;
 using DataProcessor.Utils;
 using DataProcessor.ProcessorDefinition.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
 
 namespace DataProcessor
 {
-    public class ParsedDataProcessor10
+    public class ParsedDataProcessor10 : ParsedDataProcessor
     {
-        private readonly IDataSource _source;
         private readonly FileProcessorDefinition10 _fileProcessorDefinition;
-        private readonly bool _hasHeader;
-        private readonly bool _hasTrailer;
 
         public ParserContext ParserContext { get; private set; }
 
         public ParsedDataProcessor10(IDataSource source, FileProcessorDefinition10 fileProcessorDefinition)
+            : base(source,
+                   fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0,
+                   fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0)
         {
             ValidateProcessorDefinition(fileProcessorDefinition);
 
-            _hasHeader = fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
-            _hasTrailer = fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
-
-            _source = source;
             _fileProcessorDefinition = fileProcessorDefinition;
 
             _source.BeforeProcessRow += SourceBeforeProcessRow;
@@ -43,38 +36,6 @@ namespace DataProcessor
             ValidateRowProcessorDefinition("Header", processorDefinition.HeaderRowProcessorDefinition);
             ValidateRowProcessorDefinition("Data", processorDefinition.DataRowProcessorDefinition);
             ValidateRowProcessorDefinition("Trailer", processorDefinition.TrailerRowProcessorDefinition);
-        }
-
-        private static void ValidateRowProcessorDefinition(string lineType, RowProcessorDefinition rowProcessorDefinition)
-        {
-            if (rowProcessorDefinition is null)
-            {
-                throw new ArgumentNullException($"{lineType} - {nameof(rowProcessorDefinition)}");
-            }
-
-            if (rowProcessorDefinition.FieldProcessorDefinitions is null)
-            {
-                throw new ArgumentNullException($"{lineType} - {nameof(rowProcessorDefinition.FieldProcessorDefinitions)}");
-            }
-
-            for (int i = 0; i < rowProcessorDefinition.FieldProcessorDefinitions.Length; i++)
-            {
-                var fieldProcessorDefinition = rowProcessorDefinition.FieldProcessorDefinitions[i];
-                if (fieldProcessorDefinition.Decoder == null)
-                {
-                    throw new ArgumentNullException($"{lineType} - {nameof(fieldProcessorDefinition.Decoder)}");
-                }
-            }
-        }
-
-        private bool IsHeaderRow(Row row)
-        {
-            return row.Index == 0 && _hasHeader;
-        }
-
-        private bool IsTrailerRow(bool isCurrentRowTheLast)
-        {
-            return isCurrentRowTheLast && _hasTrailer;
         }
 
         private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs e)
@@ -153,20 +114,6 @@ namespace DataProcessor
 
                 SetJson(e.Row, _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
             }
-        }
-
-        private void SetJson(Row row, FieldProcessorDefinition[] fieldProcessorDefinitions)
-        {
-            var jProperties = new List<JProperty>();
-            for (int i = 0; i < row.Fields.Count; i++)
-            {
-                var field = row.Fields[i];
-                var fieldProcessorDefinition = fieldProcessorDefinitions[i];
-                jProperties.Add(new JProperty(fieldProcessorDefinition.FieldName, field.Value));
-            }
-
-            var json = new JObject(jProperties);
-            row.Json = json.ToString(Formatting.None);
         }
 
         private void SourceProcessField(object sender, ProcessFieldEventArgs e)
