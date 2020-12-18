@@ -244,6 +244,16 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.AreEqual("DataRowCountAggregator", aggregator1.Name);
         }
 
+        [TestMethod]
+        public void CreateProcessorDefinition20_Given_an_input_definition_file_KeyField_should_be_set()
+        {
+            var inputDefinitionFile = BuildInputDefinitionFile20();
+
+            var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+
+            Assert.AreEqual("BL", actual.KeyField);
+        }
+
         private void AssertFieldProcessorDefinition(
             string expectedFieldName,
             string expectedPattern,

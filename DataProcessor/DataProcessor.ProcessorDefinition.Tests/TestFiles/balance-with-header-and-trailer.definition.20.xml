@@ -15,7 +15,7 @@
     </fields>
   </header>
 
-  <datas>
+  <datas keyField="BL">
     <data dataType="BL">
       <fields>
         <field name="RecordType" description="Record Type (Data Row)" decoder="TextDecoder" pattern="BL" failValidationResult="Error" />

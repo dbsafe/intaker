@@ -31,6 +31,7 @@ namespace DataProcessor.ProcessorDefinition
             var processorDefinition = new FileProcessorDefinition20();
             InitializeFileProcessorDefinition(processorDefinition, inputDefinitionFile_20, aggregateManager);
             processorDefinition.DataRowProcessorDefinitions = LoadRowProcessorDefinitions(inputDefinitionFile_20.Datas, aggregateManager);
+            processorDefinition.KeyField = inputDefinitionFile_20.Datas.KeyField;
 
             var fieldProcessorDefinitionsInDataRows = processorDefinition.DataRowProcessorDefinitions.SelectMany(a => a.Value.FieldProcessorDefinitions);
             InitializeRules(fieldProcessorDefinitionsInDataRows.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
