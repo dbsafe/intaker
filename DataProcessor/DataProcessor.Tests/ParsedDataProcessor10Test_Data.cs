@@ -18,7 +18,7 @@ namespace DataProcessor.Tests
         [TestInitialize]
         public void Initialize()
         {
-            _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.csv", false);
+            _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.10.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
             _fileProcessorDefinition = new FileProcessorDefinition10

@@ -22,7 +22,7 @@ namespace DataProcessor.Tests
         public void Initialize()
         {
             DataProcessorGlobal.IsDebugEnabled = true;
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
             _inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(_inputDefinitionFile);
         }
@@ -30,7 +30,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_There_should_no_be_errors()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -46,7 +46,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Header_should_be_decoded()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -72,7 +72,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Data_rows_should_be_decoded()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -139,7 +139,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Trailer_should_be_decoded()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -163,7 +163,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_header_Should_indicate_error()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.10.csv");
             var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -189,9 +189,9 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_header_with_warning_Should_indicate_warning()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.10.csv");
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
@@ -216,7 +216,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_data_row_Should_indicate_error()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.10.csv");
             var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -243,9 +243,9 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_data_row_with_warning_Should_indicate_warning()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.10.csv");
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
@@ -271,7 +271,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_trailer_Should_indicate_error()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.10.csv");
             var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -297,9 +297,9 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_trailer_with_warning_Should_indicate_warning()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.10.csv");
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
@@ -324,7 +324,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_multiple_rows_with_errors_Should_indicate_the_errors()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-multiple-errors.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-multiple-errors.10.csv");
             var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();

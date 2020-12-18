@@ -19,7 +19,7 @@ namespace DataProcessor.Tests
         public void Initialize()
         {
             DataProcessorGlobal.IsDebugEnabled = true;
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
         }
@@ -27,7 +27,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_file_with_a_missing_header_Should_indicate_the_error()
         {
-            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-missing-header.csv", false);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-missing-header.10.csv", false);
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
@@ -57,9 +57,9 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_decoder_with_critical_validation_result_Should_abort_the_process()
         {
-            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-invalid-header.csv", false);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-invalid-header.10.csv", false);
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-critical-decoder.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-critical-decoder.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithCritical = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 

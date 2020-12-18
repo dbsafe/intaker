@@ -19,7 +19,7 @@ namespace DataProcessor.Tests
         public void Initialize()
         {
             DataProcessorGlobal.IsDebugEnabled = true;
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
         }
@@ -27,7 +27,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_rule_violation_Result_should_indicate_error_and_warning()
         {
-            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-rule-violations.csv", false);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-rule-violations.10.csv", false);
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();

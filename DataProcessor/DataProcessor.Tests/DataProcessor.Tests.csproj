@@ -7,67 +7,67 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="TestFiles\balance-missing-header.csv" />
-    <None Remove="TestFiles\balance-missing-trailer.csv" />
-    <None Remove="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.xml" />
-    <None Remove="TestFiles\balance-with-header-and-trailer-with-warnings.definition.xml" />
-    <None Remove="TestFiles\balance-with-header-and-trailer.csv" />
-    <None Remove="TestFiles\balance-with-header-and-trailer.definition.xml" />
-    <None Remove="TestFiles\balance-with-invalid-date-in-a-data-row.csv" />
-    <None Remove="TestFiles\balance-with-invalid-header.csv" />
-    <None Remove="TestFiles\balance-with-invalid-trailer.csv" />
-    <None Remove="TestFiles\balance-with-multiple-errors.csv" />
-    <None Remove="TestFiles\balance-with-rule-violations.csv" />
-    <None Remove="TestFiles\test-file-data-trailer.csv" />
-    <None Remove="TestFiles\test-file-data.csv" />
-    <None Remove="TestFiles\test-file-header-data-trailer.csv" />
-    <None Remove="TestFiles\test-file-header-data.csv" />
+    <None Remove="TestFiles\balance-missing-header.10.csv" />
+    <None Remove="TestFiles\balance-missing-trailer.10.csv" />
+    <None Remove="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.10.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer-with-warnings.definition.10.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.10.csv" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.definition.10.xml" />
+    <None Remove="TestFiles\balance-with-invalid-date-in-a-data-row.10.csv" />
+    <None Remove="TestFiles\balance-with-invalid-header.10.csv" />
+    <None Remove="TestFiles\balance-with-invalid-trailer.10.csv" />
+    <None Remove="TestFiles\balance-with-multiple-errors.10.csv" />
+    <None Remove="TestFiles\balance-with-rule-violations.10.csv" />
+    <None Remove="TestFiles\test-file-data-trailer.10.csv" />
+    <None Remove="TestFiles\test-file-data.10.csv" />
+    <None Remove="TestFiles\test-file-header-data-trailer.10.csv" />
+    <None Remove="TestFiles\test-file-header-data.10.csv" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="TestFiles\balance-missing-header.csv">
+    <Content Include="TestFiles\balance-missing-header.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-missing-trailer.csv">
+    <Content Include="TestFiles\balance-missing-trailer.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.xml">
+    <Content Include="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.10.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-header-and-trailer-with-warnings.definition.xml">
+    <Content Include="TestFiles\balance-with-header-and-trailer-with-warnings.definition.10.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-rule-violations.csv">
+    <Content Include="TestFiles\balance-with-rule-violations.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-multiple-errors.csv">
+    <Content Include="TestFiles\balance-with-multiple-errors.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-invalid-trailer.csv">
+    <Content Include="TestFiles\balance-with-invalid-trailer.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-invalid-date-in-a-data-row.csv">
+    <Content Include="TestFiles\balance-with-invalid-date-in-a-data-row.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-invalid-header.csv">
+    <Content Include="TestFiles\balance-with-invalid-header.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-header-and-trailer.csv">
+    <Content Include="TestFiles\balance-with-header-and-trailer.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-header-and-trailer.definition.xml">
+    <Content Include="TestFiles\balance-with-header-and-trailer.definition.10.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\test-file-data-trailer.csv">
+    <Content Include="TestFiles\test-file-data-trailer.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\test-file-data.csv">
+    <Content Include="TestFiles\test-file-data.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\test-file-header-data-trailer.csv">
+    <Content Include="TestFiles\test-file-header-data-trailer.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\test-file-header-data.csv">
+    <Content Include="TestFiles\test-file-header-data.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
