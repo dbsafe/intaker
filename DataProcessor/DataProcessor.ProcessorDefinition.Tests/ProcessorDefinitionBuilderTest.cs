@@ -255,6 +255,16 @@ namespace DataProcessor.ProcessorDefinition.Tests
         }
 
         [TestMethod]
+        public void CreateProcessorDefinition20_Given_an_input_definition_file_DataTypeField_should_be_set()
+        {
+            var inputDefinitionFile = BuildInputDefinitionFile20();
+
+            var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+
+            Assert.AreEqual("RecordType", actual.DataTypeField);
+        }
+
+        [TestMethod]
         public void CreateProcessorDefinition20_Given_an_input_definition_with_invalid_file_KeyField_should_throw_an_exception()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-invalid-keyField.definition.20.xml");
@@ -268,6 +278,23 @@ namespace DataProcessor.ProcessorDefinition.Tests
             catch (Exception ex)
             {
                 Assert.AreEqual($"KeyField 'test-key-field' must be present in every data definition", ex.Message);
+            }
+        }
+
+        [TestMethod]
+        public void CreateProcessorDefinition20_Given_an_input_definition_with_invalid_file_DataTypeField_should_throw_an_exception()
+        {
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-invalid-dataTypeField.definition.20.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+
+            try
+            {
+                FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+                Assert.Fail("An exception was not thrown");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual($"DataTypeField 'test-data-type-field' must be present in every data definition", ex.Message);
             }
         }
 
