@@ -251,7 +251,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
 
             var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            Assert.AreEqual("BL", actual.KeyField);
+            Assert.AreEqual("ConsumerID", actual.KeyField);
         }
 
         private void AssertFieldProcessorDefinition(
