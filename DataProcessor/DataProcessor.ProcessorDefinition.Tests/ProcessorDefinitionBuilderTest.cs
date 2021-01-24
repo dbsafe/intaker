@@ -254,6 +254,23 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.AreEqual("ConsumerID", actual.KeyField);
         }
 
+        [TestMethod]
+        public void CreateProcessorDefinition20_Given_an_input_definition_with_invalid_file_KeyField_should_throw_an_exception()
+        {
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-invalid-keyField.definition.20.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+
+            try
+            {
+                FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
+                Assert.Fail("An exception was not thrown");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual($"KeyField 'test-key-field' must be present in every data definition", ex.Message);
+            }
+        }
+
         private void AssertFieldProcessorDefinition(
             string expectedFieldName,
             string expectedPattern,
