@@ -66,5 +66,25 @@ namespace DataProcessor
                 }
             }
         }
+
+        protected static void ValidateNumerOfFields(string lineType, Row row, RowProcessorDefinition rowProcessorDefinition)
+        {
+            if (rowProcessorDefinition is null)
+            {
+                throw new ArgumentNullException(nameof(rowProcessorDefinition));
+            }
+
+            if (rowProcessorDefinition.FieldProcessorDefinitions is null)
+            {
+                throw new ArgumentNullException(nameof(rowProcessorDefinition.FieldProcessorDefinitions));
+            }
+
+            if (rowProcessorDefinition.FieldProcessorDefinitions.Length != row.RawFields.Length)
+            {
+                row.ValidationResult = ValidationResultType.Error;
+                var error = $"{lineType} - The expected number of fields {rowProcessorDefinition.FieldProcessorDefinitions.Length} is not equal to the actual number of fields {row.RawFields.Length}";
+                row.Errors.Add(error);
+            }
+        }
     }
 }
