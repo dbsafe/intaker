@@ -59,6 +59,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             target.Datas = new Datas
             {
                 KeyField = "ConsumerId",
+                DataTypeField = "RecordType",
                 Rows = new RowDefinition[] { depositRow, changeRow }
             };
 

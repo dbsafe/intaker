@@ -17,6 +17,9 @@ namespace DataProcessor.InputDefinitionFile
         [XmlAttribute("keyField")]
         public string KeyField { get; set; }
 
+        [XmlAttribute("dataTypeField")]
+        public string DataTypeField { get; set; }
+
         [XmlElement("data")]
         public RowDefinition[] Rows { get; set; }
     }
