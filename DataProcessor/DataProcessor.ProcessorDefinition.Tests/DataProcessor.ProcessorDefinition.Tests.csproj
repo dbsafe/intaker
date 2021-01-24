@@ -11,6 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="TestFiles\balance-with-header-and-trailer-invalid-dataTypeField.definition.20.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer-invalid-keyField.definition.20.xml" />
     <None Remove="TestFiles\balance-with-header-and-trailer.csv" />
     <None Remove="TestFiles\balance-with-header-and-trailer.definition.10.xml" />
     <None Remove="TestFiles\balance-with-header-and-trailer.definition.20.xml" />
@@ -18,6 +20,12 @@
 
   <ItemGroup>
     <Content Include="BypassDecoderTest.cs">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer-invalid-dataTypeField.definition.20.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer-invalid-keyField.definition.20.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-with-header-and-trailer.definition.20.xml">

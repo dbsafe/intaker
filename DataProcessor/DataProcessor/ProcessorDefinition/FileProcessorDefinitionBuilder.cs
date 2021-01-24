@@ -32,12 +32,50 @@ namespace DataProcessor.ProcessorDefinition
             InitializeFileProcessorDefinition(processorDefinition, inputDefinitionFile_20, aggregateManager);
             processorDefinition.DataRowProcessorDefinitions = LoadRowProcessorDefinitions(inputDefinitionFile_20.Datas, aggregateManager);
             processorDefinition.KeyField = inputDefinitionFile_20.Datas.KeyField;
+            processorDefinition.DataTypeField = inputDefinitionFile_20.Datas.DataTypeField;
+
+            ValidateKeyField(processorDefinition);
+            ValidateDataTypeField(processorDefinition);
 
             var fieldProcessorDefinitionsInDataRows = processorDefinition.DataRowProcessorDefinitions.SelectMany(a => a.Value.FieldProcessorDefinitions);
             InitializeRules(fieldProcessorDefinitionsInDataRows.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
             InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
 
             return processorDefinition;
+        }
+
+        private static void ValidateDataTypeField(FileProcessorDefinition20 processorDefinition)
+        {
+            if (string.IsNullOrWhiteSpace(processorDefinition.DataTypeField))
+            {
+                throw new InvalidOperationException("Invalid DataTypeField");
+            }
+
+            foreach (var RowProcessorDefinition in processorDefinition.DataRowProcessorDefinitions.Values)
+            {
+                var keyFieldFound = RowProcessorDefinition.FieldProcessorDefinitions.Any(a => a.FieldName == processorDefinition.DataTypeField);
+                if (!keyFieldFound)
+                {
+                    throw new InvalidOperationException($"DataTypeField '{processorDefinition.DataTypeField}' must be present in every data definition");
+                }
+            }
+        }
+
+        private static void ValidateKeyField(FileProcessorDefinition20 processorDefinition)
+        {
+            if (string.IsNullOrWhiteSpace(processorDefinition.KeyField))
+            {
+                throw new InvalidOperationException("Invalid KeyField");
+            }
+
+            foreach(var RowProcessorDefinition in processorDefinition.DataRowProcessorDefinitions.Values)
+            {
+                var keyFieldFound = RowProcessorDefinition.FieldProcessorDefinitions.Any(a => a.FieldName == processorDefinition.KeyField);
+                if (!keyFieldFound)
+                {
+                    throw new InvalidOperationException($"KeyField '{processorDefinition.KeyField}' must be present in every data definition");
+                }
+            }
         }
 
         private static void InitializeFileProcessorDefinition(

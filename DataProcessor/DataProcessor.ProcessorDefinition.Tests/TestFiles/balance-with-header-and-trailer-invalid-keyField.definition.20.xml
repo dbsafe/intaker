@@ -15,7 +15,7 @@
     </fields>
   </header>
 
-  <datas keyField="ConsumerID" dataTypeField="RecordType">
+  <datas keyField="test-key-field">
     <data dataType="BL">
       <fields>
         <field name="RecordType" description="Record Type (Data Row)" decoder="TextDecoder" pattern="BL" failValidationResult="Error" />
