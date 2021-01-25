@@ -7,7 +7,7 @@ namespace DataProcessor.ProcessorDefinition.Models
         public string KeyField { get; set; }
 
         public string DataTypeField { get; set; }
-        
-        public Dictionary<string, RowProcessorDefinition> DataRowProcessorDefinitions { get; set; }
+
+        public Dictionary<string, DataRowProcessorDefinition> DataRowProcessorDefinitions { get; set; }
     }
 }

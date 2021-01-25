@@ -153,25 +153,25 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.IsTrue(actual.DataRowProcessorDefinitions.ContainsKey("BL"));
             {
                 var dataBL = actual.DataRowProcessorDefinitions["BL"];
-                Assert.AreEqual(7, dataBL.FieldProcessorDefinitions.Length);
-                AssertFieldProcessorDefinition("RecordType", "BL", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[0]);
-                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[1]);
-                AssertFieldProcessorDefinition("SSN", @"\d{3}-\d{2}-\d{4}", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[2]);
-                AssertFieldProcessorDefinition("FirstName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[3]);
-                AssertFieldProcessorDefinition("LastName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[4]);
-                AssertFieldProcessorDefinition("DOB", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[5]);
-                AssertFieldProcessorDefinition("Balance", @"-{0,1}[0-9]{1,10}\.[0-9]{2}", typeof(DecimalDecoder), ValidationResultType.Error, dataBL.FieldProcessorDefinitions[6]);
+                Assert.AreEqual(7, dataBL.RowProcessorDefinition.FieldProcessorDefinitions.Length);
+                AssertFieldProcessorDefinition("RecordType", "BL", typeof(TextDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[0]);
+                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[1]);
+                AssertFieldProcessorDefinition("SSN", @"\d{3}-\d{2}-\d{4}", typeof(TextDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[2]);
+                AssertFieldProcessorDefinition("FirstName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[3]);
+                AssertFieldProcessorDefinition("LastName", @"[a-zA-Z0-9\s-']{2,35}", typeof(TextDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[4]);
+                AssertFieldProcessorDefinition("DOB", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[5]);
+                AssertFieldProcessorDefinition("Balance", @"-{0,1}[0-9]{1,10}\.[0-9]{2}", typeof(DecimalDecoder), ValidationResultType.Error, dataBL.RowProcessorDefinition.FieldProcessorDefinitions[6]);
             }
 
             Assert.IsTrue(actual.DataRowProcessorDefinitions.ContainsKey("CH"));
             {
                 var dataCH = actual.DataRowProcessorDefinitions["CH"];
-                Assert.AreEqual(5, dataCH.FieldProcessorDefinitions.Length);
-                AssertFieldProcessorDefinition("RecordType", "CH", typeof(TextDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[0]);
-                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[1]);
-                AssertFieldProcessorDefinition("Date", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[2]);
-                AssertFieldProcessorDefinition("AddressLine1", @"\s*(?:\S\s*){3,100}", typeof(TextDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[3]);
-                AssertFieldProcessorDefinition("AddressLine2", @"\s*(?:\S\s*){3,100}", typeof(TextDecoder), ValidationResultType.Error, dataCH.FieldProcessorDefinitions[4]);
+                Assert.AreEqual(5, dataCH.RowProcessorDefinition.FieldProcessorDefinitions.Length);
+                AssertFieldProcessorDefinition("RecordType", "CH", typeof(TextDecoder), ValidationResultType.Error, dataCH.RowProcessorDefinition.FieldProcessorDefinitions[0]);
+                AssertFieldProcessorDefinition("ConsumerID", "[0-9]{1,10}", typeof(IntegerDecoder), ValidationResultType.Error, dataCH.RowProcessorDefinition.FieldProcessorDefinitions[1]);
+                AssertFieldProcessorDefinition("Date", "MMddyyyy", typeof(DateDecoder), ValidationResultType.Error, dataCH.RowProcessorDefinition.FieldProcessorDefinitions[2]);
+                AssertFieldProcessorDefinition("AddressLine1", @"\s*(?:\S\s*){3,100}", typeof(TextDecoder), ValidationResultType.Error, dataCH.RowProcessorDefinition.FieldProcessorDefinitions[3]);
+                AssertFieldProcessorDefinition("AddressLine2", @"\s*(?:\S\s*){3,100}", typeof(TextDecoder), ValidationResultType.Error, dataCH.RowProcessorDefinition.FieldProcessorDefinitions[4]);
             }
 
             // Trailer definition
@@ -225,11 +225,11 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.IsTrue(actual.DataRowProcessorDefinitions.ContainsKey("BL"));
 
             var dataBL = actual.DataRowProcessorDefinitions["BL"];
-            Assert.IsNotNull(dataBL.FieldProcessorDefinitions);
-            Assert.AreEqual(7, dataBL.FieldProcessorDefinitions.Length);
-            Assert.AreEqual("Balance", dataBL.FieldProcessorDefinitions[6].FieldName);
+            Assert.IsNotNull(dataBL.RowProcessorDefinition.FieldProcessorDefinitions);
+            Assert.AreEqual(7, dataBL.RowProcessorDefinition.FieldProcessorDefinitions.Length);
+            Assert.AreEqual("Balance", dataBL.RowProcessorDefinition.FieldProcessorDefinitions[6].FieldName);
 
-            var aggregators = actual.DataRowProcessorDefinitions["BL"].FieldProcessorDefinitions[6].Aggregators;
+            var aggregators = actual.DataRowProcessorDefinitions["BL"].RowProcessorDefinition.FieldProcessorDefinitions[6].Aggregators;
             Assert.IsNotNull(aggregators);
             Assert.AreEqual(2, aggregators.Length);
 
@@ -262,6 +262,8 @@ namespace DataProcessor.ProcessorDefinition.Tests
             var actual = FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             Assert.AreEqual("RecordType", actual.DataTypeField);
+            Assert.AreEqual(0, actual.DataRowProcessorDefinitions["BL"].DataTypeFieldIndex);
+            Assert.AreEqual(0, actual.DataRowProcessorDefinitions["CH"].DataTypeFieldIndex);
         }
 
         [TestMethod]
