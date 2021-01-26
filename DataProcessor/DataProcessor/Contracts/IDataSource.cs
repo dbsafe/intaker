@@ -12,27 +12,12 @@ namespace DataProcessor.Contracts
         event EventHandler<ProcessRowEventArgs> AfterProcessRow;
     }
 
-    public class ProcessFieldEventArgs
+    public interface IDataSource<TParserContext>
     {
-        public Field Field { get; }
-        public ParserContext Context { get; }
+        void Process(TParserContext context);
 
-        public ProcessFieldEventArgs(Field field, ParserContext context)
-        {
-            Field = field;
-            Context = context;
-        }
-    }
-
-    public class ProcessRowEventArgs
-    {
-        public ParserContext Context { get; }
-        public Row Row { get; }
-
-        public ProcessRowEventArgs(Row row, ParserContext context)
-        {
-            Row = row;
-            Context = context;
-        }
+        event EventHandler<ProcessFieldEventArgs<TParserContext>> ProcessField;
+        event EventHandler<ProcessRowEventArgs<TParserContext>> BeforeProcessRow;
+        event EventHandler<ProcessRowEventArgs<TParserContext>> AfterProcessRow;
     }
 }
