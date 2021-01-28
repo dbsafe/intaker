@@ -8,22 +8,17 @@ using System.Linq;
 
 namespace DataProcessor
 {
-    public class ParsedDataProcessor20
+    public class ParsedDataProcessor20 : ParsedDataProcessor<ParserContext20>
     {
-        private readonly IDataSource<ParserContext20> _source;
-        private readonly bool _hasHeader;
-        private readonly bool _hasTrailer;
-
         private readonly FileProcessorDefinition20 _fileProcessorDefinition;
 
         public ParserContext20 ParserContext { get; private set; }
 
         public ParsedDataProcessor20(IDataSource<ParserContext20> source, FileProcessorDefinition20 fileProcessorDefinition)
+            : base(source,
+                   fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0,
+                   fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0)
         {
-            _source = source;
-            _hasHeader = fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
-            _hasTrailer = fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0;
-
             ValidateProcessorDefinition(fileProcessorDefinition);
 
             _fileProcessorDefinition = fileProcessorDefinition;
@@ -72,16 +67,6 @@ namespace DataProcessor
             }
 
             ValidateNumerOfFields(_fileProcessorDefinition, e);
-        }
-
-        private bool IsHeaderRow(Row row)
-        {
-            return row.Index == 0 && _hasHeader;
-        }
-
-        private bool IsTrailerRow(bool isCurrentRowTheLast)
-        {
-            return isCurrentRowTheLast && _hasTrailer;
         }
 
         private static void ValidateNumerOfFields(FileProcessorDefinition20 fileProcessorDefinition, ProcessRowEventArgs<ParserContext20> e)
