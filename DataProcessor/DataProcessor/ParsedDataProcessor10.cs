@@ -6,13 +6,13 @@ using System;
 
 namespace DataProcessor
 {
-    public class ParsedDataProcessor10 : ParsedDataProcessor
+    public class ParsedDataProcessor10 : ParsedDataProcessor<ParserContext>
     {
         private readonly FileProcessorDefinition10 _fileProcessorDefinition;
 
         public ParserContext ParserContext { get; private set; }
 
-        public ParsedDataProcessor10(IDataSource source, FileProcessorDefinition10 fileProcessorDefinition)
+        public ParsedDataProcessor10(IDataSource<ParserContext> source, FileProcessorDefinition10 fileProcessorDefinition)
             : base(source,
                    fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0,
                    fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0)
@@ -33,12 +33,12 @@ namespace DataProcessor
                 throw new ArgumentNullException(nameof(processorDefinition));
             }
 
-            ValidateRowProcessorDefinition("Header", processorDefinition.HeaderRowProcessorDefinition);
-            ValidateRowProcessorDefinition("Data", processorDefinition.DataRowProcessorDefinition);
-            ValidateRowProcessorDefinition("Trailer", processorDefinition.TrailerRowProcessorDefinition);
+            ParsedDataProcessorHelper.ValidateRowProcessorDefinition("Header", processorDefinition.HeaderRowProcessorDefinition);
+            ParsedDataProcessorHelper.ValidateRowProcessorDefinition("Data", processorDefinition.DataRowProcessorDefinition);
+            ParsedDataProcessorHelper.ValidateRowProcessorDefinition("Trailer", processorDefinition.TrailerRowProcessorDefinition);
         }
 
-        private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs e)
+        private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs<ParserContext> e)
         {
             DataProcessorGlobal.Debug($"Processing Row. Index: {e.Row.Index}, Raw Data: '{e.Row.Raw}'");
 
@@ -50,7 +50,7 @@ namespace DataProcessor
                 lineType = "Header Row";
                 rowProcessorDefinition = _fileProcessorDefinition.HeaderRowProcessorDefinition;
                 e.Context.Header = e.Row;
-                ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+                ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
                 return;
             }
 
@@ -59,17 +59,17 @@ namespace DataProcessor
                 lineType = "Trailer Row";
                 rowProcessorDefinition = _fileProcessorDefinition.TrailerRowProcessorDefinition;
                 e.Context.Trailer = e.Row;
-                ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+                ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
                 return;
             }
 
             lineType = "Data Row";
             rowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinition;
             e.Context.DataRows.Add(e.Row);
-            ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+            ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
         }
 
-        private void SourceAfterProcessRow(object sender, ProcessRowEventArgs e)
+        private void SourceAfterProcessRow(object sender, ProcessRowEventArgs<ParserContext> e)
         {
             e.Context.AllRows.Add(e.Row);
             e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
@@ -102,21 +102,21 @@ namespace DataProcessor
             {
                 if (IsHeaderRow(e.Row))
                 {
-                    SetJson(e.Row, _fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
+                    ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
                     return;
                 }
 
                 if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
                 {
-                    SetJson(e.Row, _fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
+                    ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
                     return;
                 }
 
-                SetJson(e.Row, _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
+                ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
             }
         }
 
-        private void SourceProcessField(object sender, ProcessFieldEventArgs e)
+        private void SourceProcessField(object sender, ProcessFieldEventArgs<ParserContext> e)
         {
             if (e.Field.Row.ValidationResult == ValidationResultType.Critical)
             {
@@ -138,7 +138,7 @@ namespace DataProcessor
                 fieldProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
 
-            ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);
+            ParsedDataProcessorHelper.ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);
         }
 
         public ParsedData Process()

@@ -2,6 +2,7 @@
 using DataProcessor.DataSource.InStream;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.InputDefinitionFile.Models;
+using DataProcessor.Models;
 using System;
 using System.IO;
 
@@ -46,7 +47,7 @@ namespace FileValidator.Domain.Services
                     writer.Write(content);
                     writer.Flush();
 
-                    var source = new StreamDataSource(config, stream);
+                    var source = new StreamDataSource<ParserContext>(config, stream);
                     var processor = new ParsedDataProcessor10(source, fileProcessorDefinition);
                     result.ParsedData = processor.Process();
                 }

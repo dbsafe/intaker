@@ -29,7 +29,7 @@ namespace DataProcessor.DataSource.InMemory.Tests
             var actual = new List<Field>();
             target.ProcessField += (sender, e) =>
             {
-                e.Field.Value = e.Field.Raw.Substring(6);
+                e.Field.Value = e.Field.Raw[6..];
                 actual.Add(e.Field);
             };
 
@@ -38,7 +38,7 @@ namespace DataProcessor.DataSource.InMemory.Tests
             AssertFields(expected, actual);
         }
 
-        private InMemoryDataSource CreateTarget(bool hasFieldsEnclosedInQuotes)
+        private InMemoryDataSource<ParserContext> CreateTarget(bool hasFieldsEnclosedInQuotes)
         {
             var config = new InMemoryDataSourceConfig
             {
@@ -53,7 +53,7 @@ namespace DataProcessor.DataSource.InMemory.Tests
                 "\"field-3a\",\"field-3b\""
             };
 
-            return new InMemoryDataSource(config, lines);
+            return new InMemoryDataSource<ParserContext>(config, lines);
         }
 
         private void AssertFields(IList<Field> expected, IList<Field> actual)

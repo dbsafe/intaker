@@ -11,14 +11,14 @@ namespace DataProcessor.Tests
     {
         private FileProcessorDefinition10 _fileProcessorDefinition;
         private TextDecoder _textDecoder;
-        private FileDataSource _fileDataSource;
+        private FileDataSource<ParserContext> _fileDataSource;
 
         public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void Initialize()
         {
-            _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.10.csv", false);
+            _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext>("test-file-data.10.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
             _fileProcessorDefinition = new FileProcessorDefinition10

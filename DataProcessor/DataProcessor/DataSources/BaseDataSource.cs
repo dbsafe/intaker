@@ -15,13 +15,14 @@ namespace DataProcessor.DataSource
         string ReadLine();
     }
 
-    public abstract class BaseDataSource : IDataSource
+    public abstract class BaseDataSource<TParserContext> : IDataSource<TParserContext>
+        where TParserContext : ParserContext
     {
         private readonly LineParser _lineParser;
 
-        public event EventHandler<ProcessFieldEventArgs> ProcessField;
-        public event EventHandler<ProcessRowEventArgs> BeforeProcessRow;
-        public event EventHandler<ProcessRowEventArgs> AfterProcessRow;
+        public event EventHandler<ProcessFieldEventArgs<TParserContext>> ProcessField;
+        public event EventHandler<ProcessRowEventArgs<TParserContext>> BeforeProcessRow;
+        public event EventHandler<ProcessRowEventArgs<TParserContext>> AfterProcessRow;
 
         public abstract string Name { get; }
 
@@ -36,7 +37,7 @@ namespace DataProcessor.DataSource
 
         protected abstract ILineProvider CreateLineProvider();
 
-        public void Process(ParserContext context)
+        public void Process(TParserContext context)
         {
             using (var reader = CreateLineProvider())
             {
@@ -56,17 +57,17 @@ namespace DataProcessor.DataSource
             }
         }
 
-        protected virtual void OnBeforeProcessRow(ProcessRowEventArgs e)
+        protected virtual void OnBeforeProcessRow(ProcessRowEventArgs<TParserContext> e)
         {
             BeforeProcessRow?.Invoke(this, e);
         }
 
-        protected virtual void OnAfterProcessRow(ProcessRowEventArgs e)
+        protected virtual void OnAfterProcessRow(ProcessRowEventArgs<TParserContext> e)
         {
             AfterProcessRow?.Invoke(this, e);
         }
 
-        protected virtual void OnFieldCreated(ProcessFieldEventArgs e)
+        protected virtual void OnFieldCreated(ProcessFieldEventArgs<TParserContext> e)
         {
             ProcessField?.Invoke(this, e);
         }
@@ -76,7 +77,7 @@ namespace DataProcessor.DataSource
             Utils.DataProcessorGlobal.Debug($"{Name} - {message}");
         }
 
-        private void CreateRow(ParserContext context)
+        private void CreateRow(TParserContext context)
         {
             var row = new Row
             {
@@ -88,7 +89,7 @@ namespace DataProcessor.DataSource
 
             context.CurrentRowRawFields = row.RawFields;
 
-            var processRowEventArgs = new ProcessRowEventArgs(row, context);
+            var processRowEventArgs = new ProcessRowEventArgs<TParserContext>(row, context);
 
             OnBeforeProcessRow(processRowEventArgs);
             if (context.IsAborted)
@@ -108,7 +109,7 @@ namespace DataProcessor.DataSource
             OnAfterProcessRow(processRowEventArgs);
         }
 
-        private void CreateFieldsForRow(Row row, ParserContext context)
+        private void CreateFieldsForRow(Row row, TParserContext context)
         {
             for (int fieldIndex = 0; fieldIndex < context.CurrentRowRawFields.Length; fieldIndex++)
             {
@@ -121,7 +122,7 @@ namespace DataProcessor.DataSource
                 };
 
                 row.Fields.Add(field);
-                OnFieldCreated(new ProcessFieldEventArgs(field, context));
+                OnFieldCreated(new ProcessFieldEventArgs<TParserContext>(field, context));
                 if (context.IsAborted)
                 {
                     return;
