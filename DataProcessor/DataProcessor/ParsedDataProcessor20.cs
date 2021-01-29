@@ -82,7 +82,8 @@ namespace DataProcessor
 
             e.Context.DataRows.Add(e.Row);
             e.Context.DataType = kvp.Key;
-            ParsedDataProcessorHelper.ValidateNumerOfFields(kvp.Key, e.Row, kvp.Value.RowProcessorDefinition);
+            var lineType = $"Data Row '{kvp.Key}'";
+            ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
         }
 
         private static KeyValuePair<string, DataRowProcessorDefinition> FindDataRowProcessorDefinition(FileProcessorDefinition20 fileProcessorDefinition, ProcessRowEventArgs<ParserContext20> e)
