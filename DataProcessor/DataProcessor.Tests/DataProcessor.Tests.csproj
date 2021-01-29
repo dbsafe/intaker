@@ -24,6 +24,7 @@
     <None Remove="TestFiles\test-file-data.20.csv" />
     <None Remove="TestFiles\test-file-header-data-trailer.10.csv" />
     <None Remove="TestFiles\test-file-header-data.10.csv" />
+    <None Remove="TestFiles\test-file-header-data.20.csv" />
   </ItemGroup>
 
   <ItemGroup>
@@ -58,6 +59,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-with-header-and-trailer.definition.10.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\test-file-header-data.20.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\test-file-data-trailer.20.csv">
