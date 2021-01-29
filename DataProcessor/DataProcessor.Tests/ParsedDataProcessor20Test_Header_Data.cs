@@ -14,9 +14,9 @@ namespace DataProcessor.Tests
         private TextDecoder _textDecoder;
         private FileDataSource<ParserContext20> _fileDataSource;
 
+        private RowProcessorDefinition _header;
         private DataRowProcessorDefinition _dataType1;
         private DataRowProcessorDefinition _dataType2;
-        private RowProcessorDefinition _header;
 
         [TestInitialize]
         public void Initialize()
@@ -24,6 +24,16 @@ namespace DataProcessor.Tests
             _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext20>("test-file-header-data.20.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
+
+            _header = new RowProcessorDefinition
+            {
+                FieldProcessorDefinitions = new FieldProcessorDefinition[]
+                {
+                    new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-HA" },
+                    new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-HB" }
+                }
+            };
+
             _dataType1 = new DataRowProcessorDefinition
             {
                 DataTypeFieldIndex = 0,
@@ -51,15 +61,6 @@ namespace DataProcessor.Tests
                         new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "DT2-Field-d", Description = "DT2 Field D" }
                     }
                 }
-            };
-
-            _header = new RowProcessorDefinition
-            {
-                FieldProcessorDefinitions = new FieldProcessorDefinition[]
-                                {
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-HA" },
-                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-HB" }
-                                }
             };
 
             _fileProcessorDefinition = new FileProcessorDefinition20
@@ -113,7 +114,6 @@ namespace DataProcessor.Tests
             Assert.AreEqual("field-3b", row3.Fields[1].Value);
             Assert.AreEqual("key-value", row3.Fields[2].Value);
             Assert.AreEqual("field-3d", row3.Fields[3].Value);
-
 
             Assert.IsNotNull(actual.Header);
             Assert.AreEqual(row0, actual.Header);
