@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessor20Test_Data
+    public class ParsedDataProcessor20Test_Data_Tailer
     {
         private FileProcessorDefinition20 _fileProcessorDefinition;
         private TextDecoder _textDecoder;
@@ -16,14 +16,14 @@ namespace DataProcessor.Tests
 
         private DataRowProcessorDefinition _dataType1;
         private DataRowProcessorDefinition _dataType2;
+        private RowProcessorDefinition _trailer;
 
         [TestInitialize]
         public void Initialize()
         {
-            _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext20>("test-file-data.20.csv", false);
+            _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext20>("test-file-data-trailer.20.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
-
 
             _dataType1 = new DataRowProcessorDefinition
             {
@@ -54,6 +54,15 @@ namespace DataProcessor.Tests
                 }
             };
 
+            _trailer = new RowProcessorDefinition
+            {
+                FieldProcessorDefinitions = new FieldProcessorDefinition[]
+                    {
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-TA" },
+                        new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "Field-TB" }
+                    }
+            };
+
             _fileProcessorDefinition = new FileProcessorDefinition20
             {
                 DataTypeField = "FieldA",
@@ -62,10 +71,7 @@ namespace DataProcessor.Tests
                 {
                     FieldProcessorDefinitions = new FieldProcessorDefinition[] { },
                 },
-                TrailerRowProcessorDefinition = new RowProcessorDefinition
-                {
-                    FieldProcessorDefinitions = new FieldProcessorDefinition[] { }
-                },
+                TrailerRowProcessorDefinition = _trailer,
                 DataRowProcessorDefinitions = new Dictionary<string, DataRowProcessorDefinition>
                 {
                     { "dt1", _dataType1 },
@@ -75,13 +81,13 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_file_without_header_and_trailer_Should_decode_and_parse_fields()
+        public void Process_Given_a_file_with_header_Should_decode_and_parse_fields()
         {
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
 
-            Assert.AreEqual(3, actual.AllRows.Count);
+            Assert.AreEqual(4, actual.AllRows.Count);
             Assert.AreEqual(0, actual.InvalidRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
@@ -104,29 +110,15 @@ namespace DataProcessor.Tests
             Assert.AreEqual("key-value", row2.Fields[2].Value);
             Assert.AreEqual("field-3d", row2.Fields[3].Value);
 
+            var row3 = actual.AllRows[3];
+            Assert.AreEqual(2, row3.Fields.Count);
+            Assert.AreEqual("ta", row3.Fields[0].Value);
+            Assert.AreEqual("tb", row3.Fields[1].Value);
+
             Assert.IsNull(actual.Header);
-            Assert.IsNull(actual.Trailer);
-        }
-
-        [TestMethod]
-        public void Process_Given_that_the_number_of_fields_dont_match_The_row_should_indicate_the_error()
-        {
-            _dataType1.RowProcessorDefinition.FieldProcessorDefinitions = new FieldProcessorDefinition[]
-            {
-                new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "DataType", Description = "DT1 Field A" },
-                new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "key-field", Description = "DT1 Field B" }
-            };
-
-            var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
-
-            var actual = target.Process();
-
-            Assert.AreEqual(3, actual.AllRows.Count);
-            Assert.AreEqual(2, actual.InvalidRows.Count);
-
-            var row0 = actual.AllRows[0];
-            Assert.AreEqual(1, row0.Errors.Count);
-            Assert.AreEqual("Data Row 'dt1' - The expected number of fields 2 is not equal to the actual number of fields 3", row0.Errors[0]);
+            
+            Assert.IsNotNull(actual.Trailer);
+            Assert.AreEqual(row3, actual.Trailer);
         }
     }
 }
