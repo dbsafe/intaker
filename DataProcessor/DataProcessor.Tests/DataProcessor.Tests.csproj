@@ -27,6 +27,7 @@
     <None Remove="TestFiles\balance-with-multiple-errors.10.csv" />
     <None Remove="TestFiles\balance-with-multiple-errors.20.csv" />
     <None Remove="TestFiles\balance-with-rule-violations.10.csv" />
+    <None Remove="TestFiles\balance-with-rule-violations.20.csv" />
     <None Remove="TestFiles\test-file-data-trailer.10.csv" />
     <None Remove="TestFiles\test-file-data-trailer.20.csv" />
     <None Remove="TestFiles\test-file-data.10.csv" />
@@ -75,6 +76,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-with-multiple-errors.20.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-rule-violations.20.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-with-rule-violations.10.csv">
