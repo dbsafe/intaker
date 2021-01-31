@@ -8,8 +8,10 @@
 
   <ItemGroup>
     <None Remove="TestFiles\balance-missing-header.10.csv" />
+    <None Remove="TestFiles\balance-missing-header.20.csv" />
     <None Remove="TestFiles\balance-missing-trailer.10.csv" />
     <None Remove="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.10.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.20.xml" />
     <None Remove="TestFiles\balance-with-header-and-trailer-with-warnings.definition.10.xml" />
     <None Remove="TestFiles\balance-with-header-and-trailer-with-warnings.definition.20.xml" />
     <None Remove="TestFiles\balance-with-header-and-trailer.10.csv" />
@@ -36,10 +38,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="TestFiles\balance-missing-header.20.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\balance-missing-header.10.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-missing-trailer.10.csv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer-with-critical-decoder.definition.20.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-with-header-and-trailer-with-warnings.definition.20.xml">
