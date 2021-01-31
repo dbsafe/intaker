@@ -10,9 +10,9 @@ using System.Reflection;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Integration_Decoders
+    public class ParsedDataProcessor10Test_Integration_Decoders
     {
-        private ProcessorDefinition.Models.FileProcessorDefinition _fileProcessorDefinition;
+        private ProcessorDefinition.Models.FileProcessorDefinition10 _fileProcessorDefinition;
         private InputDefinitionFile_10 _inputDefinitionFile;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
@@ -22,7 +22,7 @@ namespace DataProcessor.Tests
         public void Initialize()
         {
             DataProcessorGlobal.IsDebugEnabled = true;
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
             _inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(_inputDefinitionFile);
         }
@@ -30,8 +30,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_There_should_no_be_errors()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -46,8 +46,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Header_should_be_decoded()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -72,8 +72,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Data_rows_should_be_decoded()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -139,8 +139,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_valid_file_Trailer_should_be_decoded()
         {
-            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var fileDataSourceValidFile = CreateFileDataSource("balance-with-header-and-trailer.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
@@ -163,8 +163,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_header_Should_indicate_error()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -189,13 +189,13 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_header_with_warning_Should_indicate_warning()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-header.10.csv");
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+            var target = new ParsedDataProcessor10(fileDataSource, fileProcessorDefinitionWithWarnings);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -216,8 +216,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_data_row_Should_indicate_error()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -243,13 +243,13 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_data_row_with_warning_Should_indicate_warning()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.10.csv");
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+            var target = new ParsedDataProcessor10(fileDataSource, fileProcessorDefinitionWithWarnings);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -271,8 +271,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_an_invalid_trailer_Should_indicate_error()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -297,13 +297,13 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_trailer_with_warning_Should_indicate_warning()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.csv");
+            var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.10.csv");
 
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.xml");
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.10.xml");
             var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var target = new ParsedDataProcessor(fileDataSource, fileProcessorDefinitionWithWarnings);
+            var target = new ParsedDataProcessor10(fileDataSource, fileProcessorDefinitionWithWarnings);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
@@ -324,8 +324,8 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_multiple_rows_with_errors_Should_indicate_the_errors()
         {
-            var fileDataSource = CreateFileDataSource("balance-with-multiple-errors.csv");
-            var target = new ParsedDataProcessor(fileDataSource, _fileProcessorDefinition);
+            var fileDataSource = CreateFileDataSource("balance-with-multiple-errors.10.csv");
+            var target = new ParsedDataProcessor10(fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
@@ -364,9 +364,9 @@ namespace DataProcessor.Tests
             Assert.AreSame(expectedRow, actualField.Row);
         }
 
-        private IDataSource CreateFileDataSource(string filename)
+        private IDataSource<ParserContext> CreateFileDataSource(string filename)
         {
-            return TestHelpers.CreateFileDataSource(filename, _inputDefinitionFile.HasFieldsEnclosedInQuotes, _inputDefinitionFile.Delimiter);
+            return TestHelpers.CreateFileDataSource<ParserContext>(filename, _inputDefinitionFile.HasFieldsEnclosedInQuotes, _inputDefinitionFile.Delimiter);
         }
     }
 }

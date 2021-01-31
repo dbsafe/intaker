@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataProcessor.Models;
+using System;
 using System.IO;
 
 namespace DataProcessor.DataSource.InStream
@@ -9,11 +10,12 @@ namespace DataProcessor.DataSource.InStream
         public bool HasFieldsEnclosedInQuotes { get; set; }
     }
 
-    public class StreamDataSource : BaseDataSource
+    public class StreamDataSource<TParserContext> : BaseDataSource<TParserContext>
+        where TParserContext : ParserContext
     {
         private readonly Stream _stream;
 
-        public override string Name => nameof(StreamDataSource);
+        public override string Name => "StreamDataSource";
 
         public StreamDataSource(StreamDataSourceConfig config, Stream stream) 
             : base(config)

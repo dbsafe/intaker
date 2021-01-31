@@ -54,7 +54,7 @@ namespace DataProcessor.DataSource.File.Tests
             var actual = new List<Field>();
             target.ProcessField += (sender, e) =>
             {
-                e.Field.Value = e.Field.Raw.Substring(6);
+                e.Field.Value = e.Field.Raw[6..];
                 actual.Add(e.Field);
             };
 
@@ -370,7 +370,7 @@ namespace DataProcessor.DataSource.File.Tests
             Assert.AreEqual(expected.Value, actual.Value);
         }
 
-        private FileDataSource CreateTarget(string filename, bool hasFieldsEnclosedInQuotes)
+        private FileDataSource<ParserContext> CreateTarget(string filename, bool hasFieldsEnclosedInQuotes)
         {
             var config = new FileDataSourceConfig
             {
@@ -379,7 +379,7 @@ namespace DataProcessor.DataSource.File.Tests
                 Path = Path.Combine(_testDirectory, "TestFiles", filename)
             };
 
-            return new FileDataSource(config);
+            return new FileDataSource<ParserContext>(config);
         }
 
         private void AssertIndexes(IList<int> expected, IList<int> actual)

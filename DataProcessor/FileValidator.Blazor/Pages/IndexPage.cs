@@ -128,7 +128,7 @@ namespace FileValidator.Blazor.Pages
             StateHasChanged();
             try
             {
-                LoadedFilePageState.ParsedDataAndSpec = FileDecoder.Load(content, fileSpecXml);
+                LoadedFilePageState.ParsedDataAndSpec = FileDecoder.LoadVersion10(content, fileSpecXml);
 
                 switch (LoadedFilePageState.ParsedDataAndSpec.ParsedData.ValidationResult)
                 {

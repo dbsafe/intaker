@@ -10,7 +10,8 @@ namespace DataProcessor.Tests
 {
     public static class TestHelpers
     {
-        public static FileDataSource CreateFileDataSource(string filename, bool hasFieldsEnclosedInQuotes, string delimiter)
+        public static FileDataSource<TParserContext> CreateFileDataSource<TParserContext>(string filename, bool hasFieldsEnclosedInQuotes, string delimiter)
+            where TParserContext : ParserContext
         {
             var testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             var config = new FileDataSourceConfig
@@ -20,12 +21,13 @@ namespace DataProcessor.Tests
                 Path = Path.Combine(testDirectory, "TestFiles", filename)
             };
 
-            return new FileDataSource(config);
+            return new FileDataSource<TParserContext>(config);
         }
 
-        public static FileDataSource CreateFileDataSource(string filename, bool hasFieldsEnclosedInQuotes)
+        public static FileDataSource<TParserContext> CreateFileDataSource<TParserContext>(string filename, bool hasFieldsEnclosedInQuotes)
+            where TParserContext : ParserContext
         {
-            return CreateFileDataSource(filename, hasFieldsEnclosedInQuotes, ",");
+            return CreateFileDataSource<TParserContext>(filename, hasFieldsEnclosedInQuotes, ",");
         }
 
         public static void PrintJson(this TestContext testContext, object obj)

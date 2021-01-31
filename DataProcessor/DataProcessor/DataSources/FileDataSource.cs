@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataProcessor.Models;
+using System;
 using System.IO;
 
 namespace DataProcessor.DataSource.File
@@ -10,11 +11,12 @@ namespace DataProcessor.DataSource.File
         public string Path { get; set; }
     }
 
-    public class FileDataSource : BaseDataSource
+    public class FileDataSource<TParserContext> : BaseDataSource<TParserContext>
+        where TParserContext : ParserContext
     {
         private readonly FileDataSourceConfig _config;
 
-        public override string Name => nameof(FileDataSource);
+        public override string Name => "FileDataSource";
 
         public FileDataSource(FileDataSourceConfig config)
             : base(config)

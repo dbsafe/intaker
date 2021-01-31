@@ -7,21 +7,21 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Data
+    public class ParsedDataProcessor10Test_Data
     {
-        private FileProcessorDefinition _fileProcessorDefinition;
+        private FileProcessorDefinition10 _fileProcessorDefinition;
         private TextDecoder _textDecoder;
-        private FileDataSource _fileDataSource;
+        private FileDataSource<ParserContext> _fileDataSource;
 
         public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void Initialize()
         {
-            _fileDataSource = TestHelpers.CreateFileDataSource("test-file-data.csv", false);
+            _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext>("test-file-data.10.csv", false);
 
             _textDecoder = new TextDecoder { Pattern = @"*.", FailValidationResult = ValidationResultType.Critical };
-            _fileProcessorDefinition = new FileProcessorDefinition
+            _fileProcessorDefinition = new FileProcessorDefinition10
             {
                 HeaderRowProcessorDefinition = new RowProcessorDefinition
                 {
@@ -46,7 +46,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_file_without_header_and_trailer_Should_decode_and_parse_fields()
         {
-            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
 
@@ -85,7 +85,7 @@ namespace DataProcessor.Tests
                 new FieldProcessorDefinition { Decoder = _textDecoder, FieldName = "FieldB" }
             };
 
-            var target = new ParsedDataProcessor(_fileDataSource, _fileProcessorDefinition);
+            var target = new ParsedDataProcessor10(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
 

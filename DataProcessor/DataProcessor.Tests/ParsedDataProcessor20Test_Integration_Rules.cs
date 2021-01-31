@@ -8,9 +8,9 @@ using System.Reflection;
 namespace DataProcessor.Tests
 {
     [TestClass]
-    public class ParsedDataProcessorTest_Integration_Rules
+    public class ParsedDataProcessor20Test_Integration_Rules
     {
-        private ProcessorDefinition.Models.FileProcessorDefinition _fileProcessorDefinition;
+        private ProcessorDefinition.Models.FileProcessorDefinition20 _fileProcessorDefinition;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public TestContext TestContext { get; set; }
@@ -19,24 +19,24 @@ namespace DataProcessor.Tests
         public void Initialize()
         {
             DataProcessorGlobal.IsDebugEnabled = true;
-            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.20.xml");
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
         }
 
         [TestMethod]
         public void Process_Given_a_rule_violation_Result_should_indicate_error_and_warning()
         {
-            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource("balance-with-rule-violations.csv", false);
-            var target = new ParsedDataProcessor(fileDataSourceValidFile, _fileProcessorDefinition);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource<ParserContext20>("balance-with-rule-violations.20.csv", false);
+            var target = new ParsedDataProcessor20(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
             TestContext.PrintJson(actual);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
-            Assert.AreEqual(5, actual.AllRows.Count);
-            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(7, actual.AllRows.Count);
+            Assert.AreEqual(5, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidRows.Count);
 
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);

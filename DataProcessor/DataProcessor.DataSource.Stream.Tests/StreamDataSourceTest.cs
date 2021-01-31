@@ -32,7 +32,7 @@ namespace DataProcessor.DataSource.Stream.Tests
             var actual = new List<Field>();
             target.ProcessField += (sender, e) =>
             {
-                e.Field.Value = e.Field.Raw.Substring(6);
+                e.Field.Value = e.Field.Raw[6..];
                 actual.Add(e.Field);
             };
 
@@ -41,7 +41,7 @@ namespace DataProcessor.DataSource.Stream.Tests
             AssertFields(expected, actual);
         }
 
-        private StreamDataSource CreateTarget(bool hasFieldsEnclosedInQuotes)
+        private StreamDataSource<ParserContext> CreateTarget(bool hasFieldsEnclosedInQuotes)
         {
             var config = new StreamDataSourceConfig
             {
@@ -59,7 +59,7 @@ namespace DataProcessor.DataSource.Stream.Tests
             writer.Write(sb.ToString());
             writer.Flush();
 
-            return new StreamDataSource(config, ms);
+            return new StreamDataSource<ParserContext>(config, ms);
         }
 
         private void AssertFields(IList<Field> expected, IList<Field> actual)

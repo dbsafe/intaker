@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<inputDataDefinition name="Balance" version="1.0" description="Demo file" delimiter="," hasFieldsEnclosedInQuotes="false" frameworkVersion="2.0" createRowJsonEnabled="true">
+  <header>
+    <fields>
+      <field name="RecordType" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HD" failValidationResult="Error"/>
+      <field name="CreationDate" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error"/>
+      <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" failValidationResult="Error"/>
+      <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
+        <rules>
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Minimum sequence number should be 10" args="{'ruleValue':'10'}" failValidationResult="Warning" />
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" args="{'ruleValue':'100'}" failValidationResult="Error" />
+        </rules>
+      </field>
+      <field name="Optional" description="Optional Field" />
+    </fields>
+  </header>
+
+  <datas keyField="ConsumerID" dataTypeField="test-data-type-field">
+    <data dataType="BL">
+      <fields>
+        <field name="RecordType" description="Record Type (Data Row)" decoder="TextDecoder" pattern="BL" failValidationResult="Error" />
+        <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" isKey="true" failValidationResult="Error" />
+        <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" failValidationResult="Error" />
+        <field name="FirstName" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
+        <field name="LastName" description="LastName" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
+        <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+        <field name="Balance" description="Amount" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error">
+          <aggregators>
+            <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />
+            <aggregator name="DataRowCountAggregator" description="Data row counter" aggregator="RowCountAggregator" />
+          </aggregators>
+        </field>
+      </fields>
+    </data>
+    <data dataType="CH">
+      <fields>
+        <field name="RecordType" description="Record Type Change" decoder="TextDecoder" pattern="CH" failValidationResult="Error" />
+        <field name="ConsumerID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" isKey="true" failValidationResult="Error" />
+        <field name="Date" description="Date of change" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+        <field name="AddressLine1" description="Street address" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
+        <field name="AddressLine2" description="Apartment or suite" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
+      </fields>
+    </data>
+  </datas>
+
+  <trailer>
+    <fields>
+      <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TR" failValidationResult="Error"/>
+      <field name="BalanceTotal" description="Sum of all balances" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error"/>
+      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error"/>
+    </fields>
+  </trailer>
+</inputDataDefinition>

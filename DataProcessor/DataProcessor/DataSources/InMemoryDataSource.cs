@@ -1,4 +1,6 @@
-﻿namespace DataProcessor.DataSource.InMemory
+﻿using DataProcessor.Models;
+
+namespace DataProcessor.DataSource.InMemory
 {
     public class InMemoryDataSourceConfig : IDataSourceConfig
     {
@@ -6,11 +8,12 @@
         public bool HasFieldsEnclosedInQuotes { get; set; }
     }
 
-    public class InMemoryDataSource : BaseDataSource
+    public class InMemoryDataSource<TParserContext> : BaseDataSource<TParserContext>
+        where TParserContext : ParserContext
     {
         private readonly string[] _lines;
 
-        public override string Name => nameof(InMemoryDataSource);
+        public override string Name => "InMemoryDataSource";
 
         public InMemoryDataSource(InMemoryDataSourceConfig config, string[] lines)
             : base(config)

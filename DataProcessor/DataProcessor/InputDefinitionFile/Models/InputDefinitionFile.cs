@@ -1,7 +1,15 @@
-﻿using System.Xml.Serialization;
+﻿using System;
+using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile.Models
 {
+    [XmlRoot("inputDataDefinition")]
+    public class InputDefinitionFrameworkVersion
+    {
+        [XmlAttribute("frameworkVersion")]
+        public string FrameworkVersion { get; set; }
+    }
+
     public abstract class InputDefinitionFile
     {
         private string frameworkVersion;
@@ -24,9 +32,6 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlElement("header")]
         public RowDefinition Header { get; set; }
 
-        [XmlElement("data")]
-        public RowDefinition Data { get; set; }
-
         [XmlElement("trailer")]
         public RowDefinition Trailer { get; set; }
 
@@ -44,8 +49,14 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("createRowJsonEnabled")]
         public bool CreateRowJsonEnabled { get; set; }
 
-        protected virtual void OnFrameworkVersionSet(string frameworkVersion)
+        private void OnFrameworkVersionSet(string frameworkVersion)
         {
+            if (frameworkVersion != ExpectedVersion)
+            {
+                throw new InvalidOperationException($"Invalid Framework Version '{frameworkVersion}'. Expected {ExpectedVersion}");
+            }
         }
+
+        protected abstract string ExpectedVersion { get; }
     }
 }

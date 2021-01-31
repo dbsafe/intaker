@@ -18,4 +18,9 @@ namespace DataProcessor.Models
         public ValidationResultType ValidationResult { get; set; }
         public int InvalidDataRowCount { get; set; }
     }
+
+    public class ParserContext20 : ParserContext
+    {
+        public string DataType { get; set; }
+    }
 }

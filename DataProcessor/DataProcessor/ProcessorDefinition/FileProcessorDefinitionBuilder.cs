@@ -1,8 +1,10 @@
 ﻿using DataProcessor.Contracts;
-using DataProcessor.Models;
 using DataProcessor.InputDefinitionFile;
 using DataProcessor.InputDefinitionFile.Models;
+using DataProcessor.Models;
 using DataProcessor.ObjectStore;
+using DataProcessor.ProcessorDefinition.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -10,22 +12,98 @@ namespace DataProcessor.ProcessorDefinition
 {
     public static class FileProcessorDefinitionBuilder
     {
-        public static Models.FileProcessorDefinition CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
+        public static FileProcessorDefinition10 CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
         {
             var aggregateManager = new AggregateManager();
-            var processorDefinition = new Models.FileProcessorDefinition
-            {
-                CreateRowJsonEnabled = inputDefinitionFile_10.CreateRowJsonEnabled,
-                HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Header, aggregateManager),
-                DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager),
-                TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Trailer, aggregateManager)
-            };
+            var processorDefinition = new FileProcessorDefinition10();
+            InitializeFileProcessorDefinition(processorDefinition, inputDefinitionFile_10, aggregateManager);
+            processorDefinition.DataRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile_10.Data, aggregateManager);
 
-            InitializeRules(processorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
             InitializeRules(processorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
             InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
 
             return processorDefinition;
+        }
+
+        public static FileProcessorDefinition20 CreateFileProcessorDefinition(InputDefinitionFile_20 inputDefinitionFile_20)
+        {
+            var aggregateManager = new AggregateManager();
+            var processorDefinition = new FileProcessorDefinition20();
+            InitializeFileProcessorDefinition(processorDefinition, inputDefinitionFile_20, aggregateManager);
+            processorDefinition.DataRowProcessorDefinitions = LoadRowProcessorDefinitions(inputDefinitionFile_20.Datas, aggregateManager);
+            
+            processorDefinition.KeyField = inputDefinitionFile_20.Datas.KeyField;
+            ValidateKeyField(processorDefinition);
+
+            processorDefinition.DataTypeField = inputDefinitionFile_20.Datas.DataTypeField;
+            ResolveDataTypeField(processorDefinition);
+
+
+            var fieldProcessorDefinitionsInDataRows = processorDefinition.DataRowProcessorDefinitions.SelectMany(a => a.Value.RowProcessorDefinition.FieldProcessorDefinitions);
+            InitializeRules(fieldProcessorDefinitionsInDataRows.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+            InitializeRules(processorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
+
+            return processorDefinition;
+        }
+
+        private static void ResolveDataTypeField(FileProcessorDefinition20 processorDefinition)
+        {
+            if (string.IsNullOrWhiteSpace(processorDefinition.DataTypeField))
+            {
+                throw new InvalidOperationException("Invalid DataTypeField");
+            }
+
+            foreach (var kvp in processorDefinition.DataRowProcessorDefinitions)
+            {
+                kvp.Value.DataTypeFieldIndex = GetDataTypeFieldIndex(kvp.Value.RowProcessorDefinition, processorDefinition.DataTypeField);
+                if (kvp.Value.DataTypeFieldIndex == -1)
+                {
+                    throw new InvalidOperationException($"DataTypeField '{processorDefinition.DataTypeField}' must be present in every data definition");
+                }
+            }
+        }
+
+        private static int GetDataTypeFieldIndex(RowProcessorDefinition rowProcessorDefinition, string dataTypeField)
+        {
+            for (int i = 0; i < rowProcessorDefinition.FieldProcessorDefinitions.Length; i++)
+            {
+                var fieldProcessorDefinition = rowProcessorDefinition.FieldProcessorDefinitions[i];
+                if (fieldProcessorDefinition.FieldName == dataTypeField)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private static void ValidateKeyField(FileProcessorDefinition20 processorDefinition)
+        {
+            if (string.IsNullOrWhiteSpace(processorDefinition.KeyField))
+            {
+                throw new InvalidOperationException("Invalid KeyField");
+            }
+
+            foreach (var RowProcessorDefinition in processorDefinition.DataRowProcessorDefinitions.Values)
+            {
+                var keyFieldFound = RowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions.Any(a => a.FieldName == processorDefinition.KeyField);
+                if (!keyFieldFound)
+                {
+                    throw new InvalidOperationException($"KeyField '{processorDefinition.KeyField}' must be present in every data definition");
+                }
+            }
+        }
+
+        private static void InitializeFileProcessorDefinition(
+            FileProcessorDefinition fileProcessorDefinition,
+            InputDefinitionFile.Models.InputDefinitionFile inputDefinitionFile,
+            AggregateManager aggregateManager)
+        {
+            fileProcessorDefinition.CreateRowJsonEnabled = inputDefinitionFile.CreateRowJsonEnabled;
+            fileProcessorDefinition.HeaderRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Header, aggregateManager);
+            fileProcessorDefinition.TrailerRowProcessorDefinition = LoadRowProcessorDefinition(inputDefinitionFile.Trailer, aggregateManager);
+
+            InitializeRules(fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.SelectMany(a => a.Rules), aggregateManager.GetAggregates());
         }
 
         private static void InitializeRules(IEnumerable<IFieldRule> rules, IEnumerable<Aggregate> aggregates)
@@ -37,9 +115,30 @@ namespace DataProcessor.ProcessorDefinition
             }
         }
 
-        private static Models.RowProcessorDefinition LoadRowProcessorDefinition(RowDefinition rowDefinition, AggregateManager aggregateManager)
+        private static Dictionary<string, DataRowProcessorDefinition> LoadRowProcessorDefinitions(Datas datasDefinitions, AggregateManager aggregateManager)
         {
-            var fieldProcessorDefinitions = new List<Models.FieldProcessorDefinition>();
+            var result = new Dictionary<string, DataRowProcessorDefinition>();
+
+            foreach (var rowDefinition in datasDefinitions.Rows)
+            {
+                var fieldProcessorDefinitions = LoadRowProcessorDefinition(rowDefinition, aggregateManager);
+                if (result.ContainsKey(rowDefinition.DataType))
+                {
+                    throw new InvalidOperationException($"DataType '{rowDefinition.DataType}' is duplicated");
+                }
+
+                result[rowDefinition.DataType] = new DataRowProcessorDefinition
+                {
+                    RowProcessorDefinition = fieldProcessorDefinitions
+                };
+            }
+
+            return result;
+        }
+
+        private static RowProcessorDefinition LoadRowProcessorDefinition(RowDefinition rowDefinition, AggregateManager aggregateManager)
+        {
+            var fieldProcessorDefinitions = new List<FieldProcessorDefinition>();
 
             if (rowDefinition != null)
             {
@@ -56,15 +155,15 @@ namespace DataProcessor.ProcessorDefinition
             };
         }
 
-        private static Models.FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition, AggregateManager aggregateManager)
+        private static FieldProcessorDefinition LoadFieldProcessorDefinition(FieldDefinition fieldDefinition, AggregateManager aggregateManager)
         {
-            return new Models.FieldProcessorDefinition
+            return new FieldProcessorDefinition
             {
                 FieldName = fieldDefinition.Name,
                 Description = fieldDefinition.Description,
                 Decoder = CreateDecoder(fieldDefinition),
                 Rules = CreateRules(fieldDefinition),
-                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)                
+                Aggregators = CreateAggregators(fieldDefinition, aggregateManager)
             };
         }
 

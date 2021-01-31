@@ -1,4 +1,4 @@
-﻿using System;
+﻿using DataProcessor.InputDefinitionFile.Models;
 using System.Xml.Serialization;
 
 namespace DataProcessor.InputDefinitionFile
@@ -6,12 +6,9 @@ namespace DataProcessor.InputDefinitionFile
     [XmlRoot("inputDataDefinition")]
     public class InputDefinitionFile_10 : Models.InputDefinitionFile
     {
-        protected override void OnFrameworkVersionSet(string frameworkVersion)
-        {
-            if (frameworkVersion != "1.0")
-            {
-                throw new InvalidOperationException($"Invalid Framework Version '{frameworkVersion}'. Expected 1.0");
-            }
-        }
+        [XmlElement("data")]
+        public RowDefinition Data { get; set; }
+
+        protected override string ExpectedVersion { get; } = "1.0";
     }
 }

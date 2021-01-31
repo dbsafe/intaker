@@ -11,18 +11,30 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="TestFiles\balance-with-header-and-trailer-invalid-dataTypeField.definition.20.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer-invalid-keyField.definition.20.xml" />
     <None Remove="TestFiles\balance-with-header-and-trailer.csv" />
-    <None Remove="TestFiles\balance-with-header-and-trailer.definition.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.definition.10.xml" />
+    <None Remove="TestFiles\balance-with-header-and-trailer.definition.20.xml" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="BypassDecoderTest.cs">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer-invalid-dataTypeField.definition.20.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer-invalid-keyField.definition.20.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\balance-with-header-and-trailer.definition.20.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFiles\balance-with-header-and-trailer.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="TestFiles\balance-with-header-and-trailer.definition.xml">
+    <Content Include="TestFiles\balance-with-header-and-trailer.definition.10.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -40,7 +52,7 @@
 
   <ItemGroup>
     <Resource Include="TestFiles\balance-with-header-and-trailer.csv" />
-    <Resource Include="TestFiles\balance-with-header-and-trailer.definition.xml" />
+    <Resource Include="TestFiles\balance-with-header-and-trailer.definition.10.xml" />
   </ItemGroup>
 
 </Project>

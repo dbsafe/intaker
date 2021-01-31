@@ -14,6 +14,14 @@
       </field>
     </fields>
   </header>
+  <trailer>
+    <fields>
+      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" failValidationResult="Error" />
+      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="TRAILER" failValidationResult="Error" />
+      <field name="HashTotal" description="Hash Total" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" failValidationResult="Error" />
+      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error" />
+    </fields>
+  </trailer>
   <data>
     <fields>
       <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="PAYMENT" failValidationResult="Error" />
@@ -35,12 +43,4 @@
       </field>
     </fields>
   </data>
-  <trailer>
-    <fields>
-      <field name="FileType" description="File Type" decoder="TextDecoder" pattern="PAYMENT" failValidationResult="Error" />
-      <field name="RecordType" description="Record Type" decoder="TextDecoder" pattern="TRAILER" failValidationResult="Error" />
-      <field name="HashTotal" description="Hash Total" decoder="DecimalDecoder" pattern="(?!0+)([0-9]{1,2},)?([0-9]{1,3},)?([0-9]{1,3},)?[0-9]{1,3}\.[0-9]{2}" failValidationResult="Error" />
-      <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error" />
-    </fields>
-  </trailer>
 </inputDataDefinition>
