@@ -45,6 +45,7 @@ namespace FileValidator.Blazor
         {
             var columnInfo = new List<object>
             {
+                new { title = "Line Number", field = "LineNumber", headerSort = false },
                 new { title = "Validation", field = nameof(Row.ValidationResult), headerSort = false }
             };
 
@@ -81,6 +82,7 @@ namespace FileValidator.Blazor
             {
                 dynamic item = new ExpandoObject();
 
+                item.LineNumber = row.Index + 1;
                 item.ValidationResult = row.ValidationResult.ToString();
                 item.Raw = row.Raw;
 
