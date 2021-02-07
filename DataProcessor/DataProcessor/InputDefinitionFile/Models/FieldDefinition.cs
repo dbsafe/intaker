@@ -8,6 +8,9 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("name")]
         public string Name { get; set; }
 
+        [XmlAttribute("uiName")]
+        public string UIName { get; set; }
+
         [XmlAttribute("description")]
         public string Description { get; set; }
 

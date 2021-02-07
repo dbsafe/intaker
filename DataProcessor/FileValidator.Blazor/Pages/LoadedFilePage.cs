@@ -1,4 +1,5 @@
-﻿using DataProcessor.Models;
+﻿using DataProcessor.InputDefinitionFile.Models;
+using DataProcessor.Models;
 using FileValidator.Domain.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -36,10 +37,15 @@ namespace FileValidator.Blazor.Pages
                 _trailerRow = LoadedFilePageState.ParsedDataAndSpec.ParsedData.Trailer;
                 _dataRows = LoadedFilePageState.ParsedDataAndSpec.ParsedData.DataRows;
 
-                _headerColumns = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Header.Fields.Select(a => a.Name);
-                _trailerColumns = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Trailer.Fields.Select(a => a.Name);
-                _dataColumns = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Data.Fields.Select(a => a.Name);
+                _headerColumns = GetHeaderNames(LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Header.Fields);
+                _trailerColumns = GetHeaderNames(LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Trailer.Fields);
+                _dataColumns = GetHeaderNames(LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Data.Fields);
             }
+        }
+
+        private static IEnumerable<string> GetHeaderNames(IEnumerable<FieldDefinition> fieldDefinitions)
+        {
+            return fieldDefinitions.Select(a => string.IsNullOrWhiteSpace(a.UIName) ? a.Name : a.UIName);
         }
 
         private void MenuItemClicked(object sender, MenuItemClickedEventArgs e)
