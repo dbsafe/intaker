@@ -48,7 +48,7 @@
     }
 
     [Parameter]
-    public IEnumerable<string> ColumnHeaders { get; set; }
+    public RowDefinition RowDefinition { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {
@@ -56,7 +56,7 @@
 
         if (firstRender)
         {
-            _tabulatorManager = TabulatorManager.Init(JS, $"#{Id}", _rows, ColumnHeaders);
+            _tabulatorManager = TabulatorManager.Init(JS, $"#{Id}", _rows, RowDefinition);
         }
     }
 }

@@ -3,7 +3,7 @@
   <header>
     <fields>
       <field name="RecordType" uiName="Record Type" description="Record Type (Header Row)" decoder="TextDecoder" pattern="HEADER" failValidationResult="Warning" />
-      <field name="CreationDate" uiName="Creation Date" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+      <field name="CreationDate" uiName="Creation Date" uiFormatter="DateTimeFormatter" uiFormat="yyyy-MM-dd" description="Creation Date" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
       <field name="LocationID" uiName="Location ID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" failValidationResult="Error" />
       <field name="SequenceNumber" uiName="Sequence Number" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
         <rules>
@@ -20,7 +20,7 @@
       <field name="SSN" description="SSN" decoder="TextDecoder" pattern="\d{3}-\d{2}-\d{4}" failValidationResult="Error" />
       <field name="FirstName" uiName="First Name" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
       <field name="LastName" uiName="Last Name" description="Last Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
-      <field name="DOB" description="DOB" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Warning" />
+      <field name="DOB" description="DOB" uiFormatter="DateTimeFormatter" uiFormat="yyyy-MM-dd" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Warning" />
       <field name="Balance" description="Amount" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error">
         <aggregators>
           <aggregator name="BalanceAggregator" description="Balance aggregator" aggregator="SumAggregator" />

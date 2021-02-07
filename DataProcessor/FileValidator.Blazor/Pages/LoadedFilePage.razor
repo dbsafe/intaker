@@ -14,9 +14,9 @@
             else
             {
                 <FileSummaryComponent ParsedDataAndSpec="@LoadedFilePageState.ParsedDataAndSpec"></FileSummaryComponent>
-                <FileSectionComponentV10 Id="table-header" ColumnHeaders="_headerColumns" Tittle="Header" Row="@_headerRow"></FileSectionComponentV10>
-                <FileSectionComponentV10 Id="table-trailer" ColumnHeaders="_trailerColumns" Tittle="Trailer" Row="@_trailerRow"></FileSectionComponentV10>
-                <FileSectionComponentV10 Id="table-data" ColumnHeaders="_dataColumns" Tittle="Data" Rows="@_dataRows"></FileSectionComponentV10>
+                <FileSectionComponentV10 Id="table-header" RowDefinition="_headerDefinition" Tittle="Header" Row="@_headerRow"></FileSectionComponentV10>
+                <FileSectionComponentV10 Id="table-trailer" RowDefinition="_trailerDefinition" Tittle="Trailer" Row="@_trailerRow"></FileSectionComponentV10>
+                <FileSectionComponentV10 Id="table-data" RowDefinition="_dataDefinition" Tittle="Data" Rows="@_dataRows"></FileSectionComponentV10>
             }
         </div>
     </div>

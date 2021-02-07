@@ -11,6 +11,12 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("uiName")]
         public string UIName { get; set; }
 
+        [XmlAttribute("uiFormatter")]
+        public string UIFormatter { get; set; }
+
+        [XmlAttribute("uiFormat")]
+        public string UIFormat { get; set; }
+
         [XmlAttribute("description")]
         public string Description { get; set; }
 
