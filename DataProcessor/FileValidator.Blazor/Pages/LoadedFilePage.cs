@@ -4,7 +4,6 @@ using FileValidator.Domain.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FileValidator.Blazor.Pages
 {
@@ -13,9 +12,10 @@ namespace FileValidator.Blazor.Pages
         private Row _headerRow;
         private Row _trailerRow;
         private IEnumerable<Row> _dataRows;
-        private IEnumerable<string> _headerColumns;
-        private IEnumerable<string> _trailerColumns;
-        private IEnumerable<string> _dataColumns;
+
+        private RowDefinition _headerDefinition;
+        private RowDefinition _trailerDefinition;
+        private RowDefinition _dataDefinition;
 
         [Inject] 
         public IJSRuntime JS { get; set; }
@@ -37,15 +37,10 @@ namespace FileValidator.Blazor.Pages
                 _trailerRow = LoadedFilePageState.ParsedDataAndSpec.ParsedData.Trailer;
                 _dataRows = LoadedFilePageState.ParsedDataAndSpec.ParsedData.DataRows;
 
-                _headerColumns = GetHeaderNames(LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Header.Fields);
-                _trailerColumns = GetHeaderNames(LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Trailer.Fields);
-                _dataColumns = GetHeaderNames(LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Data.Fields);
+                _headerDefinition = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Header;
+                _trailerDefinition = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Trailer;
+                _dataDefinition = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Data;
             }
-        }
-
-        private static IEnumerable<string> GetHeaderNames(IEnumerable<FieldDefinition> fieldDefinitions)
-        {
-            return fieldDefinitions.Select(a => string.IsNullOrWhiteSpace(a.UIName) ? a.Name : a.UIName);
         }
 
         private void MenuItemClicked(object sender, MenuItemClickedEventArgs e)
