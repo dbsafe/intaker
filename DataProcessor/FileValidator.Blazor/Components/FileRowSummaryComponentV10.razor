@@ -3,16 +3,24 @@
 
 <div class="mat-layout-grid-inner">
     <div class="space-10 mat-layout-grid-cell mat-layout-grid-cell-span-12">
-        <FileRowComponent ColumnHeaders="@ColumnHeaders" Rows="@_rows"></FileRowComponent>
+        <div id="@Id"></div>
     </div>
 </div>
 
 @code {
+    private TabulatorManager _tabulatorManager;
+
     private List<Row> _rows;
     private Row _row;
 
+    [Inject]
+    public IJSRuntime JS { get; set; }
+
     [Parameter]
     public string Tittle { get; set; }
+
+    [Parameter]
+    public string Id { get; set; }
 
     [Parameter]
     public Row Row
@@ -33,5 +41,22 @@
     }
 
     [Parameter]
+    public IEnumerable<Row> Rows
+    {
+        get { return _rows; }
+        set { _rows = value.ToList(); }
+    }
+
+    [Parameter]
     public IEnumerable<string> ColumnHeaders { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+
+        if (firstRender)
+        {
+            _tabulatorManager = TabulatorManager.Init(JS, $"#{Id}", _rows, ColumnHeaders);
+        }
+    }
 }
