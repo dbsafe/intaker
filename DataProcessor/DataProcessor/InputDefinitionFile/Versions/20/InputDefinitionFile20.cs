@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace DataProcessor.InputDefinitionFile
 {
     [XmlRoot("inputDataDefinition")]
-    public class InputDefinitionFile_20 : Models.InputDefinitionFile
+    public class InputDefinitionFile20 : Models.InputDefinitionFile
     {
         protected override string ExpectedVersion { get; } = "2.0";
 

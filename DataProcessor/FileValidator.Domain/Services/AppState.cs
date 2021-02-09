@@ -30,7 +30,7 @@
 
     public class LoadedFilePageState
     {
-        public ParsedDataAndSpec ParsedDataAndSpec { get; set; }
+        public ParsedDataAndSpec10 ParsedDataAndSpec10 { get; set; }
         public CursorPosition CursorPosition { get; set; }
     }
 

@@ -7,13 +7,13 @@
         </div>
 
         <div class="mat-layout-grid-cell-span-12 mat-elevation-z5 index-row-item mdc-theme--surface">
-            @if (LoadedFilePageState.ParsedDataAndSpec == null)
+            @if (LoadedFilePageState.ParsedDataAndSpec10 == null)
             {
                 <NoDecodedFileComponent />
             }
             else
             {
-                <FileSummaryComponent ParsedDataAndSpec="@LoadedFilePageState.ParsedDataAndSpec"></FileSummaryComponent>
+                <FileSummaryComponent ParsedDataAndSpec="@LoadedFilePageState.ParsedDataAndSpec10"></FileSummaryComponent>
                 <FileSectionComponentV10 Id="table-header" RowDefinition="_headerDefinition" Tittle="Header" Row="@_headerRow"></FileSectionComponentV10>
                 <FileSectionComponentV10 Id="table-trailer" RowDefinition="_trailerDefinition" Tittle="Trailer" Row="@_trailerRow"></FileSectionComponentV10>
                 <FileSectionComponentV10 Id="table-data" RowDefinition="_dataDefinition" Tittle="Data" Rows="@_dataRows"></FileSectionComponentV10>

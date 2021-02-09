@@ -20,7 +20,7 @@ namespace DataProcessor.Tests
         {
             DataProcessorGlobal.IsDebugEnabled = true;
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_10>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile10>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
         }
 

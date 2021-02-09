@@ -270,7 +270,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         public void CreateProcessorDefinition20_Given_an_input_definition_with_invalid_file_KeyField_should_throw_an_exception()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-invalid-keyField.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
 
             try
             {
@@ -287,7 +287,7 @@ namespace DataProcessor.ProcessorDefinition.Tests
         public void CreateProcessorDefinition20_Given_an_input_definition_with_invalid_file_DataTypeField_should_throw_an_exception()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-invalid-dataTypeField.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
 
             try
             {
@@ -340,16 +340,16 @@ namespace DataProcessor.ProcessorDefinition.Tests
             TestContext.WriteLine(message);
         }
 
-        private InputDefinitionFile_10 BuildInputDefinitionFile10()
+        private InputDefinitionFile10 BuildInputDefinitionFile10()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.10.xml");
-            return FileLoader.Load<InputDefinitionFile_10>(path);
+            return FileLoader.Load<InputDefinitionFile10>(path);
         }
 
-        private InputDefinitionFile_20 BuildInputDefinitionFile20()
+        private InputDefinitionFile20 BuildInputDefinitionFile20()
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.20.xml");
-            return FileLoader.Load<InputDefinitionFile_20>(path);
+            return FileLoader.Load<InputDefinitionFile20>(path);
         }
     }
 }

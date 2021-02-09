@@ -20,7 +20,7 @@ namespace DataProcessor.Tests
         {
             DataProcessorGlobal.IsDebugEnabled = true;
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
         }
 
@@ -60,7 +60,7 @@ namespace DataProcessor.Tests
             var fileDataSourceValidFile = TestHelpers.CreateFileDataSource<ParserContext20>("balance-with-invalid-header.20.csv", false);
 
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-critical-decoder.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
             var fileProcessorDefinitionWithCritical = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             var target = new ParsedDataProcessor20(fileDataSourceValidFile, fileProcessorDefinitionWithCritical);

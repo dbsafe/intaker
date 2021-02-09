@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace DataProcessor.InputDefinitionFile
 {
     [XmlRoot("inputDataDefinition")]
-    public class InputDefinitionFile_10 : Models.InputDefinitionFile
+    public class InputDefinitionFile10 : Models.InputDefinitionFile
     {
         [XmlElement("data")]
         public RowDefinition Data { get; set; }
