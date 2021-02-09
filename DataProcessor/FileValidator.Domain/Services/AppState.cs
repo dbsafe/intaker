@@ -30,7 +30,9 @@
 
     public class LoadedFilePageState
     {
+        public string FrameworkVersion { get; set; }
         public ParsedDataAndSpec10 ParsedDataAndSpec10 { get; set; }
+        public ParsedDataAndSpec20 ParsedDataAndSpec20 { get; set; }
         public CursorPosition CursorPosition { get; set; }
     }
 

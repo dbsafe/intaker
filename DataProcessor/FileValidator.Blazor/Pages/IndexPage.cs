@@ -1,4 +1,6 @@
-﻿using DataProcessor.Models;
+﻿using DataProcessor.InputDefinitionFile;
+using DataProcessor.InputDefinitionFile.Models;
+using DataProcessor.Models;
 using FileValidator.Domain.Services;
 using MatBlazor;
 using Microsoft.AspNetCore.Components;
@@ -128,7 +130,35 @@ namespace FileValidator.Blazor.Pages
             StateHasChanged();
             try
             {
-                LoadFileV10(content, fileSpecXml);
+                var frameworkVersion = GetFrameworkVersion(fileSpecXml);
+                ValidationResultType validationResult;
+
+                switch (frameworkVersion)
+                {
+                    case InputDefinitionFile10.VERSION:
+                        validationResult = LoadFileV10(content, fileSpecXml);
+                        break;
+                    case InputDefinitionFile20.VERSION:
+                        validationResult = LoadFileV20(content, fileSpecXml);
+                        break;
+                    default:
+                        throw new Exception($"Invalid Version '{frameworkVersion}'");
+                }
+
+                switch (validationResult)
+                {
+                    case ValidationResultType.Valid:
+                        Toaster.Add("Validation succeed", MatToastType.Success);
+                        break;
+
+                    case ValidationResultType.Warning:
+                        Toaster.Add("Validation succeed with warnings", MatToastType.Warning);
+                        break;
+
+                    default:
+                        Toaster.Add("Validation failed", MatToastType.Danger);
+                        break;
+                }
 
                 Closing();
                 NavigationManager.NavigateTo("loaded-file");
@@ -145,22 +175,28 @@ namespace FileValidator.Blazor.Pages
             }
         }
 
-        private void LoadFileV10(string content, string fileSpecXml)
+        private static string GetFrameworkVersion(string fileSpecXml)
+        {
+            var inputDefinitionFileVersion = HelperXmlSerializer.Deserialize<InputDefinitionFrameworkVersion>(fileSpecXml);
+            return inputDefinitionFileVersion.FrameworkVersion;
+        }
+
+        private ValidationResultType LoadFileV10(string content, string fileSpecXml)
         {
             LoadedFilePageState.ParsedDataAndSpec10 = FileDecoder.LoadVersion10(content, fileSpecXml);
+            LoadedFilePageState.ParsedDataAndSpec20 = null;
+            LoadedFilePageState.FrameworkVersion = InputDefinitionFile10.VERSION;
 
-            switch (LoadedFilePageState.ParsedDataAndSpec10.ParsedData.ValidationResult)
-            {
-                case ValidationResultType.Valid:
-                    Toaster.Add("Validation succeed", MatToastType.Success);
-                    break;
-                case ValidationResultType.Warning:
-                    Toaster.Add("Validation succeed with warnings", MatToastType.Warning);
-                    break;
-                default:
-                    Toaster.Add("Validation failed", MatToastType.Danger);
-                    break;
-            }
+            return LoadedFilePageState.ParsedDataAndSpec10.ParsedData.ValidationResult;
+        }
+
+        private ValidationResultType LoadFileV20(string content, string fileSpecXml)
+        {
+            LoadedFilePageState.ParsedDataAndSpec10 = null;
+            LoadedFilePageState.ParsedDataAndSpec20 = FileDecoder.LoadVersion20(content, fileSpecXml);
+            LoadedFilePageState.FrameworkVersion = InputDefinitionFile20.VERSION;
+
+            return LoadedFilePageState.ParsedDataAndSpec20.ParsedData.ValidationResult;
         }
 
         private void Closing()
