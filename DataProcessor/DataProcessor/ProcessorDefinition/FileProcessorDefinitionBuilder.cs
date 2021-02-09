@@ -12,7 +12,7 @@ namespace DataProcessor.ProcessorDefinition
 {
     public static class FileProcessorDefinitionBuilder
     {
-        public static FileProcessorDefinition10 CreateFileProcessorDefinition(InputDefinitionFile_10 inputDefinitionFile_10)
+        public static FileProcessorDefinition10 CreateFileProcessorDefinition(InputDefinitionFile10 inputDefinitionFile_10)
         {
             var aggregateManager = new AggregateManager();
             var processorDefinition = new FileProcessorDefinition10();
@@ -25,7 +25,7 @@ namespace DataProcessor.ProcessorDefinition
             return processorDefinition;
         }
 
-        public static FileProcessorDefinition20 CreateFileProcessorDefinition(InputDefinitionFile_20 inputDefinitionFile_20)
+        public static FileProcessorDefinition20 CreateFileProcessorDefinition(InputDefinitionFile20 inputDefinitionFile_20)
         {
             var aggregateManager = new AggregateManager();
             var processorDefinition = new FileProcessorDefinition20();

@@ -13,7 +13,7 @@ namespace DataProcessor.Tests
     public class ParsedDataProcessor20Test_Integration_Decoders
     {
         private ProcessorDefinition.Models.FileProcessorDefinition20 _fileProcessorDefinition;
-        private InputDefinitionFile_20 _inputDefinitionFile;
+        private InputDefinitionFile20 _inputDefinitionFile;
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
         public TestContext TestContext { get; set; }
@@ -23,7 +23,7 @@ namespace DataProcessor.Tests
         {
             DataProcessorGlobal.IsDebugEnabled = true;
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer.definition.20.xml");
-            _inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            _inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
             _fileProcessorDefinition = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(_inputDefinitionFile);
         }
 
@@ -224,7 +224,7 @@ namespace DataProcessor.Tests
             var fileDataSource = CreateFileDataSource("balance-with-invalid-header.20.csv");
 
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             var target = new ParsedDataProcessor20(fileDataSource, fileProcessorDefinitionWithWarnings);
@@ -278,7 +278,7 @@ namespace DataProcessor.Tests
             var fileDataSource = CreateFileDataSource("balance-with-invalid-date-in-a-data-row.20.csv");
 
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             var target = new ParsedDataProcessor20(fileDataSource, fileProcessorDefinitionWithWarnings);
@@ -332,7 +332,7 @@ namespace DataProcessor.Tests
             var fileDataSource = CreateFileDataSource("balance-with-invalid-trailer.20.csv");
 
             var path = Path.Combine(_testDirectory, "TestFiles", "balance-with-header-and-trailer-with-warnings.definition.20.xml");
-            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile_20>(path);
+            var inputDefinitionFile = FileLoader.Load<InputDefinitionFile20>(path);
             var fileProcessorDefinitionWithWarnings = ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
             var target = new ParsedDataProcessor20(fileDataSource, fileProcessorDefinitionWithWarnings);

@@ -31,15 +31,15 @@ namespace FileValidator.Blazor.Pages
             base.OnInitialized();
             ApplicationsEvents.MenuItemClicked += MenuItemClicked;
 
-            if (LoadedFilePageState.ParsedDataAndSpec != null)
+            if (LoadedFilePageState.ParsedDataAndSpec10 != null)
             {
-                _headerRow = LoadedFilePageState.ParsedDataAndSpec.ParsedData.Header;
-                _trailerRow = LoadedFilePageState.ParsedDataAndSpec.ParsedData.Trailer;
-                _dataRows = LoadedFilePageState.ParsedDataAndSpec.ParsedData.DataRows;
+                _headerRow = LoadedFilePageState.ParsedDataAndSpec10.ParsedData.Header;
+                _trailerRow = LoadedFilePageState.ParsedDataAndSpec10.ParsedData.Trailer;
+                _dataRows = LoadedFilePageState.ParsedDataAndSpec10.ParsedData.DataRows;
 
-                _headerDefinition = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Header;
-                _trailerDefinition = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Trailer;
-                _dataDefinition = LoadedFilePageState.ParsedDataAndSpec.InputDefinitionFile.Data;
+                _headerDefinition = LoadedFilePageState.ParsedDataAndSpec10.InputDefinitionFile.Header;
+                _trailerDefinition = LoadedFilePageState.ParsedDataAndSpec10.InputDefinitionFile.Trailer;
+                _dataDefinition = LoadedFilePageState.ParsedDataAndSpec10.InputDefinitionFile.Data;
             }
         }
 

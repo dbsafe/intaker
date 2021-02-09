@@ -7,14 +7,14 @@ using System.Reflection;
 namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
 {
     [TestClass]
-    public class InputDefinitionFile_20Test
+    public class InputDefinitionFile20Test
     {
         public TestContext TestContext { get; set; }
 
         [TestMethod]
         public void Serialize()
         {
-            var target = new InputDefinitionFile_20
+            var target = new InputDefinitionFile20
             {
                 Name = "TestFile",
                 Description = "Demo definition file with two data types",
@@ -85,7 +85,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             var path = Path.Combine(testDirectory, "TestFiles", "FXWDCSV.definition.20.xml");
             var inputXml = File.ReadAllText(path);
 
-            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_20>(inputXml);
+            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile20>(inputXml);
             var outputXml = HelperXmlSerializer.Serialize(actual);
             TestContext.WriteLine(outputXml);
 

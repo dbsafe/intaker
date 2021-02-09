@@ -7,7 +7,7 @@ using System.Reflection;
 namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
 {
     [TestClass]
-    public class InputDefinitionFile_10Test
+    public class InputDefinitionFile10Test
     {
         private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         public TestContext TestContext { get; set; }
@@ -27,7 +27,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
                 new AggregatorDefinition("BalanceAggregator", "Balance aggregator", "SumAggregator")
             };
 
-            var target = new InputDefinitionFile_10
+            var target = new InputDefinitionFile10
             {
                 Name = "FXWDCSV",
                 Description = "Demo defining part of FXWDCSV",
@@ -83,7 +83,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
         {
             var inputXml = LoadInputXml10();
 
-            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_10>(inputXml);
+            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile10>(inputXml);
             var outputXml = HelperXmlSerializer.Serialize(actual);
             TestContext.WriteLine(outputXml);
 
@@ -97,7 +97,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
             var path = Path.Combine(_testDirectory, "TestFiles", "FXWDCSV-default-values.definition.xml");
             var inputXmlWithDefaultValues = File.ReadAllText(path);
 
-            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile_10>(inputXmlWithDefaultValues);
+            var actual = HelperXmlSerializer.Deserialize<InputDefinitionFile10>(inputXmlWithDefaultValues);
             var outputXml = HelperXmlSerializer.Serialize(actual);
             TestContext.WriteLine(outputXml);
 

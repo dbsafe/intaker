@@ -39,10 +39,10 @@ namespace FileValidator.Blazor.Pages
 
         private void Opening()
         {
-            if (LoadedFilePageState.ParsedDataAndSpec != null)
+            if (LoadedFilePageState.ParsedDataAndSpec10 != null)
             {
                 _editorManager = EditorManager.CreateJsonEditor(JS, "editor", true);
-                _editorManager.SetValue(LoadedFilePageState.ParsedDataAndSpec.ParsedData.ToJson());
+                _editorManager.SetValue(LoadedFilePageState.ParsedDataAndSpec10.ParsedData.ToJson());
                 if (LoadedFileJsonPageState.CursorPosition != null)
                 {
                     _editorManager.MoveCursorToPosition(LoadedFileJsonPageState.CursorPosition);

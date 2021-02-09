@@ -7,10 +7,10 @@ namespace FileValidator.Blazor.Components
     public partial class FileSummaryComponent
     {
         private Model _model = new Model();
-        private ParsedDataAndSpec _parsedDataAndSpec;
+        private ParsedDataAndSpec10 _parsedDataAndSpec;
 
         [Parameter]
-        public ParsedDataAndSpec ParsedDataAndSpec
+        public ParsedDataAndSpec10 ParsedDataAndSpec
         {
             get
             {

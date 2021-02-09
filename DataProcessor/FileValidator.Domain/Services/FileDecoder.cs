@@ -10,18 +10,18 @@ namespace FileValidator.Domain.Services
 {
     public interface IFileDecoder
     {
-        ParsedDataAndSpec LoadVersion10(string content, string fileSpecXml);
+        ParsedDataAndSpec10 LoadVersion10(string content, string fileSpecXml);
     }
 
-    public class ParsedDataAndSpec
+    public class ParsedDataAndSpec10
     {
         public ParsedData ParsedData { get; set; }
-        public InputDefinitionFile_10 InputDefinitionFile { get; set; }
+        public InputDefinitionFile10 InputDefinitionFile { get; set; }
     }
 
     public class FileDecoder : IFileDecoder
     {
-        public ParsedDataAndSpec LoadVersion10(string content, string fileSpecXml)
+        public ParsedDataAndSpec10 LoadVersion10(string content, string fileSpecXml)
         {
             var inputDefinitionFileVersion = HelperXmlSerializer.Deserialize<InputDefinitionFrameworkVersion>(fileSpecXml);
             if (inputDefinitionFileVersion.FrameworkVersion != "1.0")
@@ -29,10 +29,10 @@ namespace FileValidator.Domain.Services
                 throw new Exception($"Invalid Version '{inputDefinitionFileVersion.FrameworkVersion}'");
             }
 
-            var inputDefinitionFile = FileLoader.LoadFromXml<InputDefinitionFile_10>(fileSpecXml);
+            var inputDefinitionFile = FileLoader.LoadFromXml<InputDefinitionFile10>(fileSpecXml);
             var fileProcessorDefinition = DataProcessor.ProcessorDefinition.FileProcessorDefinitionBuilder.CreateFileProcessorDefinition(inputDefinitionFile);
 
-            var result = new ParsedDataAndSpec { InputDefinitionFile = inputDefinitionFile };
+            var result = new ParsedDataAndSpec10 { InputDefinitionFile = inputDefinitionFile };
 
             var config = new StreamDataSourceConfig
             {

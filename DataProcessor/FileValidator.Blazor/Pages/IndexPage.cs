@@ -128,20 +128,7 @@ namespace FileValidator.Blazor.Pages
             StateHasChanged();
             try
             {
-                LoadedFilePageState.ParsedDataAndSpec = FileDecoder.LoadVersion10(content, fileSpecXml);
-
-                switch (LoadedFilePageState.ParsedDataAndSpec.ParsedData.ValidationResult)
-                {
-                    case ValidationResultType.Valid:
-                        Toaster.Add("Validation succeed", MatToastType.Success);
-                        break;
-                    case ValidationResultType.Warning:
-                        Toaster.Add("Validation succeed with warnings", MatToastType.Warning);
-                        break;
-                    default:
-                        Toaster.Add("Validation failed", MatToastType.Danger);
-                        break;
-                }
+                LoadFileV10(content, fileSpecXml);
 
                 Closing();
                 NavigationManager.NavigateTo("loaded-file");
@@ -155,6 +142,24 @@ namespace FileValidator.Blazor.Pages
             {
                 _model.ProgressDialogIsOpen = false;
                 StateHasChanged();
+            }
+        }
+
+        private void LoadFileV10(string content, string fileSpecXml)
+        {
+            LoadedFilePageState.ParsedDataAndSpec10 = FileDecoder.LoadVersion10(content, fileSpecXml);
+
+            switch (LoadedFilePageState.ParsedDataAndSpec10.ParsedData.ValidationResult)
+            {
+                case ValidationResultType.Valid:
+                    Toaster.Add("Validation succeed", MatToastType.Success);
+                    break;
+                case ValidationResultType.Warning:
+                    Toaster.Add("Validation succeed with warnings", MatToastType.Warning);
+                    break;
+                default:
+                    Toaster.Add("Validation failed", MatToastType.Danger);
+                    break;
             }
         }
 
