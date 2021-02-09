@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using System.Reflection;
 
-namespace DataProcessor.InputDefinitionFile.Tests.Versions_10
+namespace DataProcessor.InputDefinitionFile.Tests.Versions
 {
     [TestClass]
     public class InputDefinitionFile10Test
