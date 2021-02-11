@@ -6,7 +6,8 @@ namespace DataProcessor.InputDefinitionFile
     [XmlRoot("inputDataDefinition")]
     public class InputDefinitionFile20 : Models.InputDefinitionFile
     {
-        protected override string ExpectedVersion { get; } = "2.0";
+        public const string VERSION = "2.0";
+        protected override string ExpectedVersion { get; } = VERSION;
 
         [XmlElement(ElementName = "datas")]
         public Datas Datas { get; set; }
