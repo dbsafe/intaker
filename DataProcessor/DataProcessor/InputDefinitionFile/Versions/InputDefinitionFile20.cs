@@ -21,6 +21,9 @@ namespace DataProcessor.InputDefinitionFile
         [XmlAttribute("dataTypeField")]
         public string DataTypeField { get; set; }
 
+        [XmlAttribute("masterDataType")]
+        public string MasterDataType { get; set; }
+
         [XmlElement("data")]
         public RowDefinition[] Rows { get; set; }
     }

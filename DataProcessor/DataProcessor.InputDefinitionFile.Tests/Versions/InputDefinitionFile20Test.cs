@@ -60,6 +60,7 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions
             {
                 KeyField = "ConsumerId",
                 DataTypeField = "RecordType",
+                MasterDataType = "DP",
                 Rows = new RowDefinition[] { depositRow, changeRow }
             };
 
