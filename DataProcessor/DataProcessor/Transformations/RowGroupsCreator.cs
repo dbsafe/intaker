@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace DataProcessor.Transformations
 {
@@ -23,7 +24,7 @@ namespace DataProcessor.Transformations
 
             foreach(var row in rows)
             {
-                var key = row.KeyField?.Value?.ToString();
+                var key = row.KeyFieldIndex.HasValue ? row.Row.Fields[row.KeyFieldIndex.Value].Value.ToString() : null;
                 var rowGroup = FindOrCreateRow20Group(key);
                 AddRowToGroup(rowGroup, row);
             }
@@ -33,8 +34,7 @@ namespace DataProcessor.Transformations
 
         private void AddRowToGroup(DataRow20Group group, DataRow20 row)
         {
-            var dataType = row.DataTypeField?.Value?.ToString();
-            if (dataType == _config.MasterDataType)
+            if (IsMasterRow(row))
             {
                 group.MasterRow = row;
             }
@@ -42,6 +42,21 @@ namespace DataProcessor.Transformations
             {
                 group.Rows.Add(row);
             }
+        }
+
+        private bool IsMasterRow(DataRow20 row)
+        {
+            if (!row.DataTypeFieldIndex.HasValue)
+            {
+                return false;
+            }
+
+            if (row.DataTypeFieldIndex.Value >= row.Row.Fields.Count)
+            {
+                throw new InvalidOperationException($"RowIndex: {row.Row.Index}. DataTypeFieldIndex {row.DataTypeFieldIndex.Value} is greater or equal than the number of fields {row.Row.Fields.Count}");
+            }
+
+            return row.Row.Fields[row.DataTypeFieldIndex.Value].Value.ToString() == _config.MasterDataType;
         }
 
         private DataRow20Group FindOrCreateRow20Group(string key)

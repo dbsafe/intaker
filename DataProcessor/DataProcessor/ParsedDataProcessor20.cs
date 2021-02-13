@@ -81,7 +81,8 @@ namespace DataProcessor
                 return;
             }
 
-            e.Context.DataRows.Add(new DataRow20 { Row = e.Row });
+            var dataRow = new DataRow20 { Row = e.Row };
+            e.Context.DataRows.Add(dataRow);
             e.Context.DataType = kvp.Key;
             var lineType = $"Data Row '{kvp.Key}'";
             ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
