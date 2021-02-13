@@ -1,5 +1,5 @@
 ﻿window.tabulator = {
-    init: (id, tabledData, columnInfo, subtableColumnInfo) => {
+    init10: (id, tabledData, columnInfo, subtableColumnInfo) => {
         try {
             table = new Tabulator(id, {
                 data: tabledData,
@@ -33,6 +33,18 @@
                         columns: subtableColumnInfo
                     })
                 }
+            });
+        }
+        catch (err) {
+            console.log(err.message);
+        }
+    },
+    init20: (id, tabledData, columnInfo) => {
+        try {
+            table = new Tabulator(id, {
+                data: tabledData,
+                layout: "fitDataStretch",
+                columns: columnInfo,
             });
         }
         catch (err) {
