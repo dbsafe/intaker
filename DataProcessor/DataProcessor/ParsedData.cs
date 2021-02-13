@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace DataProcessor
 {
-    public class ParsedData
+    public class ParsedData10
     {
         public Row Header { get; set; }
         public Row Trailer { get; set; }

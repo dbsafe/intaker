@@ -14,13 +14,13 @@ namespace FileValidator.Domain.Services
 
     public class ParsedDataAndSpec10
     {
-        public ParsedData ParsedData { get; set; }
+        public ParsedData10 ParsedData { get; set; }
         public InputDefinitionFile10 InputDefinitionFile { get; set; }
     }
 
     public class ParsedDataAndSpec20
     {
-        public ParsedData ParsedData { get; set; }
+        public ParsedData10 ParsedData { get; set; }
         public InputDefinitionFile20 InputDefinitionFile { get; set; }
     }
 

@@ -210,7 +210,7 @@ namespace DataProcessor
             }
         }
 
-        public ParsedData Process()
+        public ParsedData10 Process()
         {
             ParserContext = new ParserContext20 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
@@ -227,7 +227,7 @@ namespace DataProcessor
                 }
             }
 
-            return new ParsedData
+            return new ParsedData10
             {
                 Errors = ParserContext.Errors,
                 AllRows = ParserContext.AllRows,

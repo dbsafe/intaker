@@ -141,7 +141,7 @@ namespace DataProcessor
             ParsedDataProcessorHelper.ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);
         }
 
-        public ParsedData Process()
+        public ParsedData10 Process()
         {
             ParserContext = new ParserContext { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
@@ -158,7 +158,7 @@ namespace DataProcessor
                 }
             }
 
-            return new ParsedData
+            return new ParsedData10
             {
                 Errors = ParserContext.Errors,
                 AllRows = ParserContext.AllRows,
