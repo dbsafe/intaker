@@ -4,7 +4,6 @@ using DataProcessor.Models;
 namespace DataProcessor
 {
     public abstract class ParsedDataProcessor<TParserContext>
-        where TParserContext : ParserContext
     {
         protected readonly IDataSource<TParserContext> _source;
         protected readonly bool _hasHeader;

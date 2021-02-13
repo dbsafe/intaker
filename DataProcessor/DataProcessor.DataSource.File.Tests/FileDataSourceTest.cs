@@ -19,7 +19,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_Given_a_file_that_does_not_exist_Should_throw_an_exception()
         {
             var target = CreateTarget("test-file.txt", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             try
             {
@@ -36,7 +36,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_Given_a_file_ProcessField_event_should_be_raised_for_every_field()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var expected = new List<Field>
             {
@@ -67,7 +67,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_ProcessField_Fields_should_reference_the_parent_row()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var row0 = new Row
             {
@@ -118,7 +118,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_Given_a_file_Context_in_processField_event_should_indicate_the_row_index()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var expected = new List<int>
             {
@@ -145,7 +145,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_Given_a_file_Context_in_processField_event_should_indicate_the_raw_fields()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var expected = new List<string[]>
             {
@@ -171,7 +171,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_ProcessField_Given_that_context_indicates_abort_The_process_should_stop()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
             var rowCount = 0;
             var fieldCount = 0;
 
@@ -196,7 +196,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_Given_a_file_BeforeProcessRow_event_should_be_raised_for_every_row()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var row0 = new Row
             {
@@ -244,7 +244,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_BeforeProcessRow_Given_that_context_indicates_abort_The_process_should_stop()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
             var rowCount = 0;
             var fieldCount = 0;
 
@@ -269,7 +269,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_Given_a_file_AfterProcessRow_event_should_be_raised_for_every_row()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var row0 = new Row
             {
@@ -315,7 +315,7 @@ namespace DataProcessor.DataSource.File.Tests
         public void Process_AfterProcessRow_Given_that_context_indicates_abort_The_process_should_stop()
         {
             var target = CreateTarget("test-file-01.csv", true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
             var rowCount = 0;
             var fieldCount = 0;
 
@@ -370,7 +370,7 @@ namespace DataProcessor.DataSource.File.Tests
             Assert.AreEqual(expected.Value, actual.Value);
         }
 
-        private FileDataSource<ParserContext> CreateTarget(string filename, bool hasFieldsEnclosedInQuotes)
+        private FileDataSource<ParserContext<Row>> CreateTarget(string filename, bool hasFieldsEnclosedInQuotes)
         {
             var config = new FileDataSourceConfig
             {
@@ -379,7 +379,7 @@ namespace DataProcessor.DataSource.File.Tests
                 Path = Path.Combine(_testDirectory, "TestFiles", filename)
             };
 
-            return new FileDataSource<ParserContext>(config);
+            return new FileDataSource<ParserContext<Row>>(config);
         }
 
         private void AssertIndexes(IList<int> expected, IList<int> actual)

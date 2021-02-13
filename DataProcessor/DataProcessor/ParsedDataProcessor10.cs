@@ -6,13 +6,13 @@ using System;
 
 namespace DataProcessor
 {
-    public class ParsedDataProcessor10 : ParsedDataProcessor<ParserContext>
+    public class ParsedDataProcessor10 : ParsedDataProcessor<ParserContext10>
     {
         private readonly FileProcessorDefinition10 _fileProcessorDefinition;
 
-        public ParserContext ParserContext { get; private set; }
+        public ParserContext10 ParserContext { get; private set; }
 
-        public ParsedDataProcessor10(IDataSource<ParserContext> source, FileProcessorDefinition10 fileProcessorDefinition)
+        public ParsedDataProcessor10(IDataSource<ParserContext10> source, FileProcessorDefinition10 fileProcessorDefinition)
             : base(source,
                    fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions.Length > 0,
                    fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions.Length > 0)
@@ -38,7 +38,7 @@ namespace DataProcessor
             ParsedDataProcessorHelper.ValidateRowProcessorDefinition("Trailer", processorDefinition.TrailerRowProcessorDefinition);
         }
 
-        private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs<ParserContext> e)
+        private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs<ParserContext10> e)
         {
             DataProcessorGlobal.Debug($"Processing Row. Index: {e.Row.Index}, Raw Data: '{e.Row.Raw}'");
 
@@ -69,7 +69,7 @@ namespace DataProcessor
             ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
         }
 
-        private void SourceAfterProcessRow(object sender, ProcessRowEventArgs<ParserContext> e)
+        private void SourceAfterProcessRow(object sender, ProcessRowEventArgs<ParserContext10> e)
         {
             e.Context.AllRows.Add(e.Row);
             e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
@@ -116,7 +116,7 @@ namespace DataProcessor
             }
         }
 
-        private void SourceProcessField(object sender, ProcessFieldEventArgs<ParserContext> e)
+        private void SourceProcessField(object sender, ProcessFieldEventArgs<ParserContext10> e)
         {
             if (e.Field.Row.ValidationResult == ValidationResultType.Critical)
             {
@@ -141,9 +141,9 @@ namespace DataProcessor
             ParsedDataProcessorHelper.ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);
         }
 
-        public ParsedData Process()
+        public ParsedData10 Process()
         {
-            ParserContext = new ParserContext { ValidationResult = ValidationResultType.Valid };
+            ParserContext = new ParserContext10 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
 
             if (ParserContext.InvalidDataRowCount > 0)
@@ -158,7 +158,7 @@ namespace DataProcessor
                 }
             }
 
-            return new ParsedData
+            return new ParsedData10
             {
                 Errors = ParserContext.Errors,
                 AllRows = ParserContext.AllRows,

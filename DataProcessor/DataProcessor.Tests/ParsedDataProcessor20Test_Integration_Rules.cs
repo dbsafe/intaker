@@ -42,14 +42,14 @@ namespace DataProcessor.Tests
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
             Assert.AreEqual("Trailer row is invalid", actual.Errors[1]);
 
-            Assert.AreSame(actual.Header, actual.InvalidRows[0]);
+            Assert.AreSame(actual.Header, actual.InvalidRows[0].Row);
             Assert.AreEqual(ValidationResultType.Error, actual.Header.ValidationResult);
             Assert.AreEqual(ValidationResultType.Error, actual.Header.Fields[3].ValidationResult);
             Assert.AreEqual(1, actual.Header.Errors.Count);
             Assert.AreEqual("Sequence number should be equal or less than 100", actual.Header.Errors[0]);
             Assert.AreEqual(0, actual.Header.Warnings.Count);
 
-            Assert.AreSame(actual.Trailer, actual.InvalidRows[1]);
+            Assert.AreSame(actual.Trailer, actual.InvalidRows[1].Row);
             Assert.AreEqual(ValidationResultType.Error, actual.Trailer.ValidationResult);
             Assert.AreEqual(ValidationResultType.Warning, actual.Trailer.Fields[1].ValidationResult);
             Assert.AreEqual(ValidationResultType.Error, actual.Trailer.Fields[2].ValidationResult);

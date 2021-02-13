@@ -30,7 +30,7 @@ namespace DataProcessor.Transformations.Tests
             "D1,key-e,d1-f2-07,d1-f3-07,master-key-e",
         };
 
-        private Row20[] _rows;
+        private DataRow20[] _rows;
         private RowGroupsCreator _target;
 
         public TestContext TestContext { get; set; }
@@ -44,9 +44,9 @@ namespace DataProcessor.Transformations.Tests
             _rows = CreateRows();
         }
 
-        private Row20[] CreateRows()
+        private DataRow20[] CreateRows()
         {
-            var rows = new List<Row20>();
+            var rows = new List<DataRow20>();
             int rowIndex = 0;
 
             foreach (var line in _lines)
@@ -58,7 +58,7 @@ namespace DataProcessor.Transformations.Tests
             return rows.ToArray();
         }
 
-        private Row20 CreateRow(int index, string raw)
+        private DataRow20 CreateRow(int index, string raw)
         {
             var row = new Row { Index = index, Raw = raw };
 
@@ -69,7 +69,7 @@ namespace DataProcessor.Transformations.Tests
                 row.Fields.Add(CreateField(fieldIndex++, rawField));
             }
 
-            return new Row20
+            return new DataRow20
             {
                 Row = row,
                 DataTypeField = row.Fields[0],

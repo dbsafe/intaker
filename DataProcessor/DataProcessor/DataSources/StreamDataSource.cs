@@ -11,7 +11,7 @@ namespace DataProcessor.DataSource.InStream
     }
 
     public class StreamDataSource<TParserContext> : BaseDataSource<TParserContext>
-        where TParserContext : ParserContext
+        where TParserContext : IParserContext
     {
         private readonly Stream _stream;
 

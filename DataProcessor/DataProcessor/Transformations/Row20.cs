@@ -2,7 +2,7 @@
 
 namespace DataProcessor.Transformations
 {
-    public class Row20
+    public class DataRow20
     {
         public Row Row { get; set; }
         public Field KeyField { get; set; }

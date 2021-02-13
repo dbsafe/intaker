@@ -91,24 +91,24 @@ namespace DataProcessor.Tests
             Assert.AreEqual(0, actual.InvalidRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
-            var row0 = actual.AllRows[0];
+            var row0 = actual.AllRows[0].Row;
             Assert.AreEqual(2, row0.Fields.Count);
             Assert.AreEqual("h1", row0.Fields[0].Value);
             Assert.AreEqual("h2", row0.Fields[1].Value);
 
-            var row1 = actual.AllRows[1];
+            var row1 = actual.AllRows[1].Row;
             Assert.AreEqual(3, row1.Fields.Count);
             Assert.AreEqual("dt1", row1.Fields[0].Value);
             Assert.AreEqual("key-value", row1.Fields[1].Value);
             Assert.AreEqual("field-1c", row1.Fields[2].Value);
 
-            var row2 = actual.AllRows[2];
+            var row2 = actual.AllRows[2].Row;
             Assert.AreEqual(3, row2.Fields.Count);
             Assert.AreEqual("dt1", row2.Fields[0].Value);
             Assert.AreEqual("key-value", row2.Fields[1].Value);
             Assert.AreEqual("field-2c", row2.Fields[2].Value);
 
-            var row3 = actual.AllRows[3];
+            var row3 = actual.AllRows[3].Row;
             Assert.AreEqual(4, row3.Fields.Count);
             Assert.AreEqual("dt2", row3.Fields[0].Value);
             Assert.AreEqual("field-3b", row3.Fields[1].Value);

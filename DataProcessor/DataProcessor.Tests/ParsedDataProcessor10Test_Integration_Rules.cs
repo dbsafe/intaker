@@ -27,7 +27,7 @@ namespace DataProcessor.Tests
         [TestMethod]
         public void Process_Given_a_rule_violation_Result_should_indicate_error_and_warning()
         {
-            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource<ParserContext>("balance-with-rule-violations.10.csv", false);
+            var fileDataSourceValidFile = TestHelpers.CreateFileDataSource<ParserContext10>("balance-with-rule-violations.10.csv", false);
             var target = new ParsedDataProcessor10(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
