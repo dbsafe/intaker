@@ -131,19 +131,12 @@ namespace FileValidator.Blazor.Pages
             try
             {
                 var frameworkVersion = GetFrameworkVersion(fileSpecXml);
-                ValidationResultType validationResult;
-
-                switch (frameworkVersion)
+                var validationResult = frameworkVersion switch
                 {
-                    case InputDefinitionFile10.VERSION:
-                        validationResult = LoadFileV10(content, fileSpecXml);
-                        break;
-                    case InputDefinitionFile20.VERSION:
-                        validationResult = LoadFileV20(content, fileSpecXml);
-                        break;
-                    default:
-                        throw new Exception($"Invalid Version '{frameworkVersion}'");
-                }
+                    InputDefinitionFile10.VERSION => LoadFileV10(content, fileSpecXml),
+                    InputDefinitionFile20.VERSION => LoadFileV20(content, fileSpecXml),
+                    _ => throw new Exception($"Invalid Version '{frameworkVersion}'"),
+                };
 
                 switch (validationResult)
                 {
@@ -217,7 +210,7 @@ namespace FileValidator.Blazor.Pages
                 {
                     _editorManager.MoveCursorToPosition(HomePageState.CursorPosition);
                 }
-                
+
                 _editorManager.Focus();
             }
         }
