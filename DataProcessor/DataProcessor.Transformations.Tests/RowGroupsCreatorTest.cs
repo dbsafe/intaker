@@ -72,8 +72,8 @@ namespace DataProcessor.Transformations.Tests
             return new DataRow20
             {
                 Row = row,
-                DataTypeField = row.Fields[0],
-                KeyField = row.Fields[1]
+                DataTypeFieldIndex = 0,
+                KeyFieldIndex = 1
             };
         }
 
