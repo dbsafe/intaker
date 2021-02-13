@@ -9,61 +9,24 @@ using System.Linq;
 
 namespace FileValidator.Blazor
 {
-    public class TabulatorManager
+    public class TabulatorManager10 : TabulatorManager
     {
         private readonly IJSInProcessRuntime _js;
         private readonly string _id;
         private readonly RowDefinition _rowDefinition;
 
-        private readonly Dictionary<string, IFormatter> _formatters = new Dictionary<string, IFormatter>()
+        public static TabulatorManager10 Init(IJSRuntime js, string id, IEnumerable<Row> rows, RowDefinition rowDefinition)
         {
-            { nameof(DateTimeFormatter), new DateTimeFormatter() }
-        };
-
-        public static TabulatorManager Init(IJSRuntime js, string id, IEnumerable<Row> rows, RowDefinition rowDefinition)
-        {
-            var table = new TabulatorManager(js, id, rowDefinition);
+            var table = new TabulatorManager10(js, id, rowDefinition);
             table.Init(rows);
             return table;
         }
 
-        public static TabulatorManager CreateDemoTable(IJSRuntime js, string id)
-        {
-            var table = new TabulatorManager(js, id, null);
-            table._js.InvokeVoid("tabulator.initDemo", id);
-            return table;
-        }
-
-        private TabulatorManager(IJSRuntime js, string id, RowDefinition rowDefinition)
+        private TabulatorManager10(IJSRuntime js, string id, RowDefinition rowDefinition)
         {
             _js = js as IJSInProcessRuntime;
             _id = id;
             _rowDefinition = rowDefinition;
-        }
-
-        private List<object> BuildColumnInfo()
-        {
-            var columnInfo = new List<object>
-            {
-                new { title = "Line Number", field = "LineNumber", headerSort = false },
-                new { title = "Validation", field = nameof(Row.ValidationResult), headerSort = false }
-            };
-
-            var counter = 0;
-            var headers = GetHeaderNames(_rowDefinition.Fields);
-            foreach (var header in headers)
-            {
-                columnInfo.Add(new { title = header, field = $"field_{counter++}", headerSort = false });
-            }
-
-            columnInfo.Add(new { title = "Raw", field = nameof(Row.Raw), headerSort = false });
-
-            return columnInfo;
-        }
-
-        private static IEnumerable<string> GetHeaderNames(IEnumerable<FieldDefinition> fieldDefinitions)
-        {
-            return fieldDefinitions.Select(a => string.IsNullOrWhiteSpace(a.UIName) ? a.Name : a.UIName);
         }
 
         private static List<object> BuildSubtableColumnInfo()
@@ -144,11 +107,11 @@ namespace FileValidator.Blazor
 
         private void Init(IEnumerable<Row> rows)
         {
-            var columnInfo = BuildColumnInfo();
+            var columnInfo = BuildColumnInfo(_rowDefinition);
             var subtableColumnInfo = BuildSubtableColumnInfo();
             var tableData = BuildTableData(rows);
 
-            _js.InvokeVoid("tabulator.init", _id, tableData, columnInfo, subtableColumnInfo);
+            _js.InvokeVoid("tabulator.init10", _id, tableData, columnInfo, subtableColumnInfo);
         }
     }
 }
