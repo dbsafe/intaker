@@ -78,7 +78,7 @@ namespace DataProcessor.Tests
             var actual = target.Process();
             TestContext.PrintJson(actual.AllRows);
 
-            var dataRow0_Balance = actual.DataRows[0];
+            var dataRow0_Balance = actual.DataRows[0].Row;
             Assert.AreEqual(1, dataRow0_Balance.Index);
             Assert.AreEqual(ValidationResultType.Valid, dataRow0_Balance.ValidationResult);
             Assert.AreEqual("BALANCE,1001,111-22-1001,fname-01,lname-01,10212000,1000.00,AA", dataRow0_Balance.Raw);
@@ -97,7 +97,7 @@ namespace DataProcessor.Tests
             AssertValidField(6, "1000.00", 1000m, dataRow0_Balance, dataRow0_Balance.Fields[6]);
             AssertValidField(7, "AA", "AA", dataRow0_Balance, dataRow0_Balance.Fields[7]);
 
-            var dataRow1_Balance = actual.DataRows[1];
+            var dataRow1_Balance = actual.DataRows[1].Row;
             Assert.AreEqual(2, dataRow1_Balance.Index);
             Assert.AreEqual(ValidationResultType.Valid, dataRow1_Balance.ValidationResult);
             Assert.AreEqual("BALANCE,1002,111-22-1002,fname-02,lname-02,10222000,2000.00,", dataRow1_Balance.Raw);
@@ -116,7 +116,7 @@ namespace DataProcessor.Tests
             AssertValidField(6, "2000.00", 2000m, dataRow1_Balance, dataRow1_Balance.Fields[6]);
             AssertValidField(7, "", "", dataRow1_Balance, dataRow1_Balance.Fields[7]);
 
-            var dataRow2_Change = actual.DataRows[2];
+            var dataRow2_Change = actual.DataRows[2].Row;
             Assert.AreEqual(3, dataRow2_Change.Index);
             Assert.AreEqual(ValidationResultType.Valid, dataRow2_Change.ValidationResult);
             Assert.AreEqual("CHANGE,1002,01022020,1002-addr-1,1002-addr-2", dataRow2_Change.Raw);
@@ -132,7 +132,7 @@ namespace DataProcessor.Tests
             AssertValidField(3, "1002-addr-1", "1002-addr-1", dataRow2_Change, dataRow2_Change.Fields[3]);
             AssertValidField(4, "1002-addr-2", "1002-addr-2", dataRow2_Change, dataRow2_Change.Fields[4]);
 
-            var dataRow3_Balance = actual.DataRows[3];
+            var dataRow3_Balance = actual.DataRows[3].Row;
             Assert.AreEqual(4, dataRow3_Balance.Index);
             Assert.AreEqual(ValidationResultType.Valid, dataRow3_Balance.ValidationResult);
             Assert.AreEqual("BALANCE,1003,111-22-1003,fname-03,lname-03,10232000,3000.00,", dataRow3_Balance.Raw);
@@ -151,7 +151,7 @@ namespace DataProcessor.Tests
             AssertValidField(6, "3000.00", 3000m, dataRow3_Balance, dataRow3_Balance.Fields[6]);
             AssertValidField(7, "", "", dataRow3_Balance, dataRow3_Balance.Fields[7]);
 
-            var dataRow4_Change = actual.DataRows[4];
+            var dataRow4_Change = actual.DataRows[4].Row;
             Assert.AreEqual(5, dataRow4_Change.Index);
             Assert.AreEqual(ValidationResultType.Valid, dataRow4_Change.ValidationResult);
             Assert.AreEqual("CHANGE,1003,01032020,1003-addr-1,1003-addr-2", dataRow4_Change.Raw);
@@ -210,7 +210,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
 
-            Assert.AreSame(actual.Header, actual.InvalidRows[0]);
+            Assert.AreSame(actual.Header, actual.InvalidRows[0].Row);
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
@@ -265,7 +265,7 @@ namespace DataProcessor.Tests
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[0]);
 
-            var invalidRow = actual.AllRows[2];
+            var invalidRow = actual.AllRows[2].Row;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual(0, invalidRow.Warnings.Count);
@@ -293,7 +293,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(5, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidRows.Count);
 
-            var rowWithWarning = actual.AllRows[2];
+            var rowWithWarning = actual.AllRows[2].Row;
             Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
             Assert.AreEqual(0, rowWithWarning.Errors.Count);
             Assert.AreEqual(1, rowWithWarning.Warnings.Count);
@@ -318,7 +318,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual("Trailer row is invalid", actual.Errors[0]);
 
-            Assert.AreSame(actual.Trailer, actual.InvalidRows[0]);
+            Assert.AreSame(actual.Trailer, actual.InvalidRows[0].Row);
             var invalidRow = actual.Trailer;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
@@ -372,7 +372,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[1]);
 
-            Assert.AreSame(actual.Header, actual.InvalidRows[0]);
+            Assert.AreSame(actual.Header, actual.InvalidRows[0].Row);
             var invalidRow = actual.Header;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
@@ -380,7 +380,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
 
             Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
-            invalidRow = actual.AllRows[2];
+            invalidRow = actual.AllRows[2].Row;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual(0, invalidRow.Warnings.Count);

@@ -364,9 +364,9 @@ namespace DataProcessor.Tests
             Assert.AreSame(expectedRow, actualField.Row);
         }
 
-        private IDataSource<ParserContext> CreateFileDataSource(string filename)
+        private IDataSource<ParserContext10> CreateFileDataSource(string filename)
         {
-            return TestHelpers.CreateFileDataSource<ParserContext>(filename, _inputDefinitionFile.HasFieldsEnclosedInQuotes, _inputDefinitionFile.Delimiter);
+            return TestHelpers.CreateFileDataSource<ParserContext10>(filename, _inputDefinitionFile.HasFieldsEnclosedInQuotes, _inputDefinitionFile.Delimiter);
         }
     }
 }

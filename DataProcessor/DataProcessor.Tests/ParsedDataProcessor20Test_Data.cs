@@ -85,19 +85,19 @@ namespace DataProcessor.Tests
             Assert.AreEqual(0, actual.InvalidRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
-            var row0 = actual.AllRows[0];
+            var row0 = actual.AllRows[0].Row;
             Assert.AreEqual(3, row0.Fields.Count);
             Assert.AreEqual("dt1", row0.Fields[0].Value);
             Assert.AreEqual("key-value", row0.Fields[1].Value);
             Assert.AreEqual("field-1c", row0.Fields[2].Value);
 
-            var row1 = actual.AllRows[1];
+            var row1 = actual.AllRows[1].Row;
             Assert.AreEqual(3, row1.Fields.Count);
             Assert.AreEqual("dt1", row1.Fields[0].Value);
             Assert.AreEqual("key-value", row1.Fields[1].Value);
             Assert.AreEqual("field-2c", row1.Fields[2].Value);
 
-            var row2 = actual.AllRows[2];
+            var row2 = actual.AllRows[2].Row;
             Assert.AreEqual(4, row2.Fields.Count);
             Assert.AreEqual("dt2", row2.Fields[0].Value);
             Assert.AreEqual("field-3b", row2.Fields[1].Value);
@@ -125,8 +125,8 @@ namespace DataProcessor.Tests
             Assert.AreEqual(2, actual.InvalidRows.Count);
 
             var row0 = actual.AllRows[0];
-            Assert.AreEqual(1, row0.Errors.Count);
-            Assert.AreEqual("Data Row 'dt1' - The expected number of fields 2 is not equal to the actual number of fields 3", row0.Errors[0]);
+            Assert.AreEqual(1, row0.Row.Errors.Count);
+            Assert.AreEqual("Data Row 'dt1' - The expected number of fields 2 is not equal to the actual number of fields 3", row0.Row.Errors[0]);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace DataProcessor.DataSource.Stream.Tests
         public void Process_Given_a_file_ProcessField_event_should_be_raised_for_every_field()
         {
             var target = CreateTarget(true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var expected = new List<Field>
             {
@@ -41,7 +41,7 @@ namespace DataProcessor.DataSource.Stream.Tests
             AssertFields(expected, actual);
         }
 
-        private StreamDataSource<ParserContext> CreateTarget(bool hasFieldsEnclosedInQuotes)
+        private StreamDataSource<ParserContext<Row>> CreateTarget(bool hasFieldsEnclosedInQuotes)
         {
             var config = new StreamDataSourceConfig
             {
@@ -59,7 +59,7 @@ namespace DataProcessor.DataSource.Stream.Tests
             writer.Write(sb.ToString());
             writer.Flush();
 
-            return new StreamDataSource<ParserContext>(config, ms);
+            return new StreamDataSource<ParserContext<Row>>(config, ms);
         }
 
         private void AssertFields(IList<Field> expected, IList<Field> actual)

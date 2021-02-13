@@ -11,7 +11,7 @@ namespace DataProcessor.DataSource.InMemory.Tests
         public void Process_Given_a_file_ProcessField_event_should_be_raised_for_every_field()
         {
             var target = CreateTarget(true);
-            var context = new ParserContext();
+            var context = new ParserContext<Row>();
 
             var expected = new List<Field>
             {
@@ -38,7 +38,7 @@ namespace DataProcessor.DataSource.InMemory.Tests
             AssertFields(expected, actual);
         }
 
-        private InMemoryDataSource<ParserContext> CreateTarget(bool hasFieldsEnclosedInQuotes)
+        private InMemoryDataSource<ParserContext<Row>> CreateTarget(bool hasFieldsEnclosedInQuotes)
         {
             var config = new InMemoryDataSourceConfig
             {
@@ -53,7 +53,7 @@ namespace DataProcessor.DataSource.InMemory.Tests
                 "\"field-3a\",\"field-3b\""
             };
 
-            return new InMemoryDataSource<ParserContext>(config, lines);
+            return new InMemoryDataSource<ParserContext<Row>>(config, lines);
         }
 
         private void AssertFields(IList<Field> expected, IList<Field> actual)
