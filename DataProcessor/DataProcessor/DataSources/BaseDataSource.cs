@@ -16,7 +16,7 @@ namespace DataProcessor.DataSource
     }
 
     public abstract class BaseDataSource<TParserContext> : IDataSource<TParserContext>
-        where TParserContext : ParserContext
+        where TParserContext : IParserContext
     {
         private readonly LineParser _lineParser;
 

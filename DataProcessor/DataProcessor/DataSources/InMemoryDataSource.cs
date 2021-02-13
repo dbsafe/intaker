@@ -9,7 +9,7 @@ namespace DataProcessor.DataSource.InMemory
     }
 
     public class InMemoryDataSource<TParserContext> : BaseDataSource<TParserContext>
-        where TParserContext : ParserContext
+        where TParserContext : IParserContext
     {
         private readonly string[] _lines;
 

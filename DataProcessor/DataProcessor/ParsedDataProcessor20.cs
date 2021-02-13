@@ -1,6 +1,7 @@
 ﻿using DataProcessor.Contracts;
 using DataProcessor.Models;
 using DataProcessor.ProcessorDefinition.Models;
+using DataProcessor.Transformations;
 using DataProcessor.Utils;
 using System;
 using System.Collections.Generic;
@@ -80,7 +81,7 @@ namespace DataProcessor
                 return;
             }
 
-            e.Context.DataRows.Add(e.Row);
+            e.Context.DataRows.Add(new DataRow20 { Row = e.Row });
             e.Context.DataType = kvp.Key;
             var lineType = $"Data Row '{kvp.Key}'";
             ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
@@ -106,7 +107,9 @@ namespace DataProcessor
 
         private void SourceAfterProcessRow(object sender, ProcessRowEventArgs<ParserContext20> e)
         {
-            e.Context.AllRows.Add(e.Row);
+            var row20 = new DataRow20 { Row = e.Row };
+
+            e.Context.AllRows.Add(row20);
             e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
             if (e.Context.ValidationResult == ValidationResultType.Critical)
             {
@@ -115,7 +118,7 @@ namespace DataProcessor
 
             if (e.Row.ValidationResult != ValidationResultType.Valid && e.Row.ValidationResult != ValidationResultType.Warning)
             {
-                e.Context.InvalidRows.Add(e.Row);
+                e.Context.InvalidRows.Add(row20);
 
                 if (IsHeaderRow(e.Row))
                 {
@@ -210,7 +213,7 @@ namespace DataProcessor
             }
         }
 
-        public ParsedData10 Process()
+        public ParsedData20 Process()
         {
             ParserContext = new ParserContext20 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
@@ -227,7 +230,7 @@ namespace DataProcessor
                 }
             }
 
-            return new ParsedData10
+            return new ParsedData20
             {
                 Errors = ParserContext.Errors,
                 AllRows = ParserContext.AllRows,

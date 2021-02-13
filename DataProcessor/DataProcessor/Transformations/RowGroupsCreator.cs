@@ -9,7 +9,7 @@ namespace DataProcessor.Transformations
 
     public class RowGroupsCreator
     {
-        private readonly Dictionary<string, Row20Group> _dictionary = new Dictionary<string, Row20Group>();
+        private readonly Dictionary<string, DataRow20Group> _dictionary = new Dictionary<string, DataRow20Group>();
         private readonly RowGroupsCreatorConfig _config;
 
         public RowGroupsCreator(RowGroupsCreatorConfig config)
@@ -17,7 +17,7 @@ namespace DataProcessor.Transformations
             _config = config;
         }
 
-        public IEnumerable<Row20Group> BuildRowGroups(IEnumerable<Row20> rows)
+        public IEnumerable<DataRow20Group> BuildRowGroups(IEnumerable<DataRow20> rows)
         {
             _dictionary.Clear();
 
@@ -31,7 +31,7 @@ namespace DataProcessor.Transformations
             return _dictionary.Values;
         }
 
-        private void AddRowToGroup(Row20Group group, Row20 row)
+        private void AddRowToGroup(DataRow20Group group, DataRow20 row)
         {
             var dataType = row.DataTypeField?.Value?.ToString();
             if (dataType == _config.MasterDataType)
@@ -44,14 +44,14 @@ namespace DataProcessor.Transformations
             }
         }
 
-        private Row20Group FindOrCreateRow20Group(string key)
+        private DataRow20Group FindOrCreateRow20Group(string key)
         {
             if (_dictionary.ContainsKey(key))
             {
                 return _dictionary[key];
             }
 
-            var row20Group = new Row20Group();
+            var row20Group = new DataRow20Group();
             _dictionary[key] = row20Group;
             return row20Group;
         }

@@ -12,7 +12,7 @@ namespace DataProcessor.DataSource.File
     }
 
     public class FileDataSource<TParserContext> : BaseDataSource<TParserContext>
-        where TParserContext : ParserContext
+        where TParserContext : IParserContext
     {
         private readonly FileDataSourceConfig _config;
 

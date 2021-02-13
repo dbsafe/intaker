@@ -2,9 +2,9 @@
 
 namespace DataProcessor.Transformations
 {
-    public class Row20Group
+    public class DataRow20Group
     {
-        public Row20 MasterRow { get; set; }
-        public List<Row20> Rows { get; } = new List<Row20>();
+        public DataRow20 MasterRow { get; set; }
+        public List<DataRow20> Rows { get; } = new List<DataRow20>();
     }
 }
