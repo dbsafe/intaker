@@ -4,5 +4,6 @@
     {
         public RowProcessorDefinition RowProcessorDefinition { get; set; }
         public int DataTypeFieldIndex { get; set; } = -1;
+        public int DataKeyFieldIndex { get; set; } = -1;
     }
 }
