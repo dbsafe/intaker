@@ -7,17 +7,27 @@
         </div>
 
         <div class="mat-layout-grid-cell-span-12 mat-elevation-z5 index-row-item mdc-theme--surface">
-            @if (LoadedFilePageState.ParsedDataAndSpec10 == null)
+            @if (string.IsNullOrWhiteSpace(_frameworkVersion))
             {
                 <NoDecodedFileComponent />
             }
-            else
+
+            @if (_frameworkVersion == InputDefinitionFile10.VERSION)
             {
-                <FileSummaryComponent ParsedDataAndSpec="@LoadedFilePageState.ParsedDataAndSpec10"></FileSummaryComponent>
+                <FileSummaryComponentV10 ParsedDataAndSpec="@_parsedDataAndSpec10"></FileSummaryComponentV10>
                 <FileSectionComponentV10 Id="table-header" RowDefinition="_headerDefinition" Tittle="Header" Row="@_headerRow"></FileSectionComponentV10>
                 <FileSectionComponentV10 Id="table-trailer" RowDefinition="_trailerDefinition" Tittle="Trailer" Row="@_trailerRow"></FileSectionComponentV10>
-                <FileSectionComponentV10 Id="table-data" RowDefinition="_dataDefinition" Tittle="Data" Rows="@_dataRows"></FileSectionComponentV10>
+                <FileSectionComponentV10 Id="table-data" RowDefinition="_dataDefinition10" Tittle="Data" Rows="@_dataRows"></FileSectionComponentV10>
             }
+
+            @if (_frameworkVersion == InputDefinitionFile20.VERSION)
+            {
+                <FileSummaryComponentV20 ParsedDataAndSpec="@_parsedDataAndSpec20"></FileSummaryComponentV20>
+                <FileSectionComponentV10 Id="table-header" RowDefinition="_headerDefinition" Tittle="Header" Row="@_headerRow"></FileSectionComponentV10>
+                <FileSectionComponentV10 Id="table-trailer" RowDefinition="_trailerDefinition" Tittle="Trailer" Row="@_trailerRow"></FileSectionComponentV10>
+                <FileDataSectionComponentV20 Id="table-data" DataRowsDefinition="_dataRowsDefinition20" Tittle="Data" Rows="@_dataRow20s"></FileDataSectionComponentV20>
+            }
+
         </div>
     </div>
 </div>

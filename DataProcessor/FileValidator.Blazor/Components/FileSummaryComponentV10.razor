@@ -1,0 +1,70 @@
+﻿<div class="mat-subtitle2">Summary</div>
+<MatDivider></MatDivider>
+
+<div class="mat-layout-grid-inner">
+    <div class="file-summary mat-layout-grid-cell mat-layout-grid-cell-span-6">
+        <div class="mat-body2"><strong>Validation Result: </strong>@_model.ValidationResult</div>
+        <div class="mat-body2"><strong>Total Number of Data rows: </strong>@_model.DataRowCount</div>
+        <div class="mat-body2"><strong>Total Number of Invalid rows: </strong>@_model.InvalidRowCount</div>
+    </div>
+
+    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
+        @if (_model.FileHasErrors)
+        {
+            <div class="mat-body2"><strong>Errors:</strong></div>
+            @foreach (var error in _model.Errors)
+            {
+                <div style="margin-left:20px" class="mat-body2">@error</div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    private Model _model = new Model();
+    private ParsedDataAndSpec10 _parsedDataAndSpec;
+
+    [Parameter]
+    public ParsedDataAndSpec10 ParsedDataAndSpec
+    {
+        get
+        {
+            return _parsedDataAndSpec;
+        }
+        set
+        {
+            _parsedDataAndSpec = value;
+            if (_parsedDataAndSpec != null)
+            {
+                SetPrivateProperties();
+            }
+            else
+            {
+                Clear();
+            }
+        }
+    }
+
+    private void SetPrivateProperties()
+    {
+        _model.FileHasErrors = _parsedDataAndSpec.ParsedData.Errors.Count > 0;
+        _model.Errors = _parsedDataAndSpec.ParsedData.Errors;
+        _model.DataRowCount = _parsedDataAndSpec.ParsedData.DataRows.Count;
+        _model.InvalidRowCount = _parsedDataAndSpec.ParsedData.InvalidRows.Count;
+        _model.ValidationResult = _parsedDataAndSpec.ParsedData.ValidationResult.ToString();
+    }
+
+    private void Clear()
+    {
+        _model = new Model();
+    }
+
+    private class Model
+    {
+        public bool FileHasErrors { get; set; }
+        public int DataRowCount { get; set; }
+        public int InvalidRowCount { get; set; }
+        public string ValidationResult { get; set; }
+        public IEnumerable<string> Errors { get; set; }
+    }
+}
