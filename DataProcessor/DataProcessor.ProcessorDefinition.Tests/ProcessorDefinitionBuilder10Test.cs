@@ -6,15 +6,12 @@ using DataProcessor.Rules;
 using DataProcessor.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
-using System.Reflection;
 
 namespace DataProcessor.ProcessorDefinition.Tests
 {
     [TestClass]
     public class ProcessorDefinitionBuilder10Test : BaseTest
     {
-        private readonly string _testDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-
         [TestInitialize]
         public void Initialize()
         {
