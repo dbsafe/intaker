@@ -46,35 +46,34 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_file_with_header_Should_decode_and_parse_fields()
+        public void Process_Given_a_file_with_data_and_trailer_Should_decode_and_parse_fields()
         {
             var target = new ParsedDataProcessor10(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
 
-            Assert.AreEqual(3, actual.AllRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.IsNull(actual.Header);
+            Assert.AreEqual(2, actual.DataRows.Count);
+            Assert.IsNotNull(actual.Trailer);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
-            var row0 = actual.AllRows[0];
-            Assert.AreEqual(3, row0.Fields.Count);
-            Assert.AreEqual("field-1a", row0.Fields[0].Value);
-            Assert.AreEqual("field-1b", row0.Fields[1].Value);
-            Assert.AreEqual("field-1c", row0.Fields[2].Value);
 
-            var row1 = actual.AllRows[1];
-            Assert.AreEqual(3, row1.Fields.Count);
-            Assert.AreEqual("field-2a", row1.Fields[0].Value);
-            Assert.AreEqual("field-2b", row1.Fields[1].Value);
-            Assert.AreEqual("field-2c", row1.Fields[2].Value);
+            var dataRow0 = actual.DataRows[0];
+            Assert.AreEqual(3, dataRow0.Fields.Count);
+            Assert.AreEqual("field-1a", dataRow0.Fields[0].Value);
+            Assert.AreEqual("field-1b", dataRow0.Fields[1].Value);
+            Assert.AreEqual("field-1c", dataRow0.Fields[2].Value);
 
-            var row2 = actual.AllRows[2];
-            Assert.AreEqual(2, row2.Fields.Count);
-            Assert.AreEqual("field-3a", row2.Fields[0].Value);
-            Assert.AreEqual("field-3b", row2.Fields[1].Value);
+            var dataRow1 = actual.DataRows[1];
+            Assert.AreEqual(3, dataRow1.Fields.Count);
+            Assert.AreEqual("field-2a", dataRow1.Fields[0].Value);
+            Assert.AreEqual("field-2b", dataRow1.Fields[1].Value);
+            Assert.AreEqual("field-2c", dataRow1.Fields[2].Value);
 
-            Assert.IsNull(actual.Header);
-            Assert.AreEqual(row2, actual.Trailer);
+            Assert.AreEqual(2, actual.Trailer.Fields.Count);
+            Assert.AreEqual("field-3a", actual.Trailer.Fields[0].Value);
+            Assert.AreEqual("field-3b", actual.Trailer.Fields[1].Value);
         }
     }
 }

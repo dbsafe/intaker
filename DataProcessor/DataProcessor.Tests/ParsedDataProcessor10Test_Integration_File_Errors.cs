@@ -34,11 +34,10 @@ namespace DataProcessor.Tests
             TestContext.PrintJson(actual);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
-            Assert.AreEqual(2, actual.Errors.Count);
-            Assert.AreEqual(4, actual.AllRows.Count);
             Assert.AreEqual(2, actual.DataRows.Count);
-            Assert.AreEqual(2, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
+            Assert.AreEqual(2, actual.Errors.Count);
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
             Assert.AreEqual("Trailer row is invalid", actual.Errors[1]);
 
@@ -70,9 +69,8 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(ValidationResultType.Critical, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
-            Assert.AreEqual(1, actual.AllRows.Count);
             Assert.AreEqual(0, actual.DataRows.Count);
-            Assert.AreEqual(1, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
 

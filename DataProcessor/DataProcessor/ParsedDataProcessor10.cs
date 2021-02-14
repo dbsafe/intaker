@@ -71,49 +71,25 @@ namespace DataProcessor
 
         private void SourceAfterProcessRow(object sender, ProcessRowEventArgs<ParserContext10> e)
         {
-            e.Context.AllRows.Add(e.Row);
             e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
             if (e.Context.ValidationResult == ValidationResultType.Critical)
             {
                 e.Context.IsAborted = true;
             }
 
-            if (e.Row.ValidationResult != ValidationResultType.Valid && e.Row.ValidationResult != ValidationResultType.Warning)
+            if (IsHeaderRow(e.Row))
             {
-                e.Context.InvalidRows.Add(e.Row);
-
-                if (IsHeaderRow(e.Row))
-                {
-                    e.Context.Errors.Add("Header row is invalid");
-                    return;
-                }
-
-                if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
-                {
-                    e.Context.Errors.Add("Trailer row is invalid");
-                    return;
-                }
-
-                e.Context.InvalidDataRowCount++;
+                AfterProcessHeaderRow(e);
                 return;
             }
 
-            if (_fileProcessorDefinition.CreateRowJsonEnabled)
+            if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
             {
-                if (IsHeaderRow(e.Row))
-                {
-                    ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
-                    return;
-                }
-
-                if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
-                {
-                    ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
-                    return;
-                }
-
-                ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
+                AfterProcessTrailerRow(e);
+                return;
             }
+
+            AfterProcessDataRow(e);
         }
 
         private void SourceProcessField(object sender, ProcessFieldEventArgs<ParserContext10> e)
@@ -141,29 +117,59 @@ namespace DataProcessor
             ParsedDataProcessorHelper.ProcessField(fieldProcessorDefinition.Description, e.Field, fieldProcessorDefinition);
         }
 
+        private void AfterProcessDataRow(ProcessRowEventArgs<ParserContext10> e)
+        {
+            if (!IsValidRow(e))
+            {
+                e.Context.InvalidDataRows.Add(e.Row);
+                return;
+            }
+
+            if (_fileProcessorDefinition.CreateRowJsonEnabled)
+            {
+                ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.DataRowProcessorDefinition.FieldProcessorDefinitions);
+            }
+        }
+
+        private void AfterProcessTrailerRow(ProcessRowEventArgs<ParserContext10> e)
+        {
+            if (!IsValidRow(e))
+            {
+                e.Context.Errors.Add("Trailer row is invalid");
+                return;
+            }
+
+            if (_fileProcessorDefinition.CreateRowJsonEnabled)
+            {
+                ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.TrailerRowProcessorDefinition.FieldProcessorDefinitions);
+            }
+        }
+
+        private void AfterProcessHeaderRow(ProcessRowEventArgs<ParserContext10> e)
+        {
+            if (!IsValidRow(e))
+            {
+                e.Context.Errors.Add("Header row is invalid");
+                return;
+            }
+
+            if (_fileProcessorDefinition.CreateRowJsonEnabled)
+            {
+                ParsedDataProcessorHelper.SetJson(e.Row, _fileProcessorDefinition.HeaderRowProcessorDefinition.FieldProcessorDefinitions);
+            }
+        }
+
         public ParsedData10 Process()
         {
             ParserContext = new ParserContext10 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
-
-            if (ParserContext.InvalidDataRowCount > 0)
-            {
-                if (ParserContext.InvalidDataRowCount == 1)
-                {
-                    ParserContext.Errors.Add($"There is 1 invalid data row");
-                }
-                else
-                {
-                    ParserContext.Errors.Add($"There are {ParserContext.InvalidDataRowCount} invalid data rows");
-                }
-            }
+            VerifyInvalidDataRows(ParserContext);
 
             return new ParsedData10
             {
                 Errors = ParserContext.Errors,
-                AllRows = ParserContext.AllRows,
                 DataRows = ParserContext.DataRows,
-                InvalidRows = ParserContext.InvalidRows,
+                InvalidDataRows = ParserContext.InvalidDataRows,
                 Header = ParserContext.Header,
                 Trailer = ParserContext.Trailer,
                 ValidationResult = ParserContext.ValidationResult

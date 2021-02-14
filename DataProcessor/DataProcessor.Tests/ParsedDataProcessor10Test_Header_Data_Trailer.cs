@@ -57,40 +57,35 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor10(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.AllRows);
+            TestContext.PrintJson(actual.DataRows);
 
-            Assert.AreEqual(4, actual.AllRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.AreEqual(2, actual.DataRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
-            var row0 = actual.AllRows[0];
-            Assert.IsNull(row0.Json);
-            Assert.AreEqual(2, row0.Fields.Count);
-            Assert.AreEqual("field-1a", row0.Fields[0].Value);
-            Assert.AreEqual("field-1b", row0.Fields[1].Value);
+            Assert.IsNull(actual.Header.Json);
+            Assert.AreEqual(2, actual.Header.Fields.Count);
+            Assert.AreEqual("field-1a", actual.Header.Fields[0].Value);
+            Assert.AreEqual("field-1b", actual.Header.Fields[1].Value);
 
-            var row1 = actual.AllRows[1];
-            Assert.IsNull(row1.Json);
-            Assert.AreEqual(3, row1.Fields.Count);
-            Assert.AreEqual("field-2a", row1.Fields[0].Value);
-            Assert.AreEqual("field-2b", row1.Fields[1].Value);
-            Assert.AreEqual("field-2c", row1.Fields[2].Value);
+            var dataRow0 = actual.DataRows[0];
+            Assert.IsNull(dataRow0.Json);
+            Assert.AreEqual(3, dataRow0.Fields.Count);
+            Assert.AreEqual("field-2a", dataRow0.Fields[0].Value);
+            Assert.AreEqual("field-2b", dataRow0.Fields[1].Value);
+            Assert.AreEqual("field-2c", dataRow0.Fields[2].Value);
 
-            var row2 = actual.AllRows[2];
-            Assert.IsNull(row2.Json);
-            Assert.AreEqual(3, row2.Fields.Count);
-            Assert.AreEqual("field-3a", row2.Fields[0].Value);
-            Assert.AreEqual("field-3b", row2.Fields[1].Value);
-            Assert.AreEqual("field-3c", row2.Fields[2].Value);
+            var dataRow1 = actual.DataRows[1];
+            Assert.IsNull(dataRow1.Json);
+            Assert.AreEqual(3, dataRow1.Fields.Count);
+            Assert.AreEqual("field-3a", dataRow1.Fields[0].Value);
+            Assert.AreEqual("field-3b", dataRow1.Fields[1].Value);
+            Assert.AreEqual("field-3c", dataRow1.Fields[2].Value);
 
-            var row3 = actual.AllRows[3];
-            Assert.IsNull(row3.Json);
-            Assert.AreEqual(2, row3.Fields.Count);
-            Assert.AreEqual("field-4a", row3.Fields[0].Value);
-            Assert.AreEqual("field-4b", row3.Fields[1].Value);
-
-            Assert.AreSame(row0, actual.Header);
-            Assert.AreSame(row3, actual.Trailer);
+            Assert.IsNull(actual.Trailer.Json);
+            Assert.AreEqual(2, actual.Trailer.Fields.Count);
+            Assert.AreEqual("field-4a", actual.Trailer.Fields[0].Value);
+            Assert.AreEqual("field-4b", actual.Trailer.Fields[1].Value);
         }
 
         [TestMethod]
@@ -100,24 +95,22 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor10(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.AllRows);
-            TestContext.PrintRowJsons(actual.AllRows);
+            TestContext.PrintJson(actual.DataRows);
+            TestContext.PrintRowJsons(actual.DataRows);
 
-            Assert.AreEqual(4, actual.AllRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.AreEqual(2, actual.DataRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
-            var row0 = actual.AllRows[0];
-            Assert.AreEqual("{\"Field-HA\":\"field-1a\",\"Field-HB\":\"field-1b\"}", row0.Json);
+            Assert.AreEqual("{\"Field-HA\":\"field-1a\",\"Field-HB\":\"field-1b\"}", actual.Header.Json);
 
-            var row1 = actual.AllRows[1];
-            Assert.AreEqual("{\"Field-DA\":\"field-2a\",\"Field-DB\":\"field-2b\",\"Field-DC\":\"field-2c\"}", row1.Json);
+            var dataRow0 = actual.DataRows[0];
+            Assert.AreEqual("{\"Field-DA\":\"field-2a\",\"Field-DB\":\"field-2b\",\"Field-DC\":\"field-2c\"}", dataRow0.Json);
 
-            var row2 = actual.AllRows[2];
-            Assert.AreEqual("{\"Field-DA\":\"field-3a\",\"Field-DB\":\"field-3b\",\"Field-DC\":\"field-3c\"}", row2.Json);
+            var dataRow1 = actual.DataRows[1];
+            Assert.AreEqual("{\"Field-DA\":\"field-3a\",\"Field-DB\":\"field-3b\",\"Field-DC\":\"field-3c\"}", dataRow1.Json);
 
-            var row3 = actual.AllRows[3];
-            Assert.AreEqual("{\"Field-TA\":\"field-4a\",\"Field-TB\":\"field-4b\"}", row3.Json);
+            Assert.AreEqual("{\"Field-TA\":\"field-4a\",\"Field-TB\":\"field-4b\"}", actual.Trailer.Json);
         }
     }
 }
