@@ -41,40 +41,39 @@ namespace DataProcessor
             ValidateDataRowProcessorDefinitions(processorDefinition);
         }
 
+        private void ClearContext(ParserContext20 context)
+        {
+            context.DataType = string.Empty;
+            context.CurrentDataRow20 = null;
+            context.DataTypeFieldIndex = -1;
+            context.DataKeyFieldIndex = -1;
+        }
+
         private void SourceBeforeProcessRow(object sender, ProcessRowEventArgs<ParserContext20> e)
         {
             DataProcessorGlobal.Debug($"Processing Row. Index: {e.Row.Index}, Raw Data: '{e.Row.Raw}'");
-            e.Context.DataType = string.Empty;
-            e.Context.CurrentDataRow20 = null;
-
-            string lineType;
-            RowProcessorDefinition rowProcessorDefinition;
+            ClearContext(e.Context);
 
             if (IsHeaderRow(e.Row))
             {
-                lineType = "Header Row";
-                rowProcessorDefinition = _fileProcessorDefinition.HeaderRowProcessorDefinition;
-                e.Context.Header = e.Row;
-                ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+                BeforeProcessHeaderRow(e);
                 return;
             }
 
             if (IsTrailerRow(e.Context.IsCurrentRowTheLast))
             {
-                lineType = "Trailer Row";
-                rowProcessorDefinition = _fileProcessorDefinition.TrailerRowProcessorDefinition;
-                e.Context.Trailer = e.Row;
-                ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, rowProcessorDefinition);
+                BeforeProcessTrailerRow(e);
                 return;
             }
 
-            e.Context.CurrentDataRow20 = new DataRow20 { Row = e.Row };
-            ValidateNumerOfFields(_fileProcessorDefinition, e);
+            SourceBeforeProcessDataRow(e);
         }
 
-        private static void ValidateNumerOfFields(FileProcessorDefinition20 fileProcessorDefinition, ProcessRowEventArgs<ParserContext20> e)
+        private void SourceBeforeProcessDataRow(ProcessRowEventArgs<ParserContext20> e)
         {
-            var kvp = FindDataRowProcessorDefinition(fileProcessorDefinition, e);
+            e.Context.CurrentDataRow20 = new DataRow20 { Row = e.Row };
+            
+            var kvp = FindDataRowProcessorDefinition(_fileProcessorDefinition, e);
             if (kvp.Key == null)
             {
                 e.Row.ValidationResult = ValidationResultType.Error;
@@ -85,8 +84,22 @@ namespace DataProcessor
 
             e.Context.DataRows.Add(e.Context.CurrentDataRow20);
             e.Context.DataType = kvp.Key;
+            e.Context.DataTypeFieldIndex = kvp.Value.DataTypeFieldIndex;
+            e.Context.DataKeyFieldIndex = kvp.Value.DataKeyFieldIndex;
             var lineType = $"Data Row '{kvp.Key}'";
             ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
+        }
+
+        private void BeforeProcessHeaderRow(ProcessRowEventArgs<ParserContext20> e)
+        {
+            e.Context.Header = e.Row;
+            ParsedDataProcessorHelper.ValidateNumerOfFields("Header Row", e.Row, _fileProcessorDefinition.HeaderRowProcessorDefinition);
+        }
+
+        private void BeforeProcessTrailerRow(ProcessRowEventArgs<ParserContext20> e)
+        {
+            e.Context.Trailer = e.Row;
+            ParsedDataProcessorHelper.ValidateNumerOfFields("Trailer Row", e.Row, _fileProcessorDefinition.TrailerRowProcessorDefinition);
         }
 
         private static KeyValuePair<string, DataRowProcessorDefinition> FindDataRowProcessorDefinition(FileProcessorDefinition20 fileProcessorDefinition, ProcessRowEventArgs<ParserContext20> e)
@@ -223,6 +236,8 @@ namespace DataProcessor
                 throw new InvalidOperationException("CurrentDataRow20 is null");
             }
 
+            SetFieldIndexes(e.Context);
+
             if (!IsValidRow(e))
             {
                 e.Context.InvalidDataRows.Add(e.Context.CurrentDataRow20);
@@ -233,6 +248,20 @@ namespace DataProcessor
             {
                 var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.DataType];
                 ParsedDataProcessorHelper.SetJson(e.Row, dataRowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions);
+            }
+        }
+
+        private void SetFieldIndexes(ParserContext20 context)
+        {
+            var fieldCount = context.CurrentDataRow20.Row.Fields.Count;
+            if (context.DataTypeFieldIndex > -1 && context.DataTypeFieldIndex < fieldCount)
+            {
+                context.CurrentDataRow20.DataTypeFieldIndex = context.DataTypeFieldIndex;
+            }
+
+            if (context.DataKeyFieldIndex > -1 && context.DataKeyFieldIndex < fieldCount)
+            {
+                context.CurrentDataRow20.DataKeyFieldIndex = context.DataKeyFieldIndex;
             }
         }
 
