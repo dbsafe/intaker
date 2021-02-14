@@ -34,13 +34,11 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.Valid, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
         }
 
         [TestMethod]
@@ -50,8 +48,7 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.AllRows);
-            TestContext.PrintRowJsons(actual.AllRows);
+            TestContext.PrintRowJsons(actual.DataRows);
 
             Assert.IsNotNull(actual.Header);
             Assert.AreEqual(0, actual.Header.Index);
@@ -76,7 +73,6 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.AllRows);
 
             var dataRow0_Balance = actual.DataRows[0].Row;
             Assert.AreEqual(1, dataRow0_Balance.Index);
@@ -175,7 +171,6 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(fileDataSourceValidFile, _fileProcessorDefinition);
 
             var actual = target.Process();
-            TestContext.PrintJson(actual.AllRows);
 
             Assert.IsNotNull(actual.Trailer);
             Assert.AreEqual(6, actual.Trailer.Index);
@@ -200,22 +195,18 @@ namespace DataProcessor.Tests
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
-            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(1, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
 
-            Assert.AreSame(actual.Header, actual.InvalidRows[0].Row);
-            var invalidRow = actual.Header;
-            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
-            Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual(0, invalidRow.Warnings.Count);
-            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
+            Assert.AreEqual(ValidationResultType.Error, actual.Header.ValidationResult);
+            Assert.AreEqual(1, actual.Header.Errors.Count);
+            Assert.AreEqual(0, actual.Header.Warnings.Count);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", actual.Header.Errors[0]);
         }
 
         [TestMethod]
@@ -234,15 +225,13 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
-            var rowWithWarning = actual.Header;
-            Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
-            Assert.AreEqual(0, rowWithWarning.Errors.Count);
-            Assert.AreEqual(1, rowWithWarning.Warnings.Count);
-            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", rowWithWarning.Warnings[0]);
+            Assert.AreEqual(ValidationResultType.Warning, actual.Header.ValidationResult);
+            Assert.AreEqual(0, actual.Header.Errors.Count);
+            Assert.AreEqual(1, actual.Header.Warnings.Count);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", actual.Header.Warnings[0]);
         }
 
         [TestMethod]
@@ -253,19 +242,17 @@ namespace DataProcessor.Tests
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
-            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(1, actual.InvalidRows.Count);
+            Assert.AreEqual(1, actual.InvalidDataRows.Count);
 
             Assert.AreEqual("There is 1 invalid data row", actual.Errors[0]);
 
-            Assert.AreSame(actual.AllRows[2], actual.InvalidRows[0]);
+            Assert.AreSame(actual.DataRows[1], actual.InvalidDataRows[0]);
 
-            var invalidRow = actual.AllRows[2].Row;
+            var invalidRow = actual.DataRows[1].Row;
             Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
             Assert.AreEqual(1, invalidRow.Errors.Count);
             Assert.AreEqual(0, invalidRow.Warnings.Count);
@@ -289,11 +276,10 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
-            var rowWithWarning = actual.AllRows[2].Row;
+            var rowWithWarning = actual.DataRows[1].Row;
             Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
             Assert.AreEqual(0, rowWithWarning.Errors.Count);
             Assert.AreEqual(1, rowWithWarning.Warnings.Count);
@@ -308,22 +294,18 @@ namespace DataProcessor.Tests
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
-            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(1, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(1, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
             Assert.AreEqual("Trailer row is invalid", actual.Errors[0]);
 
-            Assert.AreSame(actual.Trailer, actual.InvalidRows[0].Row);
-            var invalidRow = actual.Trailer;
-            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
-            Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual(0, invalidRow.Warnings.Count);
-            Assert.AreEqual("Invalid Balance Total '6000.oo'", invalidRow.Errors[0]);
+            Assert.AreEqual(ValidationResultType.Error, actual.Trailer.ValidationResult);
+            Assert.AreEqual(1, actual.Trailer.Errors.Count);
+            Assert.AreEqual(0, actual.Trailer.Warnings.Count);
+            Assert.AreEqual("Invalid Balance Total '6000.oo'", actual.Trailer.Errors[0]);
         }
 
         [TestMethod]
@@ -342,15 +324,13 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(ValidationResultType.Warning, actual.ValidationResult);
             Assert.AreEqual(0, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(0, actual.InvalidRows.Count);
+            Assert.AreEqual(0, actual.InvalidDataRows.Count);
 
-            var rowWithWarning = actual.Trailer;
-            Assert.AreEqual(ValidationResultType.Warning, rowWithWarning.ValidationResult);
-            Assert.AreEqual(0, rowWithWarning.Errors.Count);
-            Assert.AreEqual(1, rowWithWarning.Warnings.Count);
-            Assert.AreEqual("Invalid Balance Total '6000.oo'", rowWithWarning.Warnings[0]);
+            Assert.AreEqual(ValidationResultType.Warning, actual.Trailer.ValidationResult);
+            Assert.AreEqual(0, actual.Trailer.Errors.Count);
+            Assert.AreEqual(1, actual.Trailer.Warnings.Count);
+            Assert.AreEqual("Invalid Balance Total '6000.oo'", actual.Trailer.Warnings[0]);
         }
 
         [TestMethod]
@@ -361,30 +341,33 @@ namespace DataProcessor.Tests
 
             var actual = target.Process();
             TestContext.PrintJson(actual.Errors);
-            TestContext.PrintJson(actual.AllRows);
 
             Assert.AreEqual(ValidationResultType.Error, actual.ValidationResult);
             Assert.AreEqual(2, actual.Errors.Count);
-            Assert.AreEqual(7, actual.AllRows.Count);
             Assert.AreEqual(5, actual.DataRows.Count);
-            Assert.AreEqual(3, actual.InvalidRows.Count);
+            Assert.AreEqual(2, actual.InvalidDataRows.Count);
 
             Assert.AreEqual("Header row is invalid", actual.Errors[0]);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[1]);
 
-            Assert.AreSame(actual.Header, actual.InvalidRows[0].Row);
-            var invalidRow = actual.Header;
-            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
-            Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual(0, invalidRow.Warnings.Count);
-            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", invalidRow.Errors[0]);
+            Assert.AreEqual(ValidationResultType.Error, actual.Header.ValidationResult);
+            Assert.AreEqual(1, actual.Header.Errors.Count);
+            Assert.AreEqual(0, actual.Header.Warnings.Count);
+            Assert.AreEqual("Invalid Record Type (Header Row) 'H'", actual.Header.Errors[0]);
 
-            Assert.AreSame(actual.AllRows[2], actual.InvalidRows[1]);
-            invalidRow = actual.AllRows[2].Row;
-            Assert.AreEqual(ValidationResultType.Error, invalidRow.ValidationResult);
-            Assert.AreEqual(1, invalidRow.Errors.Count);
-            Assert.AreEqual(0, invalidRow.Warnings.Count);
-            Assert.AreEqual("Invalid DOB '1022200a'", invalidRow.Errors[0]);
+            Assert.AreSame(actual.DataRows[1], actual.InvalidDataRows[0]);
+            var dataRow1 = actual.DataRows[1].Row;
+            Assert.AreEqual(ValidationResultType.Error, dataRow1.ValidationResult);
+            Assert.AreEqual(1, dataRow1.Errors.Count);
+            Assert.AreEqual(0, dataRow1.Warnings.Count);
+            Assert.AreEqual("Invalid DOB '1022200a'", dataRow1.Errors[0]);
+
+            Assert.AreSame(actual.DataRows[3], actual.InvalidDataRows[1]);
+            var dataRow3 = actual.DataRows[3].Row;
+            Assert.AreEqual(ValidationResultType.Error, dataRow3.ValidationResult);
+            Assert.AreEqual(1, dataRow3.Errors.Count);
+            Assert.AreEqual(0, dataRow3.Warnings.Count);
+            Assert.AreEqual("Invalid DOB '1023200b'", dataRow3.Errors[0]);
         }
 
         public void AssertValidField(int expectedIndex, string expectedRaw, object expectedValue, Row expectedRow, Field actualField)

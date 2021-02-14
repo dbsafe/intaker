@@ -4,6 +4,7 @@ using DataProcessor.Models;
 namespace DataProcessor
 {
     public abstract class ParsedDataProcessor<TParserContext>
+        where TParserContext : IParserContext
     {
         protected readonly IDataSource<TParserContext> _source;
         protected readonly bool _hasHeader;
@@ -24,6 +25,26 @@ namespace DataProcessor
         protected bool IsTrailerRow(bool isCurrentRowTheLast)
         {
             return isCurrentRowTheLast && _hasTrailer;
+        }
+
+        protected void VerifyInvalidDataRows(TParserContext parserContext)
+        {
+            if (parserContext.InvalidDataRowCount > 0)
+            {
+                if (parserContext.InvalidDataRowCount == 1)
+                {
+                    parserContext.Errors.Add($"There is 1 invalid data row");
+                }
+                else
+                {
+                    parserContext.Errors.Add($"There are {parserContext.InvalidDataRowCount} invalid data rows");
+                }
+            }
+        }
+
+        protected bool IsValidRow(ProcessRowEventArgs<TParserContext> e)
+        {
+            return e.Row.ValidationResult == ValidationResultType.Valid || e.Row.ValidationResult == ValidationResultType.Warning;
         }
     }
 }

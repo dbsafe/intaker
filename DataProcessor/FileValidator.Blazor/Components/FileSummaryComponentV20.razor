@@ -5,7 +5,7 @@
     <div class="file-summary mat-layout-grid-cell mat-layout-grid-cell-span-6">
         <div class="mat-body2"><strong>Validation Result: </strong>@_model.ValidationResult</div>
         <div class="mat-body2"><strong>Total Number of Data rows: </strong>@_model.DataRowCount</div>
-        <div class="mat-body2"><strong>Total Number of Invalid rows: </strong>@_model.InvalidRowCount</div>
+        <div class="mat-body2"><strong>Total Number of Invalid rows: </strong>@_model.InvalidDataRowCount</div>
     </div>
 
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
@@ -50,7 +50,7 @@
         _model.FileHasErrors = _parsedDataAndSpec.ParsedData.Errors.Count > 0;
         _model.Errors = _parsedDataAndSpec.ParsedData.Errors;
         _model.DataRowCount = _parsedDataAndSpec.ParsedData.DataRows.Count;
-        _model.InvalidRowCount = _parsedDataAndSpec.ParsedData.InvalidRows.Count;
+        _model.InvalidDataRowCount = _parsedDataAndSpec.ParsedData.InvalidDataRows.Count;
         _model.ValidationResult = _parsedDataAndSpec.ParsedData.ValidationResult.ToString();
     }
 
@@ -63,7 +63,7 @@
     {
         public bool FileHasErrors { get; set; }
         public int DataRowCount { get; set; }
-        public int InvalidRowCount { get; set; }
+        public int InvalidDataRowCount { get; set; }
         public string ValidationResult { get; set; }
         public IEnumerable<string> Errors { get; set; }
     }
