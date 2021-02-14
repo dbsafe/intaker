@@ -71,7 +71,6 @@ namespace DataProcessor
 
         private void SourceAfterProcessRow(object sender, ProcessRowEventArgs<ParserContext10> e)
         {
-            e.Context.AllRows.Add(e.Row);
             e.Context.ValidationResult = ParsedDataProcessorHelper.GetMaxValidationResult(e.Context.ValidationResult, e.Row.ValidationResult);
             if (e.Context.ValidationResult == ValidationResultType.Critical)
             {
@@ -80,8 +79,6 @@ namespace DataProcessor
 
             if (e.Row.ValidationResult != ValidationResultType.Valid && e.Row.ValidationResult != ValidationResultType.Warning)
             {
-                e.Context.InvalidRows.Add(e.Row);
-
                 if (IsHeaderRow(e.Row))
                 {
                     e.Context.Errors.Add("Header row is invalid");
@@ -94,7 +91,7 @@ namespace DataProcessor
                     return;
                 }
 
-                e.Context.InvalidDataRowCount++;
+                e.Context.InvalidDataRows.Add(e.Row);
                 return;
             }
 
@@ -145,25 +142,13 @@ namespace DataProcessor
         {
             ParserContext = new ParserContext10 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
-
-            if (ParserContext.InvalidDataRowCount > 0)
-            {
-                if (ParserContext.InvalidDataRowCount == 1)
-                {
-                    ParserContext.Errors.Add($"There is 1 invalid data row");
-                }
-                else
-                {
-                    ParserContext.Errors.Add($"There are {ParserContext.InvalidDataRowCount} invalid data rows");
-                }
-            }
+            VerifyInvalidDataRows(ParserContext);
 
             return new ParsedData10
             {
                 Errors = ParserContext.Errors,
-                AllRows = ParserContext.AllRows,
                 DataRows = ParserContext.DataRows,
-                InvalidRows = ParserContext.InvalidRows,
+                InvalidDataRows = ParserContext.InvalidDataRows,
                 Header = ParserContext.Header,
                 Trailer = ParserContext.Trailer,
                 ValidationResult = ParserContext.ValidationResult

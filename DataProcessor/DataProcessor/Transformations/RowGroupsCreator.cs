@@ -24,7 +24,7 @@ namespace DataProcessor.Transformations
 
             foreach(var row in rows)
             {
-                var key = row.KeyFieldIndex.HasValue ? row.Row.Fields[row.KeyFieldIndex.Value].Value.ToString() : null;
+                var key = row.DataKeyFieldIndex.HasValue ? row.Row.Fields[row.DataKeyFieldIndex.Value].Value.ToString() : null;
                 var rowGroup = FindOrCreateRow20Group(key);
                 AddRowToGroup(rowGroup, row);
             }
