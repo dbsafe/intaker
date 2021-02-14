@@ -41,5 +41,10 @@ namespace DataProcessor
                 }
             }
         }
+
+        protected bool IsValidRow(ProcessRowEventArgs<TParserContext> e)
+        {
+            return e.Row.ValidationResult == ValidationResultType.Valid || e.Row.ValidationResult == ValidationResultType.Warning;
+        }
     }
 }

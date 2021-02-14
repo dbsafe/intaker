@@ -236,11 +236,6 @@ namespace DataProcessor
             }
         }
 
-        private bool IsValidRow(ProcessRowEventArgs<ParserContext20> e)
-        {
-            return e.Row.ValidationResult == ValidationResultType.Valid || e.Row.ValidationResult == ValidationResultType.Warning;
-        }
-
         public ParsedData20 Process()
         {
             ParserContext = new ParserContext20 { ValidationResult = ValidationResultType.Valid };
