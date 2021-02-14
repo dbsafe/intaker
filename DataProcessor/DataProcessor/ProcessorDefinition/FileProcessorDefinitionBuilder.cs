@@ -33,8 +33,6 @@ namespace DataProcessor.ProcessorDefinition
             processorDefinition.DataRowProcessorDefinitions = LoadRowProcessorDefinitions(inputDefinitionFile_20.Datas, aggregateManager);
             
             processorDefinition.KeyField = inputDefinitionFile_20.Datas.KeyField;
-            ValidateKeyField(processorDefinition);
-
             processorDefinition.DataTypeField = inputDefinitionFile_20.Datas.DataTypeField;
             ResolveDataTypeField(processorDefinition);
 
@@ -55,43 +53,32 @@ namespace DataProcessor.ProcessorDefinition
 
             foreach (var kvp in processorDefinition.DataRowProcessorDefinitions)
             {
-                kvp.Value.DataTypeFieldIndex = GetDataTypeFieldIndex(kvp.Value.RowProcessorDefinition, processorDefinition.DataTypeField);
+                kvp.Value.DataTypeFieldIndex = GetFieldIndexByName(kvp.Value.RowProcessorDefinition, processorDefinition.DataTypeField);
                 if (kvp.Value.DataTypeFieldIndex == -1)
                 {
                     throw new InvalidOperationException($"DataTypeField '{processorDefinition.DataTypeField}' must be present in every data definition");
                 }
+
+                kvp.Value.DataKeyFieldIndex = GetFieldIndexByName(kvp.Value.RowProcessorDefinition, processorDefinition.KeyField);
+                if (kvp.Value.DataKeyFieldIndex == -1)
+                {
+                    throw new InvalidOperationException($"KeyField '{processorDefinition.KeyField}' must be present in every data definition");
+                }
             }
         }
 
-        private static int GetDataTypeFieldIndex(RowProcessorDefinition rowProcessorDefinition, string dataTypeField)
+        private static int GetFieldIndexByName(RowProcessorDefinition rowProcessorDefinition, string name)
         {
             for (int i = 0; i < rowProcessorDefinition.FieldProcessorDefinitions.Length; i++)
             {
                 var fieldProcessorDefinition = rowProcessorDefinition.FieldProcessorDefinitions[i];
-                if (fieldProcessorDefinition.FieldName == dataTypeField)
+                if (fieldProcessorDefinition.FieldName == name)
                 {
                     return i;
                 }
             }
 
             return -1;
-        }
-
-        private static void ValidateKeyField(FileProcessorDefinition20 processorDefinition)
-        {
-            if (string.IsNullOrWhiteSpace(processorDefinition.KeyField))
-            {
-                throw new InvalidOperationException("Invalid KeyField");
-            }
-
-            foreach (var RowProcessorDefinition in processorDefinition.DataRowProcessorDefinitions.Values)
-            {
-                var keyFieldFound = RowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions.Any(a => a.FieldName == processorDefinition.KeyField);
-                if (!keyFieldFound)
-                {
-                    throw new InvalidOperationException($"KeyField '{processorDefinition.KeyField}' must be present in every data definition");
-                }
-            }
         }
 
         private static void InitializeFileProcessorDefinition(
