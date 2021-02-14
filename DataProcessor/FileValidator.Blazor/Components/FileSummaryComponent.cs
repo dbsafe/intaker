@@ -35,7 +35,7 @@ namespace FileValidator.Blazor.Components
             _model.FileHasErrors = _parsedDataAndSpec.ParsedData.Errors.Count > 0;
             _model.Errors = _parsedDataAndSpec.ParsedData.Errors;
             _model.DataRowCount = _parsedDataAndSpec.ParsedData.DataRows.Count;
-            _model.InvalidRowCount = _parsedDataAndSpec.ParsedData.InvalidRows.Count;
+            _model.InvalidRowCount = _parsedDataAndSpec.ParsedData.InvalidDataRows.Count;
             _model.ValidationResult = _parsedDataAndSpec.ParsedData.ValidationResult.ToString();
         }
 

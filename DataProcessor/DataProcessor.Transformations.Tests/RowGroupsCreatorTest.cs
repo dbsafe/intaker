@@ -73,7 +73,7 @@ namespace DataProcessor.Transformations.Tests
             {
                 Row = row,
                 DataTypeFieldIndex = 0,
-                KeyFieldIndex = 1
+                DataKeyFieldIndex = 1
             };
         }
 
