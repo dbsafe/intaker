@@ -7,6 +7,7 @@
         public FileSpecificationsPageState FileSpecificationsPage { get; } = new FileSpecificationsPageState();
         public LoadedFilePageState LoadedFilePage { get; } = new LoadedFilePageState();
         public LoadedFileJsonPageState LoadedFileJsonPage { get; } = new LoadedFileJsonPageState();
+        public LoadedFileGroupsJsonPageState LoadedFileGroupsJsonPage { get; } = new LoadedFileGroupsJsonPageState();
     }
 
     public class HomePageState
@@ -37,6 +38,11 @@
     }
 
     public class LoadedFileJsonPageState
+    {
+        public CursorPosition CursorPosition { get; set; }
+    }
+
+    public class LoadedFileGroupsJsonPageState
     {
         public CursorPosition CursorPosition { get; set; }
     }
