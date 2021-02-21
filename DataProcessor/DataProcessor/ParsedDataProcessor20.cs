@@ -236,7 +236,7 @@ namespace DataProcessor
                 throw new InvalidOperationException("CurrentDataRow20 is null");
             }
 
-            SetFieldIndexes(e.Context);
+            SetDataTypeAndDataKey(e.Context);
 
             if (!IsValidRow(e))
             {
@@ -251,17 +251,17 @@ namespace DataProcessor
             }
         }
 
-        private void SetFieldIndexes(ParserContext20 context)
+        private static void SetDataTypeAndDataKey(ParserContext20 context)
         {
             var fieldCount = context.CurrentDataRow20.Row.Fields.Count;
             if (context.DataTypeFieldIndex > -1 && context.DataTypeFieldIndex < fieldCount)
             {
-                context.CurrentDataRow20.DataTypeFieldIndex = context.DataTypeFieldIndex;
+                context.CurrentDataRow20.DataType = context.CurrentDataRow20.Row.Fields[context.DataTypeFieldIndex].Value.ToString();
             }
 
             if (context.DataKeyFieldIndex > -1 && context.DataKeyFieldIndex < fieldCount)
             {
-                context.CurrentDataRow20.DataKeyFieldIndex = context.DataKeyFieldIndex;
+                context.CurrentDataRow20.DataKey = context.CurrentDataRow20.Row.Fields[context.DataKeyFieldIndex].Value.ToString();
             }
         }
 
