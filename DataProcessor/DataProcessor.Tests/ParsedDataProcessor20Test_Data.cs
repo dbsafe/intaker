@@ -43,7 +43,7 @@ namespace DataProcessor.Tests
             _dataType2 = new DataRowProcessorDefinition
             {
                 DataTypeFieldIndex = 0,
-                DataKeyFieldIndex = 1,
+                DataKeyFieldIndex = 2,
                 RowProcessorDefinition = new RowProcessorDefinition
                 {
                     FieldProcessorDefinitions = new FieldProcessorDefinition[]
@@ -111,7 +111,7 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_file_with_data_Data_rows_shoudd_indicate_the_dataTypeFieldIndex()
+        public void Process_Given_a_file_with_data_Data_rows_shoudd_indicate_the_dataType()
         {
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
@@ -122,20 +122,17 @@ namespace DataProcessor.Tests
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
-            Assert.IsNotNull(dataRow0.DataTypeFieldIndex);
-            Assert.AreEqual(0, dataRow0.DataTypeFieldIndex.Value);
+            Assert.AreEqual("dt1", dataRow0.DataType);
 
             var dataRow1 = actual.DataRows[1];
-            Assert.IsNotNull(dataRow1.DataTypeFieldIndex);
-            Assert.AreEqual(0, dataRow1.DataTypeFieldIndex.Value);
+            Assert.AreEqual("dt1", dataRow1.DataType);
 
             var dataRow2 = actual.DataRows[2];
-            Assert.IsNotNull(dataRow2.DataTypeFieldIndex);
-            Assert.AreEqual(0, dataRow2.DataTypeFieldIndex.Value);
+            Assert.AreEqual("dt2", dataRow2.DataType);
         }
 
         [TestMethod]
-        public void Process_Given_a_file_with_data_Data_rows_shoudd_indicate_the_dataKeyFieldIndex()
+        public void Process_Given_a_file_with_data_Data_rows_shoudd_indicate_the_dataKey()
         {
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
@@ -146,16 +143,13 @@ namespace DataProcessor.Tests
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
-            Assert.IsNotNull(dataRow0.DataKeyFieldIndex);
-            Assert.AreEqual(1, dataRow0.DataKeyFieldIndex.Value);
+            Assert.AreEqual("key-value", dataRow0.DataKey);
 
             var dataRow1 = actual.DataRows[1];
-            Assert.IsNotNull(dataRow1.DataKeyFieldIndex);
-            Assert.AreEqual(1, dataRow1.DataKeyFieldIndex.Value);
+            Assert.AreEqual("key-value", dataRow1.DataKey);
 
             var dataRow2 = actual.DataRows[2];
-            Assert.IsNotNull(dataRow2.DataKeyFieldIndex);
-            Assert.AreEqual(1, dataRow2.DataKeyFieldIndex.Value);
+            Assert.AreEqual("key-value", dataRow2.DataKey);
         }
 
         [TestMethod]

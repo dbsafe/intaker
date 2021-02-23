@@ -4,9 +4,9 @@ namespace DataProcessor.Transformations
 {
     public class DataRow20
     {
-        public Row Row { get; set; }
-        public int? DataKeyFieldIndex { get; set; }
-        public int? DataTypeFieldIndex { get; set; }
+        public Row Row { get; set; }        
+        public string DataKey { get; set; }
+        public string DataType { get; set; }
 
     }
 }
