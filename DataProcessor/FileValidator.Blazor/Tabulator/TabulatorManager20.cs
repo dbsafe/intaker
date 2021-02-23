@@ -37,49 +37,65 @@ namespace FileValidator.Blazor
             _js.InvokeVoid("tabulator.init20", _id, tableModel, ErrorsAndWarningsColumnInfo);
         }
 
-        private static int FindRowsDefinitionIndex(Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary, RowDefinition rowDefinition)
+        private static int FindRowsDefinitionIndex(Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary, string dataType)
         {
-            if (!rowDefinitionDictionary.ContainsKey(rowDefinition.DataType))
+            var indexedRowDefinition = FindIndexedRowDefinition(rowDefinitionDictionary, dataType);
+            return indexedRowDefinition.Index;
+        }
+
+        private static IndexedRowDefinition FindIndexedRowDefinition(Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary, string dataType)
+        {
+            if (!rowDefinitionDictionary.ContainsKey(dataType))
             {
-                throw new InvalidOperationException($"DataType '{rowDefinition.DataType}' not found in dictionary");
+                throw new InvalidOperationException($"DataType '{dataType}' not found in dictionary");
             }
 
-            return rowDefinitionDictionary[rowDefinition.DataType].Index;
+            return rowDefinitionDictionary[dataType];
         }
 
         private static ExpandoObject BuildDisplayData(DataRow20 row, RowDefinition rowDefinition, Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary)
         {
-            dynamic displayData = new ExpandoObject();
-            displayData.data = GetExpandoObjectFromRow(row.Row, rowDefinition);
-            displayData.columnInfoIndex = FindRowsDefinitionIndex(rowDefinitionDictionary, rowDefinition);
+            dynamic displayData = GetExpandoObjectFromRow(row.Row, rowDefinition);
+            displayData.columnInfoIndex = FindRowsDefinitionIndex(rowDefinitionDictionary, rowDefinition.DataType);
 
             return displayData;
         }
 
-        private static List<ExpandoObject> BuildChildrenRowGroups(IEnumerable<DataRow20> rows, Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary)
+        private static ExpandoObject BuildDisplayData(DataRow20 row, Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary)
         {
-            var result = new List<ExpandoObject>();
+            var indexedRowDefinition = FindIndexedRowDefinition(rowDefinitionDictionary, row.DataType);
 
-            foreach (var row in rows)
+            dynamic displayData = GetExpandoObjectFromRow(row.Row, indexedRowDefinition.RowDefinition);
+            displayData.columnInfoIndex = indexedRowDefinition.Index;
+
+            return displayData;
+        }
+
+        private static IEnumerable<IEnumerable<ExpandoObject>> BuildChildrenRowGroups(
+            IEnumerable<KeyValuePair<string, List<DataRow20>>> rowsGroupedByType, 
+            Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary)
+        {
+            var childrenRowGroups = new List<IEnumerable<ExpandoObject>>();
+            foreach (var rowsGroup in rowsGroupedByType)
             {
-                if (!row.DataTypeFieldIndex.HasValue)
-                {
-                    throw new InvalidOperationException("Row does not have a DataTypeFieldIndex");
-                }
-
-                var dataType = row.Row.Fields[row.DataTypeFieldIndex.Value].Value.ToString();
-                if (!rowDefinitionDictionary.ContainsKey(dataType))
-                {
-                    throw new InvalidOperationException("DataType '{dataType}' not found");
-                }
-
-                var rowDefinition = rowDefinitionDictionary[dataType];
-                var displayRow = BuildDisplayData(row, rowDefinition.RowDefinition, rowDefinitionDictionary);
-
-                result.Add(displayRow);
+                var rows = BuildChildrenRows(rowsGroup.Value, rowDefinitionDictionary);
+                childrenRowGroups.Add(rows);
             }
 
-            return result;
+            return childrenRowGroups;
+        }
+
+        private static List<ExpandoObject> BuildChildrenRows(IEnumerable<DataRow20> dataRows, Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary)
+        {
+            var childrenRows = new List<ExpandoObject>();
+            foreach (var dataRow in dataRows)
+            {
+                var displayData = BuildDisplayData(dataRow, rowDefinitionDictionary);
+                childrenRows.Add(displayData);
+            }
+
+
+            return childrenRows;
         }
 
         private static object BuildTableDataModel(IEnumerable<DataRow20Group> rowGroups, Datas dataRowsDefinition)
@@ -90,59 +106,15 @@ namespace FileValidator.Blazor
             var masterRowDefinition = FindMasterRowDefinition(dataRowsDefinition);
 
             var tableData = new List<ExpandoObject>();
-
             foreach (var rowGroup in rowGroups)
             {
-                var masterRow = BuildDisplayData(rowGroup.MasterRow, masterRowDefinition, rowDefinitionDictionary);
-                var childrenRowGroups = BuildChildrenRowGroups(rowGroup.Rows, rowDefinitionDictionary);
-
-                dynamic tableDataItem = new ExpandoObject();
-                tableDataItem.masterRow = masterRow;
-                tableDataItem.childrenRowGroups = childrenRowGroups;
+                dynamic tableDataItem = BuildDisplayData(rowGroup.MasterRow, masterRowDefinition, rowDefinitionDictionary);
+                tableDataItem.childrenRowGroups = BuildChildrenRowGroups(rowGroup.RowsGroupedByType, rowDefinitionDictionary); ;
 
                 tableData.Add(tableDataItem);
             }
 
             return new { tableData, columnInfos };
-        }
-
-        public static IEnumerable<ChildrenRowGroup> BuildChildrenRowGroups(IEnumerable<DataRow20> childrenRows, Datas dataRowsDefinition)
-        {
-            var childrenRowGroupDictionary = new Dictionary<string, ChildrenRowGroup>();
-
-            foreach (var childRow in childrenRows)
-            {
-                if (!childRow.DataTypeFieldIndex.HasValue)
-                {
-                    throw new InvalidOperationException("Row does not have a DataTypeFieldIndex");
-                }
-
-                var dataType = childRow.Row.Fields[childRow.DataTypeFieldIndex.Value].Value.ToString();
-                var childrenRowGroup = GetOrCreateChildrenRowGroup(dataType, childrenRowGroupDictionary, dataRowsDefinition);
-                childrenRowGroup.Rows.Add(childRow);
-            }
-
-            return childrenRowGroupDictionary.Values;
-        }
-
-        private static ChildrenRowGroup GetOrCreateChildrenRowGroup(string dataType, Dictionary<string, ChildrenRowGroup> childrenRowGroupDictionary, Datas dataRowsDefinition)
-        {
-            if (childrenRowGroupDictionary.ContainsKey(dataType))
-            {
-                return childrenRowGroupDictionary[dataType];
-            }
-            else
-            {
-                var rowDefinition = dataRowsDefinition.Rows.FirstOrDefault(a => a.DataType == dataType);
-                if (rowDefinition == null)
-                {
-                    throw new InvalidOperationException($"Row Definition '{dataType}' not found");
-                }
-
-                var childrenRowGroup = new ChildrenRowGroup { DataType = dataType, RowDefinition = rowDefinition };
-                childrenRowGroupDictionary[dataType] = childrenRowGroup;
-                return childrenRowGroup;
-            }
         }
 
         private static RowDefinition FindMasterRowDefinition(Datas dataRowsDefinition)

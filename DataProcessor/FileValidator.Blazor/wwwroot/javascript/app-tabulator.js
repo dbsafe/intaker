@@ -27,9 +27,8 @@
             columns: errorsAndWarningsColumnInfo
         })
     },
-    displayChildrenGroup: (row, errorsAndWarningsColumnInfo) => {
-        var data = row.getData();
-        if (!data.childrenRows) {
+    displayChildrenGroup: (row, childrenRowGroup, columnInfos, errorsAndWarningsColumnInfo) => {
+        if (!childrenRowGroup) {
             return;
         }
 
@@ -49,23 +48,25 @@
         row.getElement().appendChild(holderEl);
 
         var childrenRowsSubTable = new Tabulator(tableEl, {
-            headerVisible: false,
+            headerVisible: true,
             layout: "fitDataTable",
-            data: data.childrenRows,
-            columns: data.columnInfo
+            data: childrenRowGroup,
+            columns: tabulator.getColumnInfo(childrenRowGroup, columnInfos),
+            rowFormatter: function (row) {
+                tabulator.displayErrorsAndWarnings(row, errorsAndWarningsColumnInfo);
+            }
         })
     },
-    displayChildrenGroups: (row, errorsAndWarningsColumnInfo) => {
+    displayChildrenGroups: (row, columnInfos, errorsAndWarningsColumnInfo) => {
         var data = row.getData();
-        if (!data.childrenGroups) {
+        if (!data.childrenRowGroups) {
             return;
         }
 
-        var childrenGroups = data.childrenGroups;
+        for (var i = 0; i < data.childrenRowGroups.length; i++) {
 
-        for (var i = 0; i < childrenGroups.length; i++) {
-            var childrenGroup = childrenGroups[i];
-            console.log(childrenGroup);
+            var childrenRowGroup = data.childrenRowGroups[i];
+            tabulator.displayChildrenGroup(row, childrenRowGroup, columnInfos, errorsAndWarningsColumnInfo)
         }
     },
     init10: (id, tableModel, errorsAndWarningsColumnInfo) => {
@@ -85,15 +86,20 @@
             console.log(err.message);
         }
     },
+    getColumnInfo: (data, columnInfos) => {
+        if (data.lenght == 0)
+            return null;
+        return columnInfos[data[0].columnInfoIndex];
+    },
     init20: (id, tableModel, errorsAndWarningsColumnInfo) => {
         try {
             var masterTabulatorData = {
                 data: tableModel.tableData,
                 layout: "fitDataStretch",
-                columns: tableModel.masterColumnInfo,
+                columns: tabulator.getColumnInfo(tableModel.tableData, tableModel.columnInfos),
                 rowFormatter: function (row) {
                     tabulator.displayErrorsAndWarnings(row, errorsAndWarningsColumnInfo);
-                    tabulator.displayChildrenGroups(row, errorsAndWarningsColumnInfo);
+                    tabulator.displayChildrenGroups(row, tableModel.columnInfos, errorsAndWarningsColumnInfo);
                 }
             };
             table = new Tabulator(id, masterTabulatorData);
