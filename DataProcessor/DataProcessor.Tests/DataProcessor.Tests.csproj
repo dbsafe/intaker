@@ -28,6 +28,7 @@
     <None Remove="TestFiles\balance-with-multiple-errors.20.csv" />
     <None Remove="TestFiles\balance-with-rule-violations.10.csv" />
     <None Remove="TestFiles\balance-with-rule-violations.20.csv" />
+    <None Remove="TestFiles\test-file-data-invalid-data-types.20.csv" />
     <None Remove="TestFiles\test-file-data-trailer.10.csv" />
     <None Remove="TestFiles\test-file-data-trailer.20.csv" />
     <None Remove="TestFiles\test-file-data.10.csv" />
@@ -100,6 +101,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\balance-with-header-and-trailer.definition.10.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="TestFiles\test-file-data-invalid-data-types.20.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="TestFiles\test-file-header-data-trailer.20.csv">

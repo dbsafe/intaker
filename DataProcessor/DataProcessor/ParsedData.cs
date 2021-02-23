@@ -23,5 +23,6 @@ namespace DataProcessor
 
     public class ParsedData20 : ParsedData<DataRow20>
     {
+        public IList<DataRow20> DataRowsWithInvalidTypes { get; set; }
     }
 }

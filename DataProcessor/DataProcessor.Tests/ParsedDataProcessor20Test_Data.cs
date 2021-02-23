@@ -85,6 +85,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
+            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0].Row;
@@ -119,6 +120,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
+            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -140,6 +142,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
+            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -167,10 +170,43 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
+            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
 
             var dataRow0 = actual.DataRows[0];
             Assert.AreEqual(1, dataRow0.Row.Errors.Count);
             Assert.AreEqual("Data Row 'dt1' - The expected number of fields 2 is not equal to the actual number of fields 3", dataRow0.Row.Errors[0]);
+        }
+
+        [TestMethod]
+        public void Process_Given_a_file_with_invalid_data_types_Lines_with_invalid_data_types_should_be_added_to_a_separate_collection()
+        {
+            _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext20>("test-file-data-invalid-data-types.20.csv", false);
+
+            var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
+
+            var actual = target.Process();
+
+            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(2, actual.InvalidDataRows.Count);
+
+            Assert.AreEqual(1, actual.Errors.Count);
+            Assert.AreEqual("There are 2 invalid data rows", actual.Errors[0]);
+
+            Assert.AreEqual(2, actual.DataRowsWithInvalidTypes.Count);
+
+            var dataRow3 = actual.DataRowsWithInvalidTypes[0];
+            var row3 = dataRow3.Row;
+            Assert.AreEqual(3, row3.Index);
+            Assert.AreEqual(ValidationResultType.Error, row3.ValidationResult);
+            Assert.AreEqual("dt3,field-4b,key-value,field-4d", row3.Raw);
+            Assert.AreEqual(0, row3.Fields.Count);
+
+            Assert.AreEqual(1, row3.Errors.Count);
+            Assert.AreEqual("Unknown line type", row3.Errors[0]);
+            Assert.AreEqual(0, row3.Warnings.Count);
+
+            Assert.IsNull(dataRow3.DataKey);
+            Assert.IsNull(dataRow3.DataType);
         }
     }
 }
