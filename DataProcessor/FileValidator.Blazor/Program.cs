@@ -26,6 +26,7 @@ namespace FileValidator.Blazor
             builder.Services.AddSingleton(appState.HomePage);
             builder.Services.AddSingleton(appState.LoadedFilePage);
             builder.Services.AddSingleton(appState.LoadedFileJsonPage);
+            builder.Services.AddSingleton(appState.LoadedFileGroupsJsonPage);
             builder.Services.AddSingleton(appState.FileSpecificationsPage);
 
             builder.Services.AddSingleton<ApplicationsEvents>();

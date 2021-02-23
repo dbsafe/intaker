@@ -1,5 +1,7 @@
-﻿using DataProcessor.InputDefinitionFile.Models;
+﻿using DataProcessor.InputDefinitionFile;
+using DataProcessor.InputDefinitionFile.Models;
 using DataProcessor.Models;
+using DataProcessor.Transformations;
 using FileValidator.Domain.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
@@ -12,18 +14,24 @@ namespace FileValidator.Blazor.Pages
         private Row _headerRow;
         private Row _trailerRow;
         private IEnumerable<Row> _dataRows;
+        private IEnumerable<DataRow20> _dataRow20s;
 
         private RowDefinition _headerDefinition;
         private RowDefinition _trailerDefinition;
-        private RowDefinition _dataDefinition;
+        private RowDefinition _dataDefinition10;
+        private Datas _dataRowsDefinition20;
 
-        [Inject] 
+        private string _frameworkVersion;
+        private ParsedDataAndSpec10 _parsedDataAndSpec10;
+        private ParsedDataAndSpec20 _parsedDataAndSpec20;
+
+        [Inject]
         public IJSRuntime JS { get; set; }
-        
-        [Inject] 
+
+        [Inject]
         public LoadedFilePageState LoadedFilePageState { get; set; }
-        
-        [Inject] 
+
+        [Inject]
         public ApplicationsEvents ApplicationsEvents { get; set; }
 
         protected override void OnInitialized()
@@ -31,15 +39,36 @@ namespace FileValidator.Blazor.Pages
             base.OnInitialized();
             ApplicationsEvents.MenuItemClicked += MenuItemClicked;
 
-            if (LoadedFilePageState.ParsedDataAndSpec10 != null)
+            _frameworkVersion = LoadedFilePageState.FrameworkVersion;
+            if (_frameworkVersion != InputDefinitionFile10.VERSION && _frameworkVersion != InputDefinitionFile20.VERSION)
             {
-                _headerRow = LoadedFilePageState.ParsedDataAndSpec10.ParsedData.Header;
-                _trailerRow = LoadedFilePageState.ParsedDataAndSpec10.ParsedData.Trailer;
-                _dataRows = LoadedFilePageState.ParsedDataAndSpec10.ParsedData.DataRows;
+                return;
+            }
 
-                _headerDefinition = LoadedFilePageState.ParsedDataAndSpec10.InputDefinitionFile.Header;
-                _trailerDefinition = LoadedFilePageState.ParsedDataAndSpec10.InputDefinitionFile.Trailer;
-                _dataDefinition = LoadedFilePageState.ParsedDataAndSpec10.InputDefinitionFile.Data;
+            if (_frameworkVersion == InputDefinitionFile10.VERSION)
+            {
+                _parsedDataAndSpec10 = LoadedFilePageState.ParsedDataAndSpec10;
+
+                _headerRow = _parsedDataAndSpec10.ParsedData.Header;
+                _trailerRow = _parsedDataAndSpec10.ParsedData.Trailer;
+                _dataRows = _parsedDataAndSpec10.ParsedData.DataRows;
+
+                _headerDefinition = _parsedDataAndSpec10.InputDefinitionFile.Header;
+                _trailerDefinition = _parsedDataAndSpec10.InputDefinitionFile.Trailer;
+                _dataDefinition10 = _parsedDataAndSpec10.InputDefinitionFile.Data;
+            }
+
+            if (_frameworkVersion == InputDefinitionFile20.VERSION)
+            {
+                _parsedDataAndSpec20 = LoadedFilePageState.ParsedDataAndSpec20;
+
+                _headerRow = _parsedDataAndSpec20.ParsedData.Header;
+                _trailerRow = _parsedDataAndSpec20.ParsedData.Trailer;
+                _dataRow20s = _parsedDataAndSpec20.ParsedData.DataRows;
+
+                _headerDefinition = _parsedDataAndSpec20.InputDefinitionFile.Header;
+                _trailerDefinition = _parsedDataAndSpec20.InputDefinitionFile.Trailer;
+                _dataRowsDefinition20 = _parsedDataAndSpec20.InputDefinitionFile.Datas;
             }
         }
 
