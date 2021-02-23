@@ -39,7 +39,7 @@ namespace DataProcessor.Transformations
             }
             else
             {
-                group.Rows.Add(row);
+                group.Add(row);
             }
         }
 
