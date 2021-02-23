@@ -28,6 +28,9 @@ namespace DataProcessor.Transformations.Tests
 
             // Group: key-e, master without children
             "D1,key-e,d1-f2-07,d1-f3-07,master-key-e",
+
+            // Group: key-a, one more children down here
+            "D3,key-a,d2-f2-08,d2-f3-08,child-08-key-a",
         };
 
         private DataRow20[] _rows;
@@ -90,14 +93,24 @@ namespace DataProcessor.Transformations.Tests
 
             var actualGroup0 = actual[0];
             Assert.AreSame(_rows[0], actualGroup0.MasterRow);
-            Assert.AreEqual(2, actualGroup0.Rows.Count);
-            Assert.AreSame(_rows[1], actualGroup0.Rows[0]);
-            Assert.AreSame(_rows[2], actualGroup0.Rows[1]);
+            var rowsGroupedByType0 = actualGroup0.RowsGroupedByType.ToArray();
+            Assert.AreEqual(2, rowsGroupedByType0.Length);
+            var list = rowsGroupedByType0[0].Value;
+            Assert.AreEqual(2, list.Count);
+            Assert.AreSame(_rows[1], list[0]);
+            Assert.AreSame(_rows[2], list[1]);
+
+            list = rowsGroupedByType0[1].Value;
+            Assert.AreEqual(1, list.Count);
+            Assert.AreSame(_rows[8], list[0]);
 
             var actualGroup1 = actual[1];
             Assert.AreSame(_rows[3], actualGroup1.MasterRow);
-            Assert.AreEqual(1, actualGroup1.Rows.Count);
-            Assert.AreSame(_rows[4], actualGroup1.Rows[0]);
+            var rowsGroupedByType1 = actualGroup1.RowsGroupedByType.ToArray();
+            Assert.AreEqual(1, rowsGroupedByType1.Length);
+            list = rowsGroupedByType1[0].Value;
+            Assert.AreEqual(1, list.Count);
+            Assert.AreSame(_rows[4], list[0]);
         }
 
         [TestMethod]
@@ -108,11 +121,13 @@ namespace DataProcessor.Transformations.Tests
 
             var actualGroup2 = actual[2];
             Assert.AreSame(_rows[5], actualGroup2.MasterRow);
-            Assert.AreEqual(0, actualGroup2.Rows.Count);
+            var rowsGroupedByType2 = actualGroup2.RowsGroupedByType.ToArray();
+            Assert.AreEqual(0, rowsGroupedByType2.Length);
 
             var actualGroup4 = actual[4];
             Assert.AreSame(_rows[7], actualGroup4.MasterRow);
-            Assert.AreEqual(0, actualGroup4.Rows.Count);
+            var rowsGroupedByType4 = actualGroup4.RowsGroupedByType.ToArray();
+            Assert.AreEqual(0, rowsGroupedByType4.Length);
         }
 
         [TestMethod]
@@ -123,8 +138,11 @@ namespace DataProcessor.Transformations.Tests
 
             var actualGroup3 = actual[3];
             Assert.IsNull(actualGroup3.MasterRow);
-            Assert.AreEqual(1, actualGroup3.Rows.Count);
-            Assert.AreSame(_rows[6], actualGroup3.Rows[0]);
+            var rowsGroupedByType3 = actualGroup3.RowsGroupedByType.ToArray();
+            Assert.AreEqual(1, rowsGroupedByType3.Length);
+            var list = rowsGroupedByType3[0].Value;
+            Assert.AreEqual(1, list.Count);
+            Assert.AreSame(_rows[6], list[0]);
         }
 
         [TestMethod]
