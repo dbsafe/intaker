@@ -73,6 +73,11 @@ namespace FileValidator.Blazor
 
         private static ExpandoObject BuildDisplayData(DataRow20 row, RowDefinition rowDefinition, Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary)
         {
+            if (row == null)
+            {
+                return new ExpandoObject();
+            }
+
             dynamic displayData = GetExpandoObjectFromRow(row.Row, rowDefinition);
             displayData.columnInfoIndex = FindRowsDefinitionIndex(rowDefinitionDictionary, rowDefinition.DataType);
 

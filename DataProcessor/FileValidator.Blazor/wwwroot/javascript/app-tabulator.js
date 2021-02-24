@@ -1,4 +1,19 @@
 ﻿window.tabulator = {
+    displayEmptyRow: (row) => {
+        var element = row.getElement();
+        while (element.firstChild) {
+            element.removeChild(element.firstChild);
+        }
+
+        var divElement = document.createElement("div");
+        divElement.style.boxSizing = "border-box";
+        divElement.style.padding = "10px 30px 10px 10px";
+        divElement.style.borderTop = "1px solid #333";
+        divElement.style.borderBotom = "1px solid #333";
+        divElement.textContent = "Rows without a master row";
+
+        element.appendChild(divElement);
+    },
     displayErrorsAndWarnings: (row, errorsAndWarningsColumnInfo) => {
         var data = row.getData();
         if (!data.errorsAndWarnings) {
@@ -98,7 +113,14 @@
                 layout: "fitDataStretch",
                 columns: tabulator.getColumnInfo(tableModel.tableData, tableModel.columnInfos),
                 rowFormatter: function (row) {
-                    tabulator.displayErrorsAndWarnings(row, errorsAndWarningsColumnInfo);
+                    var data = row.getData();
+                    if (data.lineNumber === undefined) {
+                        tabulator.displayEmptyRow(row);
+
+                    } else {
+                        tabulator.displayErrorsAndWarnings(row, errorsAndWarningsColumnInfo);
+                    }
+                    
                     tabulator.displayChildrenGroups(row, tableModel.columnInfos, errorsAndWarningsColumnInfo);
                 }
             };
