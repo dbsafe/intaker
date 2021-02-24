@@ -107,5 +107,18 @@
         catch (err) {
             console.log(err.message);
         }
+    },
+    init20Raw: (id, tableModel) => {
+        try {
+            var masterTabulatorData = {
+                data: tableModel.tableData,
+                layout: "fitDataStretch",
+                columns: tableModel.columnInfos
+            };
+            table = new Tabulator(id, masterTabulatorData);
+        }
+        catch (err) {
+            console.log(err.message);
+        }
     }
 };

@@ -15,6 +15,7 @@ namespace FileValidator.Blazor.Pages
         private Row _trailerRow;
         private IEnumerable<Row> _dataRows;
         private IEnumerable<DataRow20> _dataRow20s;
+        private IEnumerable<DataRow20> _dataRow20sWithInvalidDataType;
 
         private RowDefinition _headerDefinition;
         private RowDefinition _trailerDefinition;
@@ -65,6 +66,7 @@ namespace FileValidator.Blazor.Pages
                 _headerRow = _parsedDataAndSpec20.ParsedData.Header;
                 _trailerRow = _parsedDataAndSpec20.ParsedData.Trailer;
                 _dataRow20s = _parsedDataAndSpec20.ParsedData.DataRows;
+                _dataRow20sWithInvalidDataType = _parsedDataAndSpec20.ParsedData.DataRowsWithInvalidTypes;
 
                 _headerDefinition = _parsedDataAndSpec20.InputDefinitionFile.Header;
                 _trailerDefinition = _parsedDataAndSpec20.InputDefinitionFile.Trailer;
