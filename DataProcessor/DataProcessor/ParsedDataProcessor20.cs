@@ -79,6 +79,7 @@ namespace DataProcessor
                 e.Row.ValidationResult = ValidationResultType.Error;
                 var error = $"Unknown line type";
                 e.Row.Errors.Add(error);
+                e.Context.DataRowsWithInvalidTypes.Add(e.Context.CurrentDataRow20);
                 return;
             }
 
@@ -278,7 +279,8 @@ namespace DataProcessor
                 InvalidDataRows = ParserContext.InvalidDataRows,
                 Header = ParserContext.Header,
                 Trailer = ParserContext.Trailer,
-                ValidationResult = ParserContext.ValidationResult
+                ValidationResult = ParserContext.ValidationResult,
+                DataRowsWithInvalidTypes = ParserContext.DataRowsWithInvalidTypes
             };
         }
     }

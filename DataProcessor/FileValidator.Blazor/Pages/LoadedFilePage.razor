@@ -25,6 +25,12 @@
                 <FileSummaryComponentV20 ParsedDataAndSpec="@_parsedDataAndSpec20"></FileSummaryComponentV20>
                 <FileSectionComponentV10 Id="table-header" RowDefinition="_headerDefinition" Tittle="Header" Row="@_headerRow"></FileSectionComponentV10>
                 <FileSectionComponentV10 Id="table-trailer" RowDefinition="_trailerDefinition" Tittle="Trailer" Row="@_trailerRow"></FileSectionComponentV10>
+
+                @if (_dataRow20sWithInvalidDataType != null && _dataRow20sWithInvalidDataType.Count() > 0)
+                {
+                    <FileInvalidDataTypeSectionComponentV20 Id="table-data-with-invalid-data-types" Tittle="Data rows with invalid data type" Rows="@_dataRow20sWithInvalidDataType"></FileInvalidDataTypeSectionComponentV20>
+                }
+
                 <FileDataSectionComponentV20 Id="table-data" DataRowsDefinition="_dataRowsDefinition20" Tittle="Data" Rows="@_dataRow20s"></FileDataSectionComponentV20>
             }
 

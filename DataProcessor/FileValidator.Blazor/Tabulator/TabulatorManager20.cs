@@ -13,26 +13,44 @@ namespace FileValidator.Blazor
     {
         private readonly IJSInProcessRuntime _js;
         private readonly string _id;
-        private readonly Datas _dataRowsDefinition;
+
+        private static List<object> RawColumnInfo { get; } = new List<object>()
+        {
+            new { title = "Line Number", field = "lineNumber", headerSort = false },
+            new { title = "Raw", field = "raw", headerSort = false }
+        };
 
         public static TabulatorManager20 Init(IJSRuntime js, string id, IEnumerable<DataRow20> rows, Datas dataRowsDefinition)
         {
-            var table = new TabulatorManager20(js, id, dataRowsDefinition);
-            table.Init(rows);
+            var table = new TabulatorManager20(js, id);
+            table.InitWithRowDefinition(rows, dataRowsDefinition);
             return table;
         }
 
-        private TabulatorManager20(IJSRuntime js, string id, Datas dataRowsDefinition)
+        public static TabulatorManager20 InitWithRawValues(IJSRuntime js, string id, IEnumerable<DataRow20> rows)
+        {
+            var table = new TabulatorManager20(js, id);
+            table.InitWithRawValues(rows);
+            return table;
+        }
+
+        private TabulatorManager20(IJSRuntime js, string id)
         {
             _js = js as IJSInProcessRuntime;
             _id = id;
-            _dataRowsDefinition = dataRowsDefinition;
         }
 
-        private void Init(IEnumerable<DataRow20> dataRows)
+        private void InitWithRawValues(IEnumerable<DataRow20> dataRows)
         {
-            var groups = GroupHelper.BuildRowGroups(dataRows, _dataRowsDefinition);
-            var tableModel = BuildTableDataModel(groups, _dataRowsDefinition);
+            var tableData = dataRows.Select(a => new { lineNumber = a.Row.Index + 1, raw = a.Row.Raw });
+            var tableModel = new { tableData, columnInfos = RawColumnInfo };
+            _js.InvokeVoid("tabulator.init20Raw", _id, tableModel);
+        }
+
+        private void InitWithRowDefinition(IEnumerable<DataRow20> dataRows, Datas dataRowsDefinition)
+        {
+            var groups = GroupHelper.BuildRowGroups(dataRows, dataRowsDefinition);
+            var tableModel = BuildTableDataModel(groups, dataRowsDefinition);
 
             _js.InvokeVoid("tabulator.init20", _id, tableModel, ErrorsAndWarningsColumnInfo);
         }
