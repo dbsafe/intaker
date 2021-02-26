@@ -9,6 +9,8 @@ namespace DataProcessor.DataSource.File
         public string Delimiter { get; set; }
         public bool HasFieldsEnclosedInQuotes { get; set; }
         public string Path { get; set; }
+
+        public string CommentedOutIndicator { get; set; }
     }
 
     public class FileDataSource<TParserContext> : BaseDataSource<TParserContext>

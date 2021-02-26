@@ -6,6 +6,7 @@ namespace DataProcessor.DataSource.InMemory
     {
         public string Delimiter { get; set; }
         public bool HasFieldsEnclosedInQuotes { get; set; }
+        public string CommentedOutIndicator { get; set; }
     }
 
     public class InMemoryDataSource<TParserContext> : BaseDataSource<TParserContext>

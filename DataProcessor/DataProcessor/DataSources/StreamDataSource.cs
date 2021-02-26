@@ -8,6 +8,7 @@ namespace DataProcessor.DataSource.InStream
     {
         public string Delimiter { get; set; }
         public bool HasFieldsEnclosedInQuotes { get; set; }
+        public string CommentedOutIndicator { get; set; }
     }
 
     public class StreamDataSource<TParserContext> : BaseDataSource<TParserContext>

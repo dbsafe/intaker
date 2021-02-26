@@ -7,7 +7,7 @@ using System.Reflection;
 namespace DataProcessor.DataSource.File.Tests
 {
     /// <summary>
-    /// Test for and the base class BaseDataSource
+    /// Test for FileDataSource and base class BaseDataSource
     /// </summary>
     [TestClass]
     public class FileDataSourceTest
@@ -241,6 +241,47 @@ namespace DataProcessor.DataSource.File.Tests
         }
 
         [TestMethod]
+        public void Process_Given_a_file_with_commented_line_BeforeProcessRow_event_should_be_raised_for_every_row_that_is_not_commented_out()
+        {
+            var target = CreateTarget("test-file-02.csv", true, "#");
+            var context = new ParserContext<Row>();
+
+            var row0 = new Row
+            {
+                Index = 0,
+                Raw = "\"field-1a\",\"field-1b\"",
+                ValidationResult = ValidationResultType.Valid
+            };
+
+            var row2 = new Row
+            {
+                Index = 2,
+                Raw = "\"field-3a\",\"field-3b\"",
+                ValidationResult = ValidationResultType.Valid
+            };
+
+            var expected = new List<Row> { row0, row2 };
+            var actual = new List<Row>();
+            target.BeforeProcessRow += (sender, e) =>
+            {
+                Assert.AreEqual(0, e.Row.Fields.Count, "Rows should not have fields at this time");
+                var rowAtTheTimeOfTheEvent = new Row
+                {
+                    Index = e.Row.Index,
+                    Raw = e.Row.Raw,
+                    RawFields = e.Row.RawFields,
+                    ValidationResult = ValidationResultType.Valid
+                };
+
+                actual.Add(rowAtTheTimeOfTheEvent);
+            };
+
+            target.Process(context);
+
+            AssertRows(expected, actual);
+        }
+
+        [TestMethod]
         public void Process_BeforeProcessRow_Given_that_context_indicates_abort_The_process_should_stop()
         {
             var target = CreateTarget("test-file-01.csv", true);
@@ -370,13 +411,14 @@ namespace DataProcessor.DataSource.File.Tests
             Assert.AreEqual(expected.Value, actual.Value);
         }
 
-        private FileDataSource<ParserContext<Row>> CreateTarget(string filename, bool hasFieldsEnclosedInQuotes)
+        private FileDataSource<ParserContext<Row>> CreateTarget(string filename, bool hasFieldsEnclosedInQuotes, string commentedOutIndicator = null)
         {
             var config = new FileDataSourceConfig
             {
                 Delimiter = ",",
                 HasFieldsEnclosedInQuotes = hasFieldsEnclosedInQuotes,
-                Path = Path.Combine(_testDirectory, "TestFiles", filename)
+                Path = Path.Combine(_testDirectory, "TestFiles", filename),
+                CommentedOutIndicator = commentedOutIndicator
             };
 
             return new FileDataSource<ParserContext<Row>>(config);
