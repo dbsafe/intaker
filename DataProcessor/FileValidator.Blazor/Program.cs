@@ -16,8 +16,6 @@ namespace FileValidator.Blazor
             builder.RootComponents.Add<App>("#app");
 
             var httpClient = new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) };
-            var fileSpecificationsStore = new FileSpecificationsStore();
-            await FileSpecificationsStoreLoader.LoadAsync(fileSpecificationsStore, httpClient);
 
             builder.Services.AddSingleton(httpClient);
 
@@ -30,10 +28,22 @@ namespace FileValidator.Blazor
             builder.Services.AddSingleton(appState.FileSpecificationsPage);
 
             builder.Services.AddSingleton<ApplicationsEvents>();
+
+            var fileSpecificationsStore = await BuildFileSpecificationsStoreAsync(httpClient);
             builder.Services.AddSingleton<IFileSpecificationsStore>(fileSpecificationsStore);
+
+            var sampleFileStore = await BuildSampleFileStoreAsync(httpClient);
+            builder.Services.AddSingleton<ISampleFileStore>(sampleFileStore);
+
             builder.Services.AddScoped<IFileDecoder, FileDecoder>();
 
-            builder.Services.AddMatToaster(config =>
+            ConfigureToaster(builder.Services);
+            await builder.Build().RunAsync();
+        }
+
+        private static void ConfigureToaster(IServiceCollection services)
+        {
+            services.AddMatToaster(config =>
             {
                 config.Position = MatToastPosition.BottomCenter;
                 config.PreventDuplicates = false;
@@ -42,8 +52,20 @@ namespace FileValidator.Blazor
                 config.MaximumOpacity = 95;
                 config.VisibleStateDuration = 3000;
             });
+        }
 
-            await builder.Build().RunAsync();
+        private static async Task<FileSpecificationsStore> BuildFileSpecificationsStoreAsync(HttpClient httpClient)
+        {
+            var fileSpecificationsStore = new FileSpecificationsStore();
+            await SampleFileStoreLoader.LoadFileSpecsAsync(fileSpecificationsStore, httpClient);
+            return fileSpecificationsStore;
+        }
+
+        private static async Task<SampleFileStore> BuildSampleFileStoreAsync(HttpClient httpClient)
+        {
+            var sampleFileStore = new SampleFileStore();
+            await SampleFileStoreLoader.LoadSampleFileAsync(sampleFileStore, httpClient);
+            return sampleFileStore;
         }
 
         private static AppState CreateAppState()
