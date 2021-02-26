@@ -29,6 +29,9 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("hasFieldsEnclosedInQuotes")]
         public bool HasFieldsEnclosedInQuotes { get; set; }
 
+        [XmlAttribute("commentedOutIndicator")]
+        public string CommentedOutIndicator { get; set; }
+
         [XmlElement("header")]
         public RowDefinition Header { get; set; }
 

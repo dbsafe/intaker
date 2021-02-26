@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<inputDataDefinition name="TestFile" version="1.0" description="Demo definition file with two data types" hasFieldsEnclosedInQuotes="false" frameworkVersion="2.0" createRowJsonEnabled="false">
+<inputDataDefinition name="TestFile" version="1.0" description="Demo definition file with two data types" hasFieldsEnclosedInQuotes="false" commentedOutIndicator="#" frameworkVersion="2.0" createRowJsonEnabled="false">
   <header>
     <fields>
       <field name="RecordType" description="Record Type Header" decoder="TextDecoder" pattern="HD" failValidationResult="Error" />

@@ -8,6 +8,7 @@ namespace DataProcessor.DataSource
     {
         string Delimiter { get; }
         bool HasFieldsEnclosedInQuotes { get; }
+        string CommentedOutIndicator { get; }
     }
 
     public interface ILineProvider : IDisposable
@@ -19,6 +20,7 @@ namespace DataProcessor.DataSource
         where TParserContext : IParserContext
     {
         private readonly LineParser _lineParser;
+        private readonly Func<string, bool> IsLineCommentedOut = (line) => false;
 
         public event EventHandler<ProcessFieldEventArgs<TParserContext>> ProcessField;
         public event EventHandler<ProcessRowEventArgs<TParserContext>> BeforeProcessRow;
@@ -33,6 +35,14 @@ namespace DataProcessor.DataSource
                 Delimiter = config.Delimiter,
                 HasFieldsEnclosedInQuotes = config.HasFieldsEnclosedInQuotes
             };
+
+            if (!string.IsNullOrWhiteSpace(config.CommentedOutIndicator))
+            {
+                IsLineCommentedOut = (line) =>
+                {
+                    return line.StartsWith(config.CommentedOutIndicator);
+                };
+            }
         }
 
         protected abstract ILineProvider CreateLineProvider();
@@ -79,6 +89,11 @@ namespace DataProcessor.DataSource
 
         private void CreateRow(TParserContext context)
         {
+            if (IsLineCommentedOut(context.CurrentRowRaw))
+            {
+                return;
+            }
+
             var row = new Row
             {
                 Index = context.CurrentRowIndex,

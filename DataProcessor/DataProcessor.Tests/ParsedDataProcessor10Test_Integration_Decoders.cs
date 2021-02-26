@@ -352,7 +352,11 @@ namespace DataProcessor.Tests
 
         private IDataSource<ParserContext10> CreateFileDataSource(string filename)
         {
-            return TestHelpers.CreateFileDataSource<ParserContext10>(filename, _inputDefinitionFile.HasFieldsEnclosedInQuotes, _inputDefinitionFile.Delimiter);
+            return TestHelpers.CreateFileDataSource<ParserContext10>(
+                filename, 
+                _inputDefinitionFile.HasFieldsEnclosedInQuotes, 
+                _inputDefinitionFile.Delimiter, 
+                _inputDefinitionFile.CommentedOutIndicator);
         }
     }
 }

@@ -36,7 +36,8 @@ namespace FileValidator.Domain.Services
             var config = new StreamDataSourceConfig
             {
                 Delimiter = inputDefinitionFile.Delimiter,
-                HasFieldsEnclosedInQuotes = inputDefinitionFile.HasFieldsEnclosedInQuotes
+                HasFieldsEnclosedInQuotes = inputDefinitionFile.HasFieldsEnclosedInQuotes,
+                CommentedOutIndicator = inputDefinitionFile.CommentedOutIndicator
             };
 
             using (var stream = new MemoryStream())
@@ -65,7 +66,8 @@ namespace FileValidator.Domain.Services
             var config = new StreamDataSourceConfig
             {
                 Delimiter = inputDefinitionFile.Delimiter,
-                HasFieldsEnclosedInQuotes = inputDefinitionFile.HasFieldsEnclosedInQuotes
+                HasFieldsEnclosedInQuotes = inputDefinitionFile.HasFieldsEnclosedInQuotes,
+                CommentedOutIndicator = inputDefinitionFile.CommentedOutIndicator
             };
 
             using (var stream = new MemoryStream())
