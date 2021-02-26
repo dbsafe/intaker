@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace FileValidator.Domain.Services
 {
@@ -25,12 +26,14 @@ namespace FileValidator.Domain.Services
     {
         OperationResult<SampleFile> GetSampleFileById(int id);
         OperationResult<int> AddSampleFile(SampleFile sampleFile);
+
+        OperationResult<IEnumerable<SampleFileOption>> GetAllSampleFileOptions();
     }
 
     public class SampleFileStore : ISampleFileStore
     {
         private int _lastGeneratedId;
-        private List<SampleFile> _sampleFiles = new List<SampleFile>();
+        private readonly List<SampleFile> _sampleFiles = new List<SampleFile>();
 
         public OperationResult<int> AddSampleFile(SampleFile sampleFile)
         {
@@ -46,6 +49,12 @@ namespace FileValidator.Domain.Services
             return OperationResult<int>.CreateSucced(newSampleFile.Id);
         }
 
+        public OperationResult<IEnumerable<SampleFileOption>> GetAllSampleFileOptions()
+        {
+            var data = _sampleFiles.Select(a => new SampleFileOption(a.Id, a.Name));
+            return OperationResult<IEnumerable<SampleFileOption>>.CreateSucced(data);
+        }
+
         public OperationResult<SampleFile> GetSampleFileById(int id)
         {
             if (id > _lastGeneratedId)
@@ -54,7 +63,7 @@ namespace FileValidator.Domain.Services
             }
             else
             {
-                return OperationResult<SampleFile>.CreateSucced(_sampleFiles[id]);
+                return OperationResult<SampleFile>.CreateSucced(_sampleFiles[id - 1]);
             }
         }
     }

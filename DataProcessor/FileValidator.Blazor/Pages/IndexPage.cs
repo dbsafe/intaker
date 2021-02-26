@@ -26,6 +26,9 @@ namespace FileValidator.Blazor.Pages
         public IFileSpecificationsStore FileSpecificationsStore { get; set; }
 
         [Inject]
+        public ISampleFileStore SampleFileStore { get; set; }
+
+        [Inject]
         public IFileDecoder FileDecoder { get; set; }
 
         [Inject]
@@ -58,17 +61,38 @@ namespace FileValidator.Blazor.Pages
         {
             base.OnInitialized();
             ApplicationsEvents.MenuItemClicked += MenuItemClicked;
-            _model.Options = FileSpecificationsStore.GetAllFileSpecificationOptions().Data.OrderBy(a => a.Name);
+            LoadFileSpecificationOptions();
+            LoadSampleFileOptions();
+        }
 
+        private void LoadSampleFileOptions()
+        {
+            _model.SampleFileOptions = SampleFileStore.GetAllSampleFileOptions().Data;
+            if (HomePageState.SelectedSampleFileId > 0)
+            {
+                _model.SelectedSampleFileId = HomePageState.SelectedSampleFileId;
+            }
+            else
+            {
+                if (_model.SampleFileOptions.Any())
+                {
+                    _model.SelectedSampleFileId = _model.SampleFileOptions.First().Id;
+                }
+            }
+        }
+
+        private void LoadFileSpecificationOptions()
+        {
+            _model.FileSpecificationOptions = FileSpecificationsStore.GetAllFileSpecificationOptions().Data.OrderBy(a => a.Name);
             if (HomePageState.SelectedFileSpecId > 0)
             {
                 _model.SelectedFileSpecId = HomePageState.SelectedFileSpecId;
             }
             else
             {
-                if (_model.Options.Any())
+                if (_model.FileSpecificationOptions.Any())
                 {
-                    _model.SelectedFileSpecId = _model.Options.First().Id;
+                    _model.SelectedFileSpecId = _model.FileSpecificationOptions.First().Id;
                 }
             }
         }
@@ -96,6 +120,29 @@ namespace FileValidator.Blazor.Pages
             }
 
             _editorManager.SetValue(content);
+        }
+
+        private void UseSampleFile(MouseEventArgs e)
+        {
+            UseSelectedSampleFile();
+        }
+
+        private void UseSelectedSampleFile()
+        {
+            if (_model.SelectedSampleFileId == -1)
+            {
+                Toaster.Add("A sample file must be selected", MatToastType.Warning);
+                return;
+            }
+
+            var getSampleFileResult = SampleFileStore.GetSampleFileById(_model.SelectedSampleFileId);
+            if (!getSampleFileResult.Succeed)
+            {
+                Toaster.Add(getSampleFileResult.Message, MatToastType.Warning);
+                return;
+            }
+
+            _editorManager.SetValue(getSampleFileResult.Data.Content);
         }
 
         private void Decode(MouseEventArgs e)
@@ -196,7 +243,9 @@ namespace FileValidator.Blazor.Pages
         {
             HomePageState.CursorPosition = _editorManager.GetCursorPosition();
             HomePageState.InputDataContent = _editorManager.GetValue();
+            
             HomePageState.SelectedFileSpecId = _model.SelectedFileSpecId;
+            HomePageState.SelectedSampleFileId = _model.SelectedSampleFileId;
 
             ApplicationsEvents.MenuItemClicked -= MenuItemClicked;
         }
@@ -217,9 +266,13 @@ namespace FileValidator.Blazor.Pages
 
         private class Model
         {
-            public int SelectedFileSpecId = -1;
             public bool ProgressDialogIsOpen = false;
-            public IEnumerable<FileSpecificationOption> Options;
+
+            public int SelectedFileSpecId = -1;
+            public IEnumerable<FileSpecificationOption> FileSpecificationOptions;
+
+            public int SelectedSampleFileId = -1;
+            public IEnumerable<SampleFileOption> SampleFileOptions;
         }
     }
 }

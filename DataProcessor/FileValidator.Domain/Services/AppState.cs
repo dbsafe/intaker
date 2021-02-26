@@ -14,6 +14,7 @@
     {
         public string InputDataContent { get; set; }
         public int SelectedFileSpecId { get; set; }
+        public int SelectedSampleFileId { get; set; }
         public CursorPosition CursorPosition { get; set; }
     }
 

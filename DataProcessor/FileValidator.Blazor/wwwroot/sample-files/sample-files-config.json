@@ -1,10 +1,10 @@
 [
   {
-    "name": "Single data type v1.0",
-    "path": "single-data-type.v10.csv"
-  },
-  {
     "name": "Single data type with errors v1.0",
     "path": "single-data-type-with-errors.v10.csv"
+  },
+  {
+    "name": "Single data type v1.0",
+    "path": "single-data-type.v10.csv"
   }
 ]
