@@ -23,6 +23,7 @@ namespace DataProcessor
 
     public class ParsedData20 : ParsedData<DataRow20>
     {
-        public IList<DataRow20> DataRowsWithUnknownTypes { get; set; }
+        public IList<DataRow20> UndecodedDataRows { get; set; }
+        public IList<DataRow20> DecodedDataRows { get; set; }
     }
 }

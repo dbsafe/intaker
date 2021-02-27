@@ -40,6 +40,7 @@ namespace DataProcessor.Models
         public DataRow20 CurrentDataRow20 { get; set; }
         public int DataTypeFieldIndex { get; set; }
         public int DataKeyFieldIndex { get; set; }
-        public IList<DataRow20> DataRowsWithUnknownTypes { get; set; } = new List<DataRow20>();
+        public IList<DataRow20> UndecodedDataRows { get; set; } = new List<DataRow20>();
+        public IList<DataRow20> DecodedDataRows { get; set; } = new List<DataRow20>();
     }
 }
