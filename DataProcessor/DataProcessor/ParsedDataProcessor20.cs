@@ -43,7 +43,6 @@ namespace DataProcessor
 
         private void ClearContext(ParserContext20 context)
         {
-            context.DataType = string.Empty;
             context.CurrentDataRow20 = null;
             context.DataTypeFieldIndex = -1;
             context.DataKeyFieldIndex = -1;
@@ -84,9 +83,10 @@ namespace DataProcessor
             }
 
             e.Context.DataRows.Add(e.Context.CurrentDataRow20);
-            e.Context.DataType = kvp.Key;
+            e.Context.CurrentDataRow20.DataType = kvp.Key;
             e.Context.DataTypeFieldIndex = kvp.Value.DataTypeFieldIndex;
             e.Context.DataKeyFieldIndex = kvp.Value.DataKeyFieldIndex;
+
             var lineType = $"Data Row '{kvp.Key}'";
             ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
         }
@@ -163,7 +163,7 @@ namespace DataProcessor
             }
             else
             {
-                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.DataType];
+                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.CurrentDataRow20.DataType];
                 fieldProcessorDefinition = dataRowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
 
@@ -237,7 +237,7 @@ namespace DataProcessor
                 throw new InvalidOperationException("CurrentDataRow20 is null");
             }
 
-            SetDataTypeAndDataKey(e.Context);
+            SetDataKey(e.Context);
 
             if (!IsValidRow(e))
             {
@@ -247,19 +247,14 @@ namespace DataProcessor
 
             if (_fileProcessorDefinition.CreateRowJsonEnabled)
             {
-                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.DataType];
+                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.CurrentDataRow20.DataType];
                 ParsedDataProcessorHelper.SetJson(e.Row, dataRowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions);
             }
         }
 
-        private static void SetDataTypeAndDataKey(ParserContext20 context)
+        private static void SetDataKey(ParserContext20 context)
         {
             var fieldCount = context.CurrentDataRow20.Row.Fields.Count;
-            if (context.DataTypeFieldIndex > -1 && context.DataTypeFieldIndex < fieldCount)
-            {
-                context.CurrentDataRow20.DataType = context.CurrentDataRow20.Row.Fields[context.DataTypeFieldIndex].Value.ToString();
-            }
-
             if (context.DataKeyFieldIndex > -1 && context.DataKeyFieldIndex < fieldCount)
             {
                 context.CurrentDataRow20.DataKey = context.CurrentDataRow20.Row.Fields[context.DataKeyFieldIndex].Value.ToString();

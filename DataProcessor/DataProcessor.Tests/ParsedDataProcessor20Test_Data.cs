@@ -17,6 +17,8 @@ namespace DataProcessor.Tests
         private DataRowProcessorDefinition _dataType1;
         private DataRowProcessorDefinition _dataType2;
 
+        public TestContext TestContext { get; set; }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -167,14 +169,20 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual);
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.DataRowsWithUnknownTypes.Count);
 
             var dataRow0 = actual.DataRows[0];
+            Assert.AreEqual(0, dataRow0.Row.Index);
+            Assert.AreEqual(ValidationResultType.Error, dataRow0.Row.ValidationResult);
+            Assert.AreEqual(0, dataRow0.Row.Fields.Count);
             Assert.AreEqual(1, dataRow0.Row.Errors.Count);
             Assert.AreEqual("Data Row 'dt1' - The expected number of fields 2 is not equal to the actual number of fields 3", dataRow0.Row.Errors[0]);
+            Assert.AreEqual(0, dataRow0.Row.Warnings.Count);
+            Assert.AreEqual("dt1", dataRow0.DataType);
         }
 
         [TestMethod]
