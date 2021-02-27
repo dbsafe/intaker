@@ -85,7 +85,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.DataRowsWithUnknownTypes.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0].Row;
@@ -120,7 +120,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.DataRowsWithUnknownTypes.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -142,7 +142,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.DataRowsWithUnknownTypes.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -170,7 +170,7 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.DataRowsWithUnknownTypes.Count);
 
             var dataRow0 = actual.DataRows[0];
             Assert.AreEqual(1, dataRow0.Row.Errors.Count);
@@ -178,7 +178,7 @@ namespace DataProcessor.Tests
         }
 
         [TestMethod]
-        public void Process_Given_a_file_with_invalid_data_types_Lines_with_invalid_data_types_should_be_added_to_a_separate_collection()
+        public void Process_Given_a_file_with_invalid_data_types_Lines_with_unknown_data_types_should_be_added_to_a_separate_collection()
         {
             _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext20>("test-file-data-invalid-data-types.20.csv", false);
 
@@ -192,9 +192,9 @@ namespace DataProcessor.Tests
             Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[0]);
 
-            Assert.AreEqual(2, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(2, actual.DataRowsWithUnknownTypes.Count);
 
-            var dataRow3 = actual.DataRowsWithInvalidTypes[0];
+            var dataRow3 = actual.DataRowsWithUnknownTypes[0];
             var row3 = dataRow3.Row;
             Assert.AreEqual(3, row3.Index);
             Assert.AreEqual(ValidationResultType.Error, row3.ValidationResult);
