@@ -205,8 +205,8 @@ namespace DataProcessor.Tests
             Assert.AreEqual("Unknown line type", row3.Errors[0]);
             Assert.AreEqual(0, row3.Warnings.Count);
 
-            Assert.IsNull(dataRow3.DataKey);
-            Assert.IsNull(dataRow3.DataType);
+            Assert.AreEqual(string.Empty, dataRow3.DataKey);
+            Assert.AreEqual(string.Empty, dataRow3.DataType);
         }
     }
 }
