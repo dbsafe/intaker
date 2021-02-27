@@ -78,11 +78,9 @@ namespace DataProcessor
                 e.Row.ValidationResult = ValidationResultType.Error;
                 var error = $"Unknown line type";
                 e.Row.Errors.Add(error);
-                e.Context.UndecodedDataRows.Add(e.Context.CurrentDataRow20);
                 return false;
             }
 
-            e.Context.DataRows.Add(e.Context.CurrentDataRow20);
             e.Context.CurrentDataRow20.DataType = dataType;
             e.Context.DataTypeFieldIndex = dataRowProcessorDefinition.DataTypeFieldIndex;
             e.Context.DataKeyFieldIndex = dataRowProcessorDefinition.DataKeyFieldIndex;
@@ -92,11 +90,13 @@ namespace DataProcessor
         private void SourceBeforeProcessDataRow(ProcessRowEventArgs<ParserContext20> e)
         {
             e.Context.CurrentDataRow20 = new DataRow20 { Row = e.Row };
+            e.Context.DataRows.Add(e.Context.CurrentDataRow20);
             var kvp = FindDataRowProcessorDefinition(_fileProcessorDefinition, e);
 
             var hasValidDataType = ValidateDataRowProcessorDefinition(e, kvp.Value, kvp.Key);
             if (!hasValidDataType)
             {
+                e.Context.UndecodedDataRows.Add(e.Context.CurrentDataRow20);
                 return;
             }
 
@@ -105,7 +105,10 @@ namespace DataProcessor
             if (!hasValidateNumerOfFields)
             {
                 e.Context.UndecodedDataRows.Add(e.Context.CurrentDataRow20);
+                return;
             }
+
+            e.Context.DecodedDataRows.Add(e.Context.CurrentDataRow20);
         }
 
         private void BeforeProcessHeaderRow(ProcessRowEventArgs<ParserContext20> e)

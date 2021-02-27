@@ -88,6 +88,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0].Row;
@@ -123,6 +124,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -145,6 +147,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
             Assert.AreEqual(0, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -174,6 +177,7 @@ namespace DataProcessor.Tests
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
             Assert.AreEqual(2, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(1, actual.DecodedDataRows.Count);
 
             var dataRow0 = actual.DataRows[0];
             Assert.AreEqual(0, dataRow0.Row.Index);
@@ -193,14 +197,22 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual);
 
-            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(5, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
 
             Assert.AreEqual(1, actual.Errors.Count);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[0]);
 
             Assert.AreEqual(2, actual.UndecodedDataRows.Count);
+            Assert.AreSame(actual.DataRows[3], actual.UndecodedDataRows[0]);
+            Assert.AreSame(actual.DataRows[4], actual.UndecodedDataRows[1]);
+
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
+            Assert.AreSame(actual.DataRows[0], actual.DecodedDataRows[0]);
+            Assert.AreSame(actual.DataRows[1], actual.DecodedDataRows[1]);
+            Assert.AreSame(actual.DataRows[2], actual.DecodedDataRows[2]);
 
             var dataRow3 = actual.UndecodedDataRows[0];
             var row3 = dataRow3.Row;
