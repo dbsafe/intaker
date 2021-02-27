@@ -56,7 +56,7 @@ namespace FileValidator.Blazor.Pages
 
             _editorManager = EditorManager.CreateJsonEditor(JS, "editor", true);
 
-            var groups = GroupHelper.BuildRowGroups(_parsedData.DataRows, _inputDefinitionFile.Datas);
+            var groups = GroupHelper.BuildRowGroups(_parsedData.DecodedDataRows, _inputDefinitionFile.Datas);
             _editorManager.SetValue(groups.ToJson());
 
             if (LoadedFileGroupJsonPageState.CursorPosition != null)

@@ -65,7 +65,7 @@ namespace FileValidator.Blazor.Pages
 
                 _headerRow = _parsedDataAndSpec20.ParsedData.Header;
                 _trailerRow = _parsedDataAndSpec20.ParsedData.Trailer;
-                _dataRow20s = _parsedDataAndSpec20.ParsedData.DataRows;
+                _dataRow20s = _parsedDataAndSpec20.ParsedData.DecodedDataRows;
                 _undecodedDataRows = _parsedDataAndSpec20.ParsedData.UndecodedDataRows;
 
                 _headerDefinition = _parsedDataAndSpec20.InputDefinitionFile.Header;
