@@ -6,7 +6,7 @@ Demo website using this library
 https://dbsafe.github.io/intaker/
 
 ## Basic Idea
-The basic idea is that a file specification can be declared in a file.
+The basic idea is that a file specification can be declared using a xml file.
 
 Example:\
 This is a text file that contains balances.
