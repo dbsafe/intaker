@@ -83,7 +83,7 @@ namespace FileValidator.Blazor.Pages
 
         private void LoadFileSpecificationOptions()
         {
-            _model.FileSpecificationOptions = FileSpecificationsStore.GetAllFileSpecificationOptions().Data.OrderBy(a => a.Name);
+            _model.FileSpecificationOptions = FileSpecificationsStore.GetAllFileSpecificationOptions().Data;
             if (HomePageState.SelectedFileSpecId > 0)
             {
                 _model.SelectedFileSpecId = HomePageState.SelectedFileSpecId;

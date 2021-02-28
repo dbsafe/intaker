@@ -29,16 +29,27 @@
             <aggregator name="DataRowCountAggregator" description="Data row counter" aggregator="RowCountAggregator" />
           </aggregators>
         </field>
-        <field name="CustomField" uiName="Custom Field" description="Custom Field without validation" />
+        <field name="Comment" uiName="Comment" description="Comment field" />
       </fields>
     </data>
-    <data dataType="CHANGE">
+    <data dataType="ADDRCHANGE">
       <fields>
-        <field name="RecordType" uiName="Record Type" description="Record Type Change" decoder="TextDecoder" pattern="CHANGE" failValidationResult="Error" />
+        <field name="RecordType" uiName="Record Type" description="Record Type Change" decoder="TextDecoder" pattern="ADDRCHANGE" failValidationResult="Error" />
         <field name="ConsumerID" uiName="Consumer ID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" isKey="true" failValidationResult="Error" />
-        <field name="Date" description="Date of change" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+        <field name="Date" description="Date of change" uiFormatter="DateTimeFormatter" uiFormat="yyyy-MM-dd" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
         <field name="AddressLine1" uiName="Address Line1" description="Street address" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
         <field name="AddressLine2" uiName="Address Line1" description="Apartment or suite" decoder="TextDecoder" pattern="\s*(?:\S\s*){3,100}" failValidationResult="Error" />
+        <field name="Comment" uiName="Comment" description="Comment field" />
+      </fields>
+    </data>
+    <data dataType="NAMECHANGE">
+      <fields>
+        <field name="RecordType" uiName="Record Type" description="Record Type Change" decoder="TextDecoder" pattern="NAMECHANGE" failValidationResult="Error" />
+        <field name="ConsumerID" uiName="Consumer ID" description="Consumer ID" decoder="IntegerDecoder" pattern="[0-9]{1,10}" isKey="true" failValidationResult="Error" />
+        <field name="Date" description="Date of change" uiFormatter="DateTimeFormatter" uiFormat="yyyy-MM-dd" decoder="DateDecoder" pattern="MMddyyyy" failValidationResult="Error" />
+        <field name="FirstName" uiName="First Name" description="First Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
+        <field name="LastName" uiName="Last Name" description="Last Name" decoder="TextDecoder" pattern="[a-zA-Z0-9\s-']{2,35}" failValidationResult="Error" />
+        <field name="Comment" uiName="Comment" description="Comment field" />
       </fields>
     </data>
   </datas>
