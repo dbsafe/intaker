@@ -14,23 +14,24 @@ namespace FileValidator.Blazor
         private readonly IJSInProcessRuntime _js;
         private readonly string _id;
 
-        private static List<object> RawColumnInfo { get; } = new List<object>()
+        private static List<object> InitUndecodedRowsColumnInfo { get; } = new List<object>()
         {
             new { title = "Line Number", field = "lineNumber", headerSort = false },
-            new { title = "Raw", field = "raw", headerSort = false }
+            new { title = "Raw", field = "raw", headerSort = false },
+            new { title = "Error", field = "error", headerSort = false }
         };
 
-        public static TabulatorManager20 Init(IJSRuntime js, string id, IEnumerable<DataRow20> rows, Datas dataRowsDefinition)
+        public static TabulatorManager20 InitDecodedRows(IJSRuntime js, string id, IEnumerable<DataRow20> rows, Datas dataRowsDefinition)
         {
             var table = new TabulatorManager20(js, id);
-            table.InitWithRowDefinition(rows, dataRowsDefinition);
+            table.InitDecodedRows(rows, dataRowsDefinition);
             return table;
         }
 
-        public static TabulatorManager20 InitWithRawValues(IJSRuntime js, string id, IEnumerable<DataRow20> rows)
+        public static TabulatorManager20 InitUndecodedRows(IJSRuntime js, string id, IEnumerable<DataRow20> rows)
         {
             var table = new TabulatorManager20(js, id);
-            table.InitWithRawValues(rows);
+            table.InitUndecodedRows(rows);
             return table;
         }
 
@@ -40,19 +41,24 @@ namespace FileValidator.Blazor
             _id = id;
         }
 
-        private void InitWithRawValues(IEnumerable<DataRow20> dataRows)
+        private void InitUndecodedRows(IEnumerable<DataRow20> dataRows)
         {
-            var tableData = dataRows.Select(a => new { lineNumber = a.Row.Index + 1, raw = a.Row.Raw });
-            var tableModel = new { tableData, columnInfos = RawColumnInfo };
-            _js.InvokeVoid("tabulator.init20Raw", _id, tableModel);
+            var tableData = dataRows.Select(a => new 
+            { 
+                lineNumber = a.Row.Index + 1, 
+                raw = a.Row.Raw,
+                error = string.Join(Environment.NewLine, a.Row.Errors)
+            });
+            var tableModel = new { tableData, columnInfos = InitUndecodedRowsColumnInfo };
+            _js.InvokeVoid("tabulator.initUndecodedRows20", _id, tableModel);
         }
 
-        private void InitWithRowDefinition(IEnumerable<DataRow20> dataRows, Datas dataRowsDefinition)
+        private void InitDecodedRows(IEnumerable<DataRow20> dataRows, Datas dataRowsDefinition)
         {
             var groups = GroupHelper.BuildRowGroups(dataRows, dataRowsDefinition);
             var tableModel = BuildTableDataModel(groups, dataRowsDefinition);
 
-            _js.InvokeVoid("tabulator.init20", _id, tableModel, ErrorsAndWarningsColumnInfo);
+            _js.InvokeVoid("tabulator.initDecodedRows20", _id, tableModel, ErrorsAndWarningsColumnInfo);
         }
 
         private static int FindRowsDefinitionIndex(Dictionary<string, IndexedRowDefinition> rowDefinitionDictionary, string dataType)

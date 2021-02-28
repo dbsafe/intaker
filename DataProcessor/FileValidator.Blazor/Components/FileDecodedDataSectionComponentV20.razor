@@ -1,11 +1,18 @@
 ﻿<div class="space-10 mat-subtitle2">@Tittle</div>
 <MatDivider></MatDivider>
 
-<div class="mat-layout-grid-inner">
-    <div class="space-10 mat-layout-grid-cell mat-layout-grid-cell-span-12">
-        <div id="@Id"></div>
+@if (_rows.Count() == 0)
+{
+    <div class="space-10 mat-subtitle4">None</div>
+}
+else
+{
+    <div class="mat-layout-grid-inner">
+        <div class="space-10 mat-layout-grid-cell mat-layout-grid-cell-span-12">
+            <div id="@Id"></div>
+        </div>
     </div>
-</div>
+}
 
 @code {
     private TabulatorManager20 _tabulatorManager;
@@ -32,15 +39,18 @@
         set { _rows = value.ToList(); }
     }
 
+    [Parameter]
+    public Datas DataRowsDefinition { get; set; }
+
     protected override void OnAfterRender(bool firstRender)
     {
         base.OnAfterRender(firstRender);
 
-        if (firstRender)
+        if (firstRender && _rows.Count() > 0)
         {
             try
             {
-                _tabulatorManager = TabulatorManager20.InitWithRawValues(JS, $"#{Id}", _rows);
+                _tabulatorManager = TabulatorManager20.InitDecodedRows(JS, $"#{Id}", _rows, DataRowsDefinition);
             }
             catch (Exception ex)
             {

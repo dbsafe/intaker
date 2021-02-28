@@ -102,11 +102,11 @@
         }
     },
     getColumnInfo: (data, columnInfos) => {
-        if (data.lenght == 0)
+        if (data.length == 0)
             return null;
         return columnInfos[data[0].columnInfoIndex];
     },
-    init20: (id, tableModel, errorsAndWarningsColumnInfo) => {
+    initDecodedRows20: (id, tableModel, errorsAndWarningsColumnInfo) => {
         try {
             var masterTabulatorData = {
                 data: tableModel.tableData,
@@ -130,7 +130,7 @@
             console.log(err.message);
         }
     },
-    init20Raw: (id, tableModel) => {
+    initUndecodedRows20: (id, tableModel) => {
         try {
             var masterTabulatorData = {
                 data: tableModel.tableData,
