@@ -281,11 +281,27 @@ namespace DataProcessor
             }
         }
 
+        protected void VerifyUndecodedDataRows(ParserContext20 parserContext)
+        {
+            if (parserContext.UndecodedDataRows.Count > 0)
+            {
+                if (parserContext.UndecodedDataRows.Count == 1)
+                {
+                    parserContext.Errors.Add($"There is 1 undecoded data row");
+                }
+                else
+                {
+                    parserContext.Errors.Add($"There are {parserContext.UndecodedDataRows.Count} undecoded data rows");
+                }
+            }
+        }
+
         public ParsedData20 Process()
         {
             ParserContext = new ParserContext20 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
             VerifyInvalidDataRows(ParserContext);
+            VerifyUndecodedDataRows(ParserContext);
 
             return new ParsedData20
             {

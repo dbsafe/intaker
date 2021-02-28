@@ -202,8 +202,9 @@ namespace DataProcessor.Tests
             Assert.AreEqual(5, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
 
-            Assert.AreEqual(1, actual.Errors.Count);
+            Assert.AreEqual(2, actual.Errors.Count);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[0]);
+            Assert.AreEqual("There are 2 undecoded data rows", actual.Errors[1]);
 
             Assert.AreEqual(2, actual.UndecodedDataRows.Count);
             Assert.AreSame(actual.DataRows[3], actual.UndecodedDataRows[0]);
