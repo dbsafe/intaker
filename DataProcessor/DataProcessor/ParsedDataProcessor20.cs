@@ -43,7 +43,6 @@ namespace DataProcessor
 
         private void ClearContext(ParserContext20 context)
         {
-            context.DataType = string.Empty;
             context.CurrentDataRow20 = null;
             context.DataTypeFieldIndex = -1;
             context.DataKeyFieldIndex = -1;
@@ -69,26 +68,47 @@ namespace DataProcessor
             SourceBeforeProcessDataRow(e);
         }
 
-        private void SourceBeforeProcessDataRow(ProcessRowEventArgs<ParserContext20> e)
+        private bool ValidateDataRowProcessorDefinition(
+            ProcessRowEventArgs<ParserContext20> e, 
+            DataRowProcessorDefinition dataRowProcessorDefinition,
+            string dataType)
         {
-            e.Context.CurrentDataRow20 = new DataRow20 { Row = e.Row };
-            
-            var kvp = FindDataRowProcessorDefinition(_fileProcessorDefinition, e);
-            if (kvp.Key == null)
+            if (dataRowProcessorDefinition == null)
             {
                 e.Row.ValidationResult = ValidationResultType.Error;
                 var error = $"Unknown line type";
                 e.Row.Errors.Add(error);
-                e.Context.DataRowsWithInvalidTypes.Add(e.Context.CurrentDataRow20);
+                return false;
+            }
+
+            e.Context.CurrentDataRow20.DataType = dataType;
+            e.Context.DataTypeFieldIndex = dataRowProcessorDefinition.DataTypeFieldIndex;
+            e.Context.DataKeyFieldIndex = dataRowProcessorDefinition.DataKeyFieldIndex;
+            return true;
+        }
+
+        private void SourceBeforeProcessDataRow(ProcessRowEventArgs<ParserContext20> e)
+        {
+            e.Context.CurrentDataRow20 = new DataRow20 { Row = e.Row };
+            e.Context.DataRows.Add(e.Context.CurrentDataRow20);
+            var kvp = FindDataRowProcessorDefinition(_fileProcessorDefinition, e);
+
+            var hasValidDataType = ValidateDataRowProcessorDefinition(e, kvp.Value, kvp.Key);
+            if (!hasValidDataType)
+            {
+                e.Context.UndecodedDataRows.Add(e.Context.CurrentDataRow20);
                 return;
             }
 
-            e.Context.DataRows.Add(e.Context.CurrentDataRow20);
-            e.Context.DataType = kvp.Key;
-            e.Context.DataTypeFieldIndex = kvp.Value.DataTypeFieldIndex;
-            e.Context.DataKeyFieldIndex = kvp.Value.DataKeyFieldIndex;
-            var lineType = $"Data Row '{kvp.Key}'";
-            ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
+            var lineType = $"Data Row '{e.Context.CurrentDataRow20.DataType}'";
+            var hasValidateNumerOfFields = ParsedDataProcessorHelper.ValidateNumerOfFields(lineType, e.Row, kvp.Value.RowProcessorDefinition);
+            if (!hasValidateNumerOfFields)
+            {
+                e.Context.UndecodedDataRows.Add(e.Context.CurrentDataRow20);
+                return;
+            }
+
+            e.Context.DecodedDataRows.Add(e.Context.CurrentDataRow20);
         }
 
         private void BeforeProcessHeaderRow(ProcessRowEventArgs<ParserContext20> e)
@@ -163,7 +183,7 @@ namespace DataProcessor
             }
             else
             {
-                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.DataType];
+                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.CurrentDataRow20.DataType];
                 fieldProcessorDefinition = dataRowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions[e.Field.Index];
             }
 
@@ -237,7 +257,7 @@ namespace DataProcessor
                 throw new InvalidOperationException("CurrentDataRow20 is null");
             }
 
-            SetDataTypeAndDataKey(e.Context);
+            SetDataKey(e.Context);
 
             if (!IsValidRow(e))
             {
@@ -247,22 +267,32 @@ namespace DataProcessor
 
             if (_fileProcessorDefinition.CreateRowJsonEnabled)
             {
-                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.DataType];
+                var dataRowProcessorDefinition = _fileProcessorDefinition.DataRowProcessorDefinitions[e.Context.CurrentDataRow20.DataType];
                 ParsedDataProcessorHelper.SetJson(e.Row, dataRowProcessorDefinition.RowProcessorDefinition.FieldProcessorDefinitions);
             }
         }
 
-        private static void SetDataTypeAndDataKey(ParserContext20 context)
+        private static void SetDataKey(ParserContext20 context)
         {
             var fieldCount = context.CurrentDataRow20.Row.Fields.Count;
-            if (context.DataTypeFieldIndex > -1 && context.DataTypeFieldIndex < fieldCount)
-            {
-                context.CurrentDataRow20.DataType = context.CurrentDataRow20.Row.Fields[context.DataTypeFieldIndex].Value.ToString();
-            }
-
             if (context.DataKeyFieldIndex > -1 && context.DataKeyFieldIndex < fieldCount)
             {
                 context.CurrentDataRow20.DataKey = context.CurrentDataRow20.Row.Fields[context.DataKeyFieldIndex].Value.ToString();
+            }
+        }
+
+        protected void VerifyUndecodedDataRows(ParserContext20 parserContext)
+        {
+            if (parserContext.UndecodedDataRows.Count > 0)
+            {
+                if (parserContext.UndecodedDataRows.Count == 1)
+                {
+                    parserContext.Errors.Add($"There is 1 undecoded data row");
+                }
+                else
+                {
+                    parserContext.Errors.Add($"There are {parserContext.UndecodedDataRows.Count} undecoded data rows");
+                }
             }
         }
 
@@ -271,6 +301,7 @@ namespace DataProcessor
             ParserContext = new ParserContext20 { ValidationResult = ValidationResultType.Valid };
             _source.Process(ParserContext);
             VerifyInvalidDataRows(ParserContext);
+            VerifyUndecodedDataRows(ParserContext);
 
             return new ParsedData20
             {
@@ -280,7 +311,8 @@ namespace DataProcessor
                 Header = ParserContext.Header,
                 Trailer = ParserContext.Trailer,
                 ValidationResult = ParserContext.ValidationResult,
-                DataRowsWithInvalidTypes = ParserContext.DataRowsWithInvalidTypes
+                UndecodedDataRows = ParserContext.UndecodedDataRows,
+                DecodedDataRows = ParserContext.DecodedDataRows,
             };
         }
     }

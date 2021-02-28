@@ -9,14 +9,32 @@
         <div class="mat-layout-grid-cell-span-12 mat-elevation-z5 index-row-item mdc-theme--surface">
             <div class="page-tool-bar mat-elevation-z4">
                 <div class="mat-layout-grid-inner">
-                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-8">
-                        <MatSelect @bind-Value="@_model.SelectedFileSpecId" HelperTextPersistent="false" Outlined="true">
-                            @foreach (var option in _model.Options)
-                            {
-                                <MatOption TValue="int" Value="@option.Id">@option.Name</MatOption>
-                            }
-                        </MatSelect>
-                        <MatButton OnClick="@Decode" Label="Decode"></MatButton>
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                        <MatTooltip Tooltip="Preloaded file specifications. See 'File Specifications' in the main menu for more details.">
+                            <MatSelect RefBack="@context" @bind-Value="@_model.SelectedFileSpecId" HelperTextPersistent="false" Outlined="true" Label="File Specification">
+                                @foreach (var option in _model.FileSpecificationOptions)
+                                {
+                                    <MatOption TValue="int" Value="@option.Id">@option.Name</MatOption>
+                                }
+                            </MatSelect>
+                        </MatTooltip>
+                        <MatTooltip Tooltip="Decodes current text using the selected file specification.">
+                            <MatButton RefBack="@context" OnClick="@Decode" Label="Decode"></MatButton>
+                        </MatTooltip>
+                    </div>
+
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">
+                        <MatTooltip Tooltip="Preloaded sample data files.">
+                            <MatSelect RefBack="@context" @bind-Value="@_model.SelectedSampleFileId" HelperTextPersistent="false" Outlined="true" Label="Sample File ">
+                                @foreach (var option in _model.SampleFileOptions)
+                                {
+                                    <MatOption TValue="int" Value="@option.Id">@option.Name</MatOption>
+                                }
+                            </MatSelect>
+                        </MatTooltip>
+                        <MatTooltip Tooltip="Replaces the text with the file from the selected sample file.">
+                            <MatButton RefBack="@context" OnClick="@UseSampleFile" Label="Use this file"></MatButton>
+                        </MatTooltip>
                     </div>
 
                     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-4">

@@ -4,8 +4,10 @@
 <div class="mat-layout-grid-inner">
     <div class="file-summary mat-layout-grid-cell mat-layout-grid-cell-span-6">
         <div class="mat-body2"><strong>Validation Result: </strong>@_model.ValidationResult</div>
-        <div class="mat-body2"><strong>Total Number of Data rows: </strong>@_model.DataRowCount</div>
-        <div class="mat-body2"><strong>Total Number of Invalid rows: </strong>@_model.InvalidDataRowCount</div>
+        <div class="mat-body2"><strong>Data rows: </strong>@_model.DataRowCount</div>
+        <div class="mat-body2"><strong>Decoded data rows: </strong>@_model.DecodedDataRowCount</div>
+        <div class="mat-body2"><strong>Undecoded data rows: </strong>@_model.UndecodedDataRowCount</div>
+        <div class="mat-body2"><strong>Invalid data rows: </strong>@_model.InvalidDataRowCount</div>
     </div>
 
     <div class="mat-layout-grid-cell mat-layout-grid-cell-span-6">
@@ -52,6 +54,8 @@
         _model.DataRowCount = _parsedDataAndSpec.ParsedData.DataRows.Count;
         _model.InvalidDataRowCount = _parsedDataAndSpec.ParsedData.InvalidDataRows.Count;
         _model.ValidationResult = _parsedDataAndSpec.ParsedData.ValidationResult.ToString();
+        _model.DecodedDataRowCount = _parsedDataAndSpec.ParsedData.DecodedDataRows.Count;
+        _model.UndecodedDataRowCount = _parsedDataAndSpec.ParsedData.UndecodedDataRows.Count;
     }
 
     private void Clear()
@@ -66,5 +70,7 @@
         public int InvalidDataRowCount { get; set; }
         public string ValidationResult { get; set; }
         public IEnumerable<string> Errors { get; set; }
+        public int DecodedDataRowCount { get; set; }
+        public int UndecodedDataRowCount { get; set; }
     }
 }

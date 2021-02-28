@@ -38,7 +38,7 @@ namespace DataProcessor
             }
         }
 
-        public static void ValidateNumerOfFields(string lineType, Row row, RowProcessorDefinition rowProcessorDefinition)
+        public static bool ValidateNumerOfFields(string lineType, Row row, RowProcessorDefinition rowProcessorDefinition)
         {
             if (rowProcessorDefinition is null)
             {
@@ -50,12 +50,15 @@ namespace DataProcessor
                 throw new ArgumentNullException(nameof(rowProcessorDefinition.FieldProcessorDefinitions));
             }
 
-            if (rowProcessorDefinition.FieldProcessorDefinitions.Length != row.RawFields.Length)
+            if (rowProcessorDefinition.FieldProcessorDefinitions.Length == row.RawFields.Length)
             {
-                row.ValidationResult = ValidationResultType.Error;
-                var error = $"{lineType} - The expected number of fields {rowProcessorDefinition.FieldProcessorDefinitions.Length} is not equal to the actual number of fields {row.RawFields.Length}";
-                row.Errors.Add(error);
+                return true;
             }
+
+            row.ValidationResult = ValidationResultType.Error;
+            var error = $"{lineType} - The expected number of fields {rowProcessorDefinition.FieldProcessorDefinitions.Length} is not equal to the actual number of fields {row.RawFields.Length}";
+            row.Errors.Add(error);
+            return false;
         }
 
         public static void SetJson(Row row, FieldProcessorDefinition[] fieldProcessorDefinitions)

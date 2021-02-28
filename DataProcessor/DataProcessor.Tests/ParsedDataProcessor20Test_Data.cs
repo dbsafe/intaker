@@ -17,6 +17,8 @@ namespace DataProcessor.Tests
         private DataRowProcessorDefinition _dataType1;
         private DataRowProcessorDefinition _dataType2;
 
+        public TestContext TestContext { get; set; }
+
         [TestInitialize]
         public void Initialize()
         {
@@ -85,7 +87,8 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0].Row;
@@ -120,7 +123,8 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -142,7 +146,8 @@ namespace DataProcessor.Tests
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(0, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(0, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
             Assert.AreEqual(0, actual.Errors.Count);
 
             var dataRow0 = actual.DataRows[0];
@@ -167,34 +172,50 @@ namespace DataProcessor.Tests
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual);
 
             Assert.AreEqual(3, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
-            Assert.AreEqual(0, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(2, actual.UndecodedDataRows.Count);
+            Assert.AreEqual(1, actual.DecodedDataRows.Count);
 
             var dataRow0 = actual.DataRows[0];
+            Assert.AreEqual(0, dataRow0.Row.Index);
+            Assert.AreEqual(ValidationResultType.Error, dataRow0.Row.ValidationResult);
+            Assert.AreEqual(0, dataRow0.Row.Fields.Count);
             Assert.AreEqual(1, dataRow0.Row.Errors.Count);
             Assert.AreEqual("Data Row 'dt1' - The expected number of fields 2 is not equal to the actual number of fields 3", dataRow0.Row.Errors[0]);
+            Assert.AreEqual(0, dataRow0.Row.Warnings.Count);
+            Assert.AreEqual("dt1", dataRow0.DataType);
         }
 
         [TestMethod]
-        public void Process_Given_a_file_with_invalid_data_types_Lines_with_invalid_data_types_should_be_added_to_a_separate_collection()
+        public void Process_Given_a_file_with_invalid_data_types_Lines_with_unknown_data_types_should_be_added_to_undecoded_data_rows()
         {
             _fileDataSource = TestHelpers.CreateFileDataSource<ParserContext20>("test-file-data-invalid-data-types.20.csv", false);
 
             var target = new ParsedDataProcessor20(_fileDataSource, _fileProcessorDefinition);
 
             var actual = target.Process();
+            TestContext.PrintJson(actual);
 
-            Assert.AreEqual(3, actual.DataRows.Count);
+            Assert.AreEqual(5, actual.DataRows.Count);
             Assert.AreEqual(2, actual.InvalidDataRows.Count);
 
-            Assert.AreEqual(1, actual.Errors.Count);
+            Assert.AreEqual(2, actual.Errors.Count);
             Assert.AreEqual("There are 2 invalid data rows", actual.Errors[0]);
+            Assert.AreEqual("There are 2 undecoded data rows", actual.Errors[1]);
 
-            Assert.AreEqual(2, actual.DataRowsWithInvalidTypes.Count);
+            Assert.AreEqual(2, actual.UndecodedDataRows.Count);
+            Assert.AreSame(actual.DataRows[3], actual.UndecodedDataRows[0]);
+            Assert.AreSame(actual.DataRows[4], actual.UndecodedDataRows[1]);
 
-            var dataRow3 = actual.DataRowsWithInvalidTypes[0];
+            Assert.AreEqual(3, actual.DecodedDataRows.Count);
+            Assert.AreSame(actual.DataRows[0], actual.DecodedDataRows[0]);
+            Assert.AreSame(actual.DataRows[1], actual.DecodedDataRows[1]);
+            Assert.AreSame(actual.DataRows[2], actual.DecodedDataRows[2]);
+
+            var dataRow3 = actual.UndecodedDataRows[0];
             var row3 = dataRow3.Row;
             Assert.AreEqual(3, row3.Index);
             Assert.AreEqual(ValidationResultType.Error, row3.ValidationResult);
@@ -205,8 +226,8 @@ namespace DataProcessor.Tests
             Assert.AreEqual("Unknown line type", row3.Errors[0]);
             Assert.AreEqual(0, row3.Warnings.Count);
 
-            Assert.IsNull(dataRow3.DataKey);
-            Assert.IsNull(dataRow3.DataType);
+            Assert.AreEqual(string.Empty, dataRow3.DataKey);
+            Assert.AreEqual(string.Empty, dataRow3.DataType);
         }
     }
 }

@@ -37,10 +37,10 @@ namespace DataProcessor.Models
 
     public class ParserContext20 : ParserContext<DataRow20>
     {
-        public string DataType { get; set; }
         public DataRow20 CurrentDataRow20 { get; set; }
         public int DataTypeFieldIndex { get; set; }
         public int DataKeyFieldIndex { get; set; }
-        public IList<DataRow20> DataRowsWithInvalidTypes { get; set; } = new List<DataRow20>();
+        public IList<DataRow20> UndecodedDataRows { get; set; } = new List<DataRow20>();
+        public IList<DataRow20> DecodedDataRows { get; set; } = new List<DataRow20>();
     }
 }
