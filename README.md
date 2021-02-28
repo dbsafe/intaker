@@ -1,10 +1,9 @@
-# data-processor
+# Intaker
 
-This repository contains libraries that support parsing and validating data from a text file. 
+Llibrary for parsing and validating data from a text file. It uses a declarative way of defining the file specs. 
 
-It started as a POC from some ideas about importing data using a declarative way of defining the file specs. 
 Demo website using this library
-http://file-decoder-tool.s3-website-us-east-1.amazonaws.com/
+https://dbsafe.github.io/intaker/
 
 ## Basic Idea
 The basic idea is that a file specification can be declared in a file.
