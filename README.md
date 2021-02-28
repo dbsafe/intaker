@@ -13,6 +13,7 @@ https://dbsafe.github.io/intaker/
 - Blazor
 - MatBlazor - https://www.matblazor.com/
 - Tabulator - http://tabulator.info/
+- Ace Editor - https://ace.c9.io/
 
 ## Basic Idea
 The basic idea is that a file specification can be declared using a XML file.
