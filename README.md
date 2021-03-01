@@ -1,9 +1,19 @@
 # Intaker
 
-Llibrary for parsing and validating data from a text file. It uses a declarative way of defining the file specs. 
+File Parsing & Data Validation with .Net. It uses a declarative way of defining the file specs. 
 
 Demo website using this library
 https://dbsafe.github.io/intaker/
+
+## Dependencies
+#### Intaker library uses .Net Core
+- .Net Core
+#### Demo UI uses
+- .Net Core
+- Blazor
+- MatBlazor - https://www.matblazor.com/
+- Tabulator - http://tabulator.info/
+- Ace Editor - https://ace.c9.io/
 
 ## Basic Idea
 The basic idea is that a file specification can be declared using a XML file.
