@@ -2,7 +2,7 @@
 {
     public class AppState
     {
-        public string AppName { get; } = "File Validator";
+        public string AppName { get; } = "Intaker";
         public HomePageState HomePage { get; } = new HomePageState();
         public FileSpecificationsPageState FileSpecificationsPage { get; } = new FileSpecificationsPageState();
         public LoadedFilePageState LoadedFilePage { get; } = new LoadedFilePageState();
