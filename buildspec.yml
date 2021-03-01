@@ -9,4 +9,12 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build **/*.sln
+      - dotnet build -c Release **/*.sln
+      - dotnet test -c Release **/*.Tests.csproj --logger trx --results-directory ./testresults
+      
+  reports:
+    DotnetTestExamples:
+        file-format: VisualStudioTrx
+        files:
+            - '**/*'
+        base-directory: './testresults'      
