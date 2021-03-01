@@ -6,12 +6,7 @@ phases:
     runtime-versions:
       dotnet: latest
       
-  pre_build:
-    commands:
-      - echo Restore started on `date`
-      - dotnet restore DataProcessor\DataProcessor.sln
-      
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build DataProcessor\DataProcessor.sln
+      - dotnet build **/*.sln
