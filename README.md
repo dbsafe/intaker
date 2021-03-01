@@ -3,7 +3,7 @@
 File Parsing & Data Validation with .Net. It uses a declarative way of defining the file specs. 
 
 Demo website using this library
-https://dbsafe.github.io/intaker/
+http://intaker-ui.s3-website-us-east-1.amazonaws.com/
 
 ## Dependencies
 #### Intaker library uses .Net Core
