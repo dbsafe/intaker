@@ -10,4 +10,4 @@ phases:
     commands:
       - echo Build started on `date`
       - dotnet build -c Release **/*.sln
-      - dotnet test -c Release **/*.Tests.dll --logger trx --results-directory ./testresults
+      - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
