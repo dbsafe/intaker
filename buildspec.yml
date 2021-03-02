@@ -11,6 +11,11 @@ phases:
       - echo Build started on `date`
       - dotnet build -c Release **/*.sln
       - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
+      
+  post_build:
+    commands:
+      - echo Publish started on `date`
+      - dotnet publish -c Release **/FileValidator.Blazor.csproj
 
 reports:
     DotnetTest:
@@ -18,8 +23,3 @@ reports:
         files:
             - '**/*'
         base-directory: './testresults'
-
-post_build:
-    commands:
-      - echo Publish started on `date`
-      - dotnet publish -c Release **/FileValidator.Blazor.csproj
