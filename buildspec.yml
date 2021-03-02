@@ -18,3 +18,8 @@ reports:
         files:
             - '**/*'
         base-directory: './testresults'
+
+post_build:
+    commands:
+      - echo Publish started on `date`
+      - dotnet publish -c Release **/FileValidator.Blazor.csproj
