@@ -27,5 +27,5 @@ reports:
 artifacts:
   files:
     - '**/*'
-  base-directory: $CODEBUILD_SRC_DIR/DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
   discard-paths: no        
