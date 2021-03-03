@@ -15,7 +15,7 @@ phases:
   post_build:
     commands:
       - echo Publish started on `date`
-      - dotnet publish -c Release **/FileValidator.Blazor.csproj
+      - dotnet publish -c Release ~/FileValidator.Blazor.csproj
 
 reports:
     DotnetTest:
