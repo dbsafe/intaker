@@ -14,7 +14,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build -c Release **/*.sln -p:Version=$version$buildType
+      - dotnet build -c Release **/*.sln -p:Version=$version.$CODEBUILD_BUILD_NUMBER$buildType
       - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
       
   post_build:
