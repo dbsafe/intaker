@@ -8,7 +8,7 @@ Demo website using this library
 http://intaker-ui.s3-website-us-east-1.amazonaws.com/
 
 ## Dependencies
-#### Intaker library uses .Net Core
+#### Intaker library uses
 - .Net Core
 #### Demo UI uses
 - .Net Core
