@@ -1,3 +1,5 @@
+![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoianVqVjkzek5JY0kvbDNVaE50ZU9Ua3ZMNDN0SXVpTTVUYTEyOFphQ1dYMDVFVXdkK3NqZXpCUkxDeDRpcUJGTzludWJadVZpN1VkakhsdEFwcnNGVVFVPSIsIml2UGFyYW1ldGVyU3BlYyI6IkZHaTFEaHgzT2QreHF1eEIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=main)
+
 # Intaker
 
 File Parsing & Data Validation with .Net. It uses a declarative way of defining the file specs. 
