@@ -23,3 +23,9 @@ reports:
         files:
             - '**/*'
         base-directory: './testresults'
+        
+artifacts:
+  files:
+    - '**/*'
+  base-directory: $CODEBUILD_SRC_DIR/DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+  discard-paths: no        
