@@ -9,4 +9,23 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build **/*.sln
+      - dotnet build -c Release **/*.sln
+      - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
+      
+  post_build:
+    commands:
+      - echo Publish started on `date`
+      - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release
+
+reports:
+    DotnetTest:
+        file-format: VisualStudioTrx
+        files:
+            - '**/*'
+        base-directory: './testresults'
+        
+artifacts:
+  files:
+    - '**/*'
+  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+  discard-paths: no        
