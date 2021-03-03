@@ -1,5 +1,10 @@
 # AWS CodeBuild spec
 version: 0.2
+
+env:
+  variables:
+    version: "0.1.0"
+    buildType: "-beta"
     
 phases:   
   install:
@@ -9,7 +14,7 @@ phases:
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build -c Release **/*.sln
+      - dotnet build -c Release **/*.sln -p:Version=$version$buildType
       - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
       
   post_build:
