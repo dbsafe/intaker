@@ -5,6 +5,7 @@ env:
   variables:
     version: "0.1.0"
     buildType: "-beta"
+    FULL_VERSION: $version.$CODEBUILD_BUILD_NUMBER$buildType
     
 phases:   
   install:
@@ -34,4 +35,4 @@ artifacts:
     - '**/*'
   base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
   discard-paths: no        
-  name: intaker-$version.$CODEBUILD_BUILD_NUMBER$buildType
+  name: intaker-$FULL_VERSION
