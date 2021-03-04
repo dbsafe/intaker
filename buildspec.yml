@@ -14,7 +14,7 @@ phases:
       
   pre_build:
     commands:
-    - $($FULL_VERSION = $version.$CODEBUILD_BUILD_NUMBER$buildType)
+    - $(FULL_VERSION=$version'.'$CODEBUILD_BUILD_NUMBER$buildType)
       
   build:
     commands:
