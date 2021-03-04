@@ -34,3 +34,4 @@ artifacts:
     - '**/*'
   base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
   discard-paths: no        
+  name: intaker-$version.$CODEBUILD_BUILD_NUMBER$buildType
