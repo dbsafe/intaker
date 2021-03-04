@@ -13,7 +13,7 @@ phases:
       dotnet: latest
       
   pre_build:
-    command:
+    commands:
     - $FULL_VERSION = $version.$CODEBUILD_BUILD_NUMBER$buildType
       
   build:
