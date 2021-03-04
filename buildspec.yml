@@ -5,12 +5,16 @@ env:
   variables:
     version: "0.1.0"
     buildType: "-beta"
-    FULL_VERSION: $version.$CODEBUILD_BUILD_NUMBER$buildType
+    FULL_VERSION: ""
     
 phases:   
   install:
     runtime-versions:
       dotnet: latest
+      
+  pre_build:
+    command:
+    - $FULL_VERSION = $version.$CODEBUILD_BUILD_NUMBER$buildType
       
   build:
     commands:
