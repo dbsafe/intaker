@@ -33,6 +33,6 @@ reports:
        
 artifacts:
   files:
-    - '**/*.'$FULL_VERSION'.nupkg'
+    - '**/bin/**/*.nupkg'
   discard-paths: no        
   name: intaker-$FULL_VERSION
