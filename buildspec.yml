@@ -38,16 +38,16 @@ reports:
 artifacts:
   secondary-artifacts:
     files:
-      - DataProcessor/*
+      - '**/*'
     artifact1:
       files:
-      - '**/*'
+        - '**/*'
       base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
       discard-paths: no        
       name: intaker-$FULL_VERSION-ui
     artifact2:
       files:
-       - '**/bin/**/*.nupkg'
-       - '**/bin/**/*.snupkg'
+         - '**/bin/**/*.nupkg'
+         - '**/bin/**/*.snupkg'
       discard-paths: yes        
       name: intaker-$FULL_VERSION-packages
