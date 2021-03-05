@@ -43,7 +43,7 @@ artifacts:
     name: intaker-$FULL_VERSION-ui
     secondary-artifacts:
       artifact1:
-      files:
-       - '**/bin/**/*.nupkg'
-      discard-paths: yes        
-      name: intaker-$FULL_VERSION-packages
+        files:
+         - '**/bin/**/*.nupkg'
+        discard-paths: yes        
+        name: intaker-$FULL_VERSION-packages
