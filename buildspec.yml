@@ -37,7 +37,7 @@ reports:
        
 artifacts:
   files:
-    - '**/nunca*'
+    - './DataProcessor/*'
   secondary-artifacts:
     artifact1:
       files:
