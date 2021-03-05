@@ -37,6 +37,8 @@ reports:
        
 artifacts:
   secondary-artifacts:
+    files:
+      - DataProcessor/*
     artifact1:
       files:
       - '**/*'
