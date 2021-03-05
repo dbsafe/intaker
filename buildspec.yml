@@ -23,6 +23,11 @@ phases:
       - dotnet build -c Release **/*.sln -p:Version=$FULL_VERSION
       - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
       
+  post_build:
+    commands:
+      - echo Publish started on `date`
+      - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release      
+      
 reports:
     DotnetTest:
         file-format: VisualStudioTrx
