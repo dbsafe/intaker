@@ -38,6 +38,7 @@ reports:
        
 artifacts:
   files:
-    - '/DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/*'
+    - '**/*'
+  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
   discard-paths: no        
   name: intaker-$FULL_VERSION-ui
