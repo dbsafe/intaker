@@ -36,9 +36,9 @@ reports:
     base-directory: './testresults'
        
 artifacts:
+  files:
+    - '**/*'
   secondary-artifacts:
-    files:
-      - '**/*'
     artifact1:
       files:
         - '**/*'
