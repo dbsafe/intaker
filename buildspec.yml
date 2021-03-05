@@ -6,6 +6,8 @@ env:
     VERSION: "0.1.0"
     BUILD_TYPE: "-beta"
     FULL_VERSION: ""
+  secrets-manager:
+    NUGET_API_KEY: "nuget-api-keys:intaker"
     
 phases:   
   install:
@@ -26,8 +28,8 @@ phases:
   post_build:
     commands:
       - echo Publish started on `date`
-      - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
-      - set
+      #- dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
+      - dotnet nuget push ./DataProcessor/bin/Release/Intaker.$FULL_VERSION.nupkg -s https://api.nuget.org/v3/index.json -k NUGET_API_KEY
       
 reports:
   DotnetTest:
@@ -36,9 +38,9 @@ reports:
       - '**/*'
     base-directory: './testresults'
        
-artifacts:
-  files:
-    - '**/*'
-  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
-  discard-paths: no        
-  name: intaker-$FULL_VERSION-ui
+#artifacts:
+#  files:
+#    - '**/*'
+#  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+#  discard-paths: no        
+#  name: intaker-$FULL_VERSION-ui
