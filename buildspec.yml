@@ -29,7 +29,7 @@ phases:
     commands:
       - echo Publish started on `date`
       #- dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
-      - dotnet nuget push ./DataProcessor/DataProcessor/bin/Release/Intaker.$FULL_VERSION.nupkg -s https://api.nuget.org/v3/index.json -k NUGET_API_KEY
+      - dotnet nuget push ./DataProcessor/DataProcessor/bin/Release/Intaker.$FULL_VERSION.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
       
 reports:
   DotnetTest:
