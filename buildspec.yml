@@ -36,16 +36,14 @@ reports:
         base-directory: './testresults'
        
 artifacts:
-  name: intaker-$FULL_VERSION
-  secondary-artifacts:
-    artifact1:
-      files:
-        - '**/*'
-      base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
-      discard-paths: no        
-      name: intaker-$FULL_VERSION-ui
-    artifact2:
-      files:
-       - '**/bin/**/*.nupkg'
-      discard-paths: yes        
-      name: intaker-$FULL_VERSION-packages
+    files:
+    - '**/*'
+    base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+    discard-paths: no        
+    name: intaker-$FULL_VERSION-ui
+#    secondary-artifacts:
+#      artifact1:
+#      files:
+#       - '**/bin/**/*.nupkg'
+#      discard-paths: yes        
+#      name: intaker-$FULL_VERSION-packages
