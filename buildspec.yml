@@ -1,31 +1,44 @@
 # AWS CodeBuild spec
 version: 0.2
+
+env:
+  variables:
+    VERSION: "0.1.0"
+    BUILD_TYPE: "-beta"
+    FULL_VERSION: ""
     
 phases:   
   install:
     runtime-versions:
       dotnet: latest
       
+  pre_build:
+    commands:
+    - FULL_VERSION=$VERSION'.'$CODEBUILD_BUILD_NUMBER$BUILD_TYPE
+    - echo $FULL_VERSION
+
   build:
     commands:
       - echo Build started on `date`
-      - dotnet build -c Release **/*.sln
+      - dotnet build -c Release **/*.sln -p:Version=$FULL_VERSION
       - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
       
   post_build:
     commands:
       - echo Publish started on `date`
-      - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release
-
+      - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
+      - set
+      
 reports:
-    DotnetTest:
-        file-format: VisualStudioTrx
-        files:
-            - '**/*'
-        base-directory: './testresults'
-        
+  DotnetTest:
+    file-format: VisualStudioTrx
+    files:
+      - '**/*'
+    base-directory: './testresults'
+       
 artifacts:
   files:
     - '**/*'
   base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
   discard-paths: no        
+  name: intaker-$FULL_VERSION-ui
