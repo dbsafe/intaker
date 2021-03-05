@@ -3,8 +3,8 @@ version: 0.2
 
 env:
   variables:
-    version: "0.1.0"
-    buildType: "-beta"
+    VERSION: "0.1.0"
+    BUILD_TYPE: "-beta"
     FULL_VERSION: ""
     
 phases:   
@@ -14,7 +14,12 @@ phases:
       
   pre_build:
     commands:
-    - set
-    - echo $version
-    - FULL_VERSION=$version'.'$CODEBUILD_BUILD_NUMBER$buildType
+    - FULL_VERSION=$VERSION'.'$CODEBUILD_BUILD_NUMBER$BUILD_TYPE
     - echo $FULL_VERSION
+
+  build:
+    commands:
+      - echo Build started on `date`
+      - dotnet build -c Release **/*.sln -p:Version=$FULL_VERSION
+      - dotnet test -c Release **/bin/**/*.Tests.dll --logger trx --results-directory ./testresults
+      
