@@ -34,5 +34,6 @@ reports:
 artifacts:
   files:
     - '**/bin/**/*.nupkg'
-  discard-paths: no        
+  discard-paths: yes        
   name: intaker-$FULL_VERSION
+  s3-prefix: packages
