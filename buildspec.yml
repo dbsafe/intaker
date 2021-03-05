@@ -16,5 +16,5 @@ phases:
     commands:
     - set
     - echo $version
-    - $(FULL_VERSION=$version'.'$CODEBUILD_BUILD_NUMBER$buildType)
+    - FULL_VERSION=$version'.'$CODEBUILD_BUILD_NUMBER$buildType
     - echo $FULL_VERSION
