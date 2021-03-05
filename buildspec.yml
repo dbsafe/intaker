@@ -33,22 +33,12 @@ reports:
   DotnetTest:
     file-format: VisualStudioTrx
     files:
-        - '**/*'
+      - '**/*'
     base-directory: './testresults'
        
-#artifacts:
-#  files:
-#    - './DataProcessor/*'
-#  secondary-artifacts:
-#    artifact1:
-#      files:
-#         - '**/bin/**/*.nupkg'
-#         - '**/bin/**/*.snupkg'
-#      discard-paths: yes        
-#      name: intaker-$FULL_VERSION-packages
-#    artifact2:
-#      files:
-#        - '**/*'
-#      base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
-#      discard-paths: no        
-#      name: intaker-$FULL_VERSION-ui
+artifacts:
+  files:
+    - '/DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/*'
+    - '/DataProcessor/DataProcessor/bin/Release/netstandard2.0/publish/*'
+  discard-paths: no        
+  name: intaker-$FULL_VERSION
