@@ -14,6 +14,6 @@ phases:
       
   pre_build:
     commands:
-    - printenv version
+    - echo $version
     - $(FULL_VERSION=$version'.'$CODEBUILD_BUILD_NUMBER$buildType)
-    - printenv FULL_VERSION
+    - echo $FULL_VERSION
