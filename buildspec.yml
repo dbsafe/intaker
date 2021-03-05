@@ -36,6 +36,7 @@ reports:
         base-directory: './testresults'
        
 artifacts:
+  name: intaker-$FULL_VERSION
   secondary-artifacts:
     artifact1:
       files:
