@@ -1,3 +1,5 @@
+![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoianVqVjkzek5JY0kvbDNVaE50ZU9Ua3ZMNDN0SXVpTTVUYTEyOFphQ1dYMDVFVXdkK3NqZXpCUkxDeDRpcUJGTzludWJadVZpN1VkakhsdEFwcnNGVVFVPSIsIml2UGFyYW1ldGVyU3BlYyI6IkZHaTFEaHgzT2QreHF1eEIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+
 # Intaker
 
 File Parsing & Data Validation with .Net. It uses a declarative way of defining the file specs. 
@@ -6,7 +8,7 @@ Demo website using this library
 http://intaker-ui.s3-website-us-east-1.amazonaws.com/
 
 ## Dependencies
-#### Intaker library uses .Net Core
+#### Intaker library uses
 - .Net Core
 #### Demo UI uses
 - .Net Core
