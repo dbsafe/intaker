@@ -29,21 +29,23 @@ phases:
       - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
       
 reports:
-    DotnetTest:
-        file-format: VisualStudioTrx
-        files:
-            - '**/*'
-        base-directory: './testresults'
+  DotnetTest:
+    file-format: VisualStudioTrx
+    files:
+        - '**/*'
+    base-directory: './testresults'
        
 artifacts:
-    files:
-    - '**/*'
-    base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
-    discard-paths: no        
-    name: intaker-$FULL_VERSION-ui
-    secondary-artifacts:
-      artifact1:
-        files:
-         - '**/bin/**/*.nupkg'
-        discard-paths: yes        
-        name: intaker-$FULL_VERSION-packages
+  secondary-artifacts:
+    artifact1:
+      files:
+      - '**/*'
+      base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+      discard-paths: no        
+      name: intaker-$FULL_VERSION-ui
+    artifact2:
+      files:
+       - '**/bin/**/*.nupkg'
+       - '**/bin/**/*.snupkg'
+      discard-paths: yes        
+      name: intaker-$FULL_VERSION-packages
