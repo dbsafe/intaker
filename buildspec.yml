@@ -27,7 +27,7 @@ phases:
     commands:
       - echo Publish started on `date`
       - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
-      - dotnet publish ./DataProcessor/DataProcessor/DataProcessor.csproj -c Release -p:Version=$FULL_VERSION
+      - set
       
 reports:
   DotnetTest:
@@ -39,6 +39,5 @@ reports:
 artifacts:
   files:
     - '/DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/*'
-    - '/DataProcessor/DataProcessor/bin/Release/netstandard2.0/publish/*'
   discard-paths: no        
-  name: intaker-$FULL_VERSION
+  name: intaker-$FULL_VERSION-ui
