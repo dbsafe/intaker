@@ -35,5 +35,5 @@ artifacts:
   files:
     - '**/bin/**/*.nupkg'
   discard-paths: yes        
-  name: intaker-$FULL_VERSION
+  name: intaker-$FULL_VERSION-packages
   
