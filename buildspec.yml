@@ -28,7 +28,7 @@ phases:
   post_build:
     commands:
       - echo Publish started on `date`
-      #- dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
+      - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
       - dotnet nuget push ./DataProcessor/DataProcessor/bin/Release/Intaker.$FULL_VERSION.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
       
 reports:
@@ -38,9 +38,9 @@ reports:
       - '**/*'
     base-directory: './testresults'
        
-#artifacts:
-#  files:
-#    - '**/*'
-#  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
-#  discard-paths: no        
-#  name: intaker-$FULL_VERSION-ui
+artifacts:
+  files:
+    - '**/*'
+  base-directory: ./DataProcessor/FileValidator.Blazor/bin/Release/net5.0/publish/
+  discard-paths: no        
+  name: intaker-$FULL_VERSION-ui
