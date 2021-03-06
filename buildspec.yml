@@ -3,9 +3,11 @@ version: 0.2
 
 env:
   variables:
-    VERSION: "0.1.0"
+    VERSION: "0.1.1"
     BUILD_TYPE: "-beta"
     FULL_VERSION: ""
+  secrets-manager:
+    NUGET_API_KEY: "nuget-api-keys:intaker"
     
 phases:   
   install:
@@ -27,7 +29,7 @@ phases:
     commands:
       - echo Publish started on `date`
       - dotnet publish ./DataProcessor/FileValidator.Blazor/FileValidator.Blazor.csproj -c Release -p:Version=$FULL_VERSION
-      - set
+      - dotnet nuget push ./DataProcessor/DataProcessor/bin/Release/Intaker.$FULL_VERSION.nupkg -s https://api.nuget.org/v3/index.json -k $NUGET_API_KEY
       
 reports:
   DotnetTest:
