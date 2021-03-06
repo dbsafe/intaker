@@ -204,3 +204,4 @@ public enum ValidationResultType
 ```
 
 When creating the definition file the ValidationResultType is used for setting the severity of a failed validation.
+
