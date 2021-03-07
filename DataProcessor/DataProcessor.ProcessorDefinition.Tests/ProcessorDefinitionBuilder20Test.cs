@@ -93,14 +93,14 @@ namespace DataProcessor.ProcessorDefinition.Tests
             Assert.AreEqual(2, rules.Length);
 
             var rule0 = rules[0];
-            Assert.AreEqual("{'ruleValue':'10'}", rule0.Args);
+            Assert.AreEqual("10", rule0.SingleArg);
             Assert.AreEqual("Minimum sequence number should be 10", rule0.Description);
             Assert.AreEqual(ValidationResultType.Warning, rule0.FailValidationResult);
             Assert.AreEqual(typeof(MinNumberFieldRule), rule0.GetType());
             Assert.AreEqual("SequenceNumber-MinNumberFieldRule", rule0.Name);
 
             var rule1 = rules[1];
-            Assert.AreEqual("{'ruleValue':'100'}", rule1.Args);
+            Assert.AreEqual("100", rule1.SingleArg);
             Assert.AreEqual("Maximum sequence number should be 100", rule1.Description);
             Assert.AreEqual(ValidationResultType.Error, rule1.FailValidationResult);
             Assert.AreEqual(typeof(MaxNumberFieldRule), rule1.GetType());

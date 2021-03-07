@@ -126,7 +126,7 @@ namespace DataProcessor.ObjectStore.Tests
         }
     }
 
-    public class LocalRule : Rules.FieldRule<string> { }
+    public class LocalRule : Rules.FieldRule { }
 
     public class LocalAggregator : Aggregators.FieldAggregator
     {
