@@ -1,65 +1,50 @@
 ﻿using DataProcessor.Contracts;
 using DataProcessor.Models;
 using DataProcessor.Utils;
-using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace DataProcessor.Rules
 {
-    public abstract class FieldRule<TArgs> : IFieldRule
+    public abstract class FieldRule : IFieldRule
     {
-        private string _args;
+        protected string _singleArg;
+        protected KeyValuePair<string, string>[] _args;
 
-        public virtual void Validate(Field field)
+        public virtual void Validate(Field field) { }
+        protected virtual void SingleArgChanged() { }
+        protected virtual void ArgsChanged() { }
+
+        public string SingleArg
         {
+            get => _singleArg;
+            set
+            {
+                _singleArg = value;
+                SingleArgChanged();
+            }
         }
 
-        public string Args
+        public KeyValuePair<string, string>[] Args
         {
             get => _args;
             set
             {
                 _args = value;
-                DecodedArgs = GetArgs();
+                ArgsChanged();
             }
         }
-        protected TArgs DecodedArgs { get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public ValidationResultType FailValidationResult { get; set; }
 
-        protected TArgs GetArgs()
+        private void EnsureThatPropertiesAreInitialized()
         {
-            if (string.IsNullOrEmpty(_args))
-            {
-                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Args is empty");
-            }
-
-            try
-            {
-                return JsonConvert.DeserializeObject<TArgs>(Args);
-            }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Error reading Args [{Args}]", ex);
-            }
-        }
-
-        protected void EnsureThatPropertiesAreInitialized()
-        {
-            EnsureThatPropertyIsInitialized(nameof(TArgs), _args);
             EnsureThatPropertyIsInitialized(nameof(FailValidationResult), FailValidationResult);
         }
 
-        protected void EnsureThatPropertyIsInitialized(string name, string value)
-        {
-            if (string.IsNullOrEmpty(value))
-            {
-                throw new InvalidOperationException($"Property {name} cannot be empty or null");
-            }
-        }
-
-        protected void EnsureThatPropertyIsInitialized(string name, ValidationResultType value)
+        private void EnsureThatPropertyIsInitialized(string name, ValidationResultType value)
         {
             if (value == 0)
             {
