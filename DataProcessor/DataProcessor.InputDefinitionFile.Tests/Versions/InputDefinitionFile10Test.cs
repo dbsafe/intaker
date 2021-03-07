@@ -16,10 +16,26 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions
         public void Serialize()
         {
             var sequenceNumberFieldDefinition = CreateFieldDefinition("SequenceNumber", "Sequence Number", "IntegerDecoder", "(?!0{4})[0-9]{4}", ValidationResultType.Error);
-            sequenceNumberFieldDefinition.Rules = new RuleDefinition[]
+
+            var minNumberFieldRule = new RuleDefinition
             {
-                CreateRuleDefinition("SequenceNumber-MinNumberFieldRule", "Sequence number should be greater or equal to 10", "MinNumberFieldRule", "{'min':'10'}", ValidationResultType.Error)
+                Name = "SequenceNumber-MinNumberFieldRule",
+                Description = "Sequence number should be greater or equal to 10",
+                Rule = "MinNumberFieldRule",
+                SingleArg = "10",
+                FailValidationResult = ValidationResultType.Error
             };
+
+            var maxNumberFieldRule = new RuleDefinition
+            {
+                Name = "SequenceNumber-MaxNumberFieldRule",
+                Description = "Sequence number should be equal or less than 100",
+                Rule = "MinNumberFieldRule",
+                Args = new ArgDefinition[] { new ArgDefinition { Name = "ruleValue", Value = "100" } },
+                FailValidationResult = ValidationResultType.Error
+            };
+
+            sequenceNumberFieldDefinition.Rules = new RuleDefinition[] { minNumberFieldRule, maxNumberFieldRule };
 
             var originatorName = CreateFieldDefinition("OriginatorName", "Originator Name", "TextDecoder", @"[a-zA-Z\s-']{2,35}", ValidationResultType.Error);
             originatorName.Aggregators = new AggregatorDefinition[]
@@ -108,18 +124,6 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions
         {
             var path = Path.Combine(_testDirectory, "TestFiles", "FXWDCSV.definition.10.xml");
             return File.ReadAllText(path);
-        }
-
-        private RuleDefinition CreateRuleDefinition(string name, string description, string rule, string args, ValidationResultType failValidationResult)
-        {
-            return new RuleDefinition
-            {
-                Name = name,
-                Description = description,
-                Rule = rule,
-                Args = args,
-                FailValidationResult = failValidationResult
-            };
         }
 
         private FieldDefinition CreateFieldDefinition(string name, string description, string decoder, string pattern, ValidationResultType failValidationResult)
