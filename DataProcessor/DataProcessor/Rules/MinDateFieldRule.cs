@@ -1,10 +1,23 @@
-﻿using DataProcessor.Contracts;
-using DataProcessor.Models;
+﻿using DataProcessor.Models;
+using DataProcessor.Utils;
+using System;
 
 namespace DataProcessor.Rules
 {
-    public class MinDateFieldRule : FieldRule<DateFieldRuleArgs>
+    public class MinDateFieldRule : FieldRule
     {
+        private DateTime _dateTimeArg;
+
+        protected override void SingleArgChanged()
+        {
+            DataProcessorGlobal.Debug($"Rule: {Name}. Arg: '{_singleArg}'.");
+            var isValidDateTime = DateTime.TryParse(_singleArg, out _dateTimeArg);
+            if (!isValidDateTime)
+            {
+                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Invalid arg '{_singleArg}'");
+            }
+        }
+
         public override void Validate(Field field)
         {
             base.Validate(field);
@@ -13,16 +26,10 @@ namespace DataProcessor.Rules
                 return;
             }
 
-            if (field.AsDateTime() < DecodedArgs.RuleValue)
+            if (field.AsDateTime() < _dateTimeArg)
             {
                 field.ValidationResult = FailValidationResult;
             }
-        }
-
-        public override void Initialize(FieldRuleConfiguration config)
-        {
-            base.Initialize(config);
-            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
         }
     }
 }
