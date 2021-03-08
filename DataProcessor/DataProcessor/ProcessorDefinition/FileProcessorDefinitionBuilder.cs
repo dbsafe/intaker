@@ -197,10 +197,16 @@ namespace DataProcessor.ProcessorDefinition
         private static IFieldRule CreateRule(RuleDefinition ruleDefinition)
         {
             var rule = StoreManager.RuleStore.CreateObject(ruleDefinition.Rule);
-            rule.Args = ruleDefinition.Args;
+            rule.Name = ruleDefinition.Name;
             rule.Description = ruleDefinition.Description;
             rule.FailValidationResult = ruleDefinition.FailValidationResult;
-            rule.Name = ruleDefinition.Name;
+
+            rule.SingleArg = ruleDefinition.SingleArg;
+            if (ruleDefinition.Args != null)
+            {
+                rule.Args = ruleDefinition.Args.Select(a => new KeyValuePair<string, string>(a.Name, a.Value)).ToArray();
+            }
+
             return rule;
         }
 

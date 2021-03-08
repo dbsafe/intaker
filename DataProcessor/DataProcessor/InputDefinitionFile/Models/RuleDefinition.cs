@@ -14,8 +14,12 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("rule")]
         public string Rule { get; set; }
 
-        [XmlAttribute("args")]
-        public string Args { get; set; }
+        [XmlAttribute("arg")]
+        public string SingleArg { get; set; }
+
+        [XmlArray(ElementName = "args")]
+        [XmlArrayItem(ElementName = "arg")]
+        public ArgDefinition[] Args { get; set; }
 
         [XmlAttribute("failValidationResult")]
         public ValidationResultType FailValidationResult { get; set; } = ValidationResultType.Error;

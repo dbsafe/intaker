@@ -44,7 +44,8 @@ namespace DataProcessor.Tests
             Assert.AreEqual(ValidationResultType.Error, actual.Header.Fields[3].ValidationResult);
             Assert.AreEqual(1, actual.Header.Errors.Count);
             Assert.AreEqual("Sequence number should be equal or less than 100", actual.Header.Errors[0]);
-            Assert.AreEqual(0, actual.Header.Warnings.Count);
+            Assert.AreEqual(1, actual.Header.Warnings.Count);
+            Assert.AreEqual("Sequence number should be between 1 and 100", actual.Header.Warnings[0]);
         }
 
         [TestMethod]

@@ -40,13 +40,14 @@ namespace DataProcessor.ObjectStore.Tests
         {
             var registeredRules = StoreManager.RuleStore.GetRegisteredObjects();
             
-            Assert.AreEqual(7, registeredRules.Count(), "Expected 7. DataProcessor.dll(5), DataProcessor.ObjectStore.Tests.Lib.dll(1), this project (1)");
+            Assert.AreEqual(8, registeredRules.Count(), "Expected 8. DataProcessor.dll(6), DataProcessor.ObjectStore.Tests.Lib.dll(1), this project (1)");
 
             AssertStoredObject("MinDateFieldRule", typeof(Rules.MinDateFieldRule), registeredRules);
             AssertStoredObject("MaxDateFieldRule", typeof(Rules.MaxDateFieldRule), registeredRules);
             AssertStoredObject("MinNumberFieldRule", typeof(Rules.MinNumberFieldRule), registeredRules);
             AssertStoredObject("MaxNumberFieldRule", typeof(Rules.MaxNumberFieldRule), registeredRules);
             AssertStoredObject("MatchesAggregateRule", typeof(Rules.MatchesAggregateRule), registeredRules);
+            AssertStoredObject("RangeNumberFieldRule", typeof(Rules.RangeNumberFieldRule), registeredRules);
         }
 
         [TestMethod]
@@ -126,7 +127,7 @@ namespace DataProcessor.ObjectStore.Tests
         }
     }
 
-    public class LocalRule : Rules.FieldRule<string> { }
+    public class LocalRule : Rules.FieldRule { }
 
     public class LocalAggregator : Aggregators.FieldAggregator
     {

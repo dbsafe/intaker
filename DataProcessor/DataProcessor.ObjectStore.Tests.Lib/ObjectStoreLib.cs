@@ -36,7 +36,7 @@ namespace DataProcessor.ObjectStore.Tests.Lib
         }
     }
 
-    public class LibRule : Rules.FieldRule<string> { }
+    public class LibRule : Rules.FieldRule { }
 
     public class LibAggregator : Aggregators.FieldAggregator
     {

@@ -1,21 +1,32 @@
 ﻿using DataProcessor.Contracts;
 using DataProcessor.Models;
+using DataProcessor.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DataProcessor.Rules
 {
-    public class MatchesAggregateRule : FieldRule<MatchesAggregateRuleArgs>
+    public class MatchesAggregateRule : FieldRule
     {
         private Aggregate _aggregate;
 
+        protected override void SingleArgChanged()
+        {
+            DataProcessorGlobal.Debug($"Rule: {Name}. Arg: '{_singleArg}'.");
+            var isValidArg = !string.IsNullOrWhiteSpace(_singleArg);
+            if (!isValidArg)
+            {
+                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Arg cannot be null or empty");
+            }
+        }
+
         private void SetAggregate(IEnumerable<Aggregate> aggregates)
         {
-            _aggregate = aggregates.FirstOrDefault(a => a.Name == DecodedArgs.RuleValue);
+            _aggregate = aggregates.FirstOrDefault(a => a.Name == _singleArg);
             if (_aggregate == null)
             {
-                throw new InvalidOperationException($"{typeof(MatchesAggregateRule)} - Aggregate '{DecodedArgs.RuleValue}' not found");
+                throw new InvalidOperationException($"{typeof(MatchesAggregateRule)} - Aggregate '{_singleArg}' not found");
             }
         }
 
@@ -36,7 +47,6 @@ namespace DataProcessor.Rules
         public override void Initialize(FieldRuleConfiguration config)
         {
             base.Initialize(config);
-            ArgsHelper.EnsureDecodedArgs(Name, Description, Args, DecodedArgs.RuleValue);
             SetAggregate(config.Aggregates);
         }
     }
