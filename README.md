@@ -165,7 +165,7 @@ Defines a rule used to validate a field. A field can be validated using multiple
 name | Required attribute. Specifies the name of the rule.
 description | Specifies the description of the rule.
 rule | Name of the `FieldRule` class used when validating the field.
-arg  | Argument pased the rule
+arg  | Argument pased to the rule
 failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error". [See ValidationResultType](#validationresulttype)
 
 ### Field Rule Class
