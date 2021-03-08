@@ -44,8 +44,8 @@ The file specification can be defined in a XML file
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" />
       <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}">
         <rules>
-          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" args="{'ruleValue':'1'}" failValidationResult="Warning" />
-          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" args="{'ruleValue':'100'}" />
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" arg="1" failValidationResult="Warning" />
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" arg="100" />
         </rules>
       </field>
     </fields>
@@ -72,12 +72,12 @@ The file specification can be defined in a XML file
       <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" />
       <field name="BalanceTotal" description="Balance Total" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}">
         <rules>
-          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning" />
+          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" arg="BalanceAggregator" failValidationResult="Warning" />
         </rules>
       </field>
       <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}">
         <rules>
-          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" args="{'ruleValue':'DataRowCountAggregator'}" />
+          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" arg="DataRowCountAggregator" />
         </rules>
       </field>
     </fields>
@@ -156,7 +156,7 @@ Defines a rule used to validate a field. A field can be validated using multiple
 
 #### Syntax
 ```xml
-<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" args="{'ruleValue':'BalanceAggregator'}" failValidationResult="Warning" />
+<rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" arg="BalanceAggregator" failValidationResult="Warning" />
 ```
 
 #### Attributes
@@ -165,14 +165,14 @@ Defines a rule used to validate a field. A field can be validated using multiple
 name | Required attribute. Specifies the name of the rule.
 description | Specifies the description of the rule.
 rule | Name of the `FieldRule` class used when validating the field.
-args | Data passed to the rule in a JSON format
+arg  | Argument pased the rule
 failValidationResult | Optional. Defines the validation result used when the validation fails. Default "Error". [See ValidationResultType](#validationresulttype)
 
 ### Field Rule Class
 The library implements the standard rules `MinNumberFieldRule`, `MaxNumberFieldRule`, `MinDateFieldRule`, `MaxDateFieldRule`, and `MatchesAggregateRule`.
 
-`MatchesAggregateRule` can be used to validate whether a value in the header/trailer matches the value of an aggregator. The name of the aggregator must be passed in the `args` attribute.
-e.g.: `args="{'ruleValue':'BalanceAggregator'}"`
+`MatchesAggregateRule` can be used to validate whether a value in the header/trailer matches the value of an aggregator. The name of the aggregator must be passed in the `arg` attribute.
+e.g.: `arg="BalanceAggregator"`
 
 You can define custom rules and use them in the file definition.
 
