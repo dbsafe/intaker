@@ -34,7 +34,6 @@ namespace DataProcessor.DataSource.InStream
 
         public StreamLineProvider(Stream stream)
         {
-            stream.Seek(0, SeekOrigin.Begin);
             _reader = new StreamReader(stream);
         }
 

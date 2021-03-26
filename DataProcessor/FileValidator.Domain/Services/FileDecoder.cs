@@ -46,6 +46,7 @@ namespace FileValidator.Domain.Services
                 {
                     writer.Write(content);
                     writer.Flush();
+                    stream.Seek(0, SeekOrigin.Begin);
 
                     var source = new StreamDataSource<ParserContext10>(config, stream);
                     var processor = new ParsedDataProcessor10(source, fileProcessorDefinition);
@@ -76,6 +77,7 @@ namespace FileValidator.Domain.Services
                 {
                     writer.Write(content);
                     writer.Flush();
+                    stream.Seek(0, SeekOrigin.Begin);
 
                     var source = new StreamDataSource<ParserContext20>(config, stream);
                     var processor = new ParsedDataProcessor20(source, fileProcessorDefinition);

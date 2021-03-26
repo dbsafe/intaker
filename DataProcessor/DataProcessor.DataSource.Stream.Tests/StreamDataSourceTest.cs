@@ -58,6 +58,7 @@ namespace DataProcessor.DataSource.Stream.Tests
             var writer = new StreamWriter(ms);
             writer.Write(sb.ToString());
             writer.Flush();
+            ms.Seek(0, SeekOrigin.Begin);
 
             return new StreamDataSource<ParserContext<Row>>(config, ms);
         }
