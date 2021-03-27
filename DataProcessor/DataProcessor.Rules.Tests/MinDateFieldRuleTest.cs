@@ -72,7 +72,7 @@ namespace DataProcessor.Rules.Tests
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("Rule: 'rule-name'. Argument: 'DateTime'. Invalid value '2020-01-aa'", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument: 'DateTimeValue'. Invalid value '2020-01-aa'", ex.Message);
                 return;
             }
 
@@ -89,7 +89,7 @@ namespace DataProcessor.Rules.Tests
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("Rule: 'rule-name'. Argument 'DateTime' not found", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'DateTimeValue' not found", ex.Message);
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace DataProcessor.Rules.Tests
                 Name = name,
                 Args = new KeyValuePair<string, string>[]
                 {
-                    new KeyValuePair<string, string>("DateTime", argDateTimeValue)
+                    new KeyValuePair<string, string>("DateTimeValue", argDateTimeValue)
                 }
             };
         }

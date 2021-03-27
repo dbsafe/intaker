@@ -7,30 +7,30 @@ namespace DataProcessor.Rules
 {
     public abstract class DateFieldRule : FieldRule
     {
-        private const string ARG_DATETIME = "DateTime";
+        private const string ARG_DATETIME = "DateTimeValue";
         protected DateTime _dateTimeArg;
 
-        private void SetDateTimeArg()
+        private void SetArg()
         {
-            var dateTimeTextArg = Args?.FirstOrDefault(a => a.Key == ARG_DATETIME).Value;
-            if (string.IsNullOrEmpty(dateTimeTextArg))
+            var textArg = Args?.FirstOrDefault(a => a.Key == ARG_DATETIME).Value;
+            if (string.IsNullOrEmpty(textArg))
             {
                 throw new InvalidOperationException($"Rule: '{Name}'. Argument '{ARG_DATETIME}' not found");
             }
 
-            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_DATETIME}: '{dateTimeTextArg}'.");
+            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_DATETIME}: '{textArg}'.");
 
-            var isValidDateTime = DateTime.TryParse(dateTimeTextArg, out _dateTimeArg);
+            var isValidDateTime = DateTime.TryParse(textArg, out _dateTimeArg);
             if (!isValidDateTime)
             {
-                throw new InvalidOperationException($"Rule: '{Name}'. Argument: '{ARG_DATETIME}'. Invalid value '{dateTimeTextArg}'");
+                throw new InvalidOperationException($"Rule: '{Name}'. Argument: '{ARG_DATETIME}'. Invalid value '{textArg}'");
             }
         }
 
         public override void Initialize(FieldRuleConfiguration config)
         {
             base.Initialize(config);
-            SetDateTimeArg();
+            SetArg();
         }
     }
 }
