@@ -2,6 +2,7 @@ using DataProcessor.Contracts;
 using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace DataProcessor.Rules.Tests
 {
@@ -62,15 +63,16 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void SingleArg_Given_an_invalid_arg_Should_throw_an_exception()
+        public void Initialize_Given_invalid_arg_Should_throw_an_exception()
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "1a", ValidationResultType.Critical);
+                var target = CreateRule("rule-name", "rule-description", "1a", ValidationResultType.Critical);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid arg '1a'", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument: 'NumericValue'. Invalid value '1a'", ex.Message);
                 return;
             }
 
@@ -78,15 +80,16 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void SingleArg_Given_a_null_arg_Should_throw_an_exception()
+        public void Initialize_Given_missing_arg_Should_throw_an_exception()
         {
             try
             {
-                CreateRule("rule-name", "rule-description", null, ValidationResultType.Critical);
+                var target = CreateRuleWithoutArgs("rule-name", "rule-description", ValidationResultType.Critical);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid arg ''", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'NumericValue' not found", ex.Message);
                 return;
             }
 
@@ -100,7 +103,20 @@ namespace DataProcessor.Rules.Tests
                 Description = description,
                 FailValidationResult = failValidationResult,
                 Name = name,
-                SingleArg = arg
+                Args = new KeyValuePair<string, string>[]
+                {
+                    new KeyValuePair<string, string>("NumericValue", arg)
+                }
+            };
+        }
+
+        public MaxNumberFieldRule CreateRuleWithoutArgs(string name, string description, ValidationResultType failValidationResult)
+        {
+            return new MaxNumberFieldRule
+            {
+                Description = description,
+                FailValidationResult = failValidationResult,
+                Name = name
             };
         }
     }
