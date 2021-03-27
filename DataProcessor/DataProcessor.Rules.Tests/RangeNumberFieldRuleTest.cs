@@ -13,19 +13,19 @@ namespace DataProcessor.Rules.Tests
 
         private readonly KeyValuePair<string, string>[] _validArgs = new KeyValuePair<string, string>[]
         {
-            new KeyValuePair<string, string>("Min", "10"),
-            new KeyValuePair<string, string>("Max", "100")
+            new KeyValuePair<string, string>("NumericValueMin", "10"),
+            new KeyValuePair<string, string>("NumericValueMax", "100")
         };
 
         private readonly KeyValuePair<string, string>[] _invalidArgs = new KeyValuePair<string, string>[]
         {
-            new KeyValuePair<string, string>("Min", "10"),
-            new KeyValuePair<string, string>("Max", "1aa")
+            new KeyValuePair<string, string>("NumericValueMin", "10"),
+            new KeyValuePair<string, string>("NumericValueMax", "1aa")
         };
 
         private readonly KeyValuePair<string, string>[] _incompleArgs = new KeyValuePair<string, string>[]
         {
-            new KeyValuePair<string, string>("Min", "10"),
+            new KeyValuePair<string, string>("NumericValueMin", "10"),
         };
 
         [TestMethod]
@@ -85,10 +85,11 @@ namespace DataProcessor.Rules.Tests
             try
             {
                 var target = CreateRule("rule-name", "rule-description", _invalidArgs, ValidationResultType.Error);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid arg 'Max', found '1aa'", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument: 'NumericValueMax'. Invalid value '1aa'", ex.Message);
                 return;
             }
 
@@ -101,10 +102,11 @@ namespace DataProcessor.Rules.Tests
             try
             {
                 var target = CreateRule("rule-name", "rule-description", null, ValidationResultType.Error);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Args cannot be null or empty", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'NumericValueMin' not found", ex.Message);
                 return;
             }
 
@@ -117,10 +119,11 @@ namespace DataProcessor.Rules.Tests
             try
             {
                 var target = CreateRule("rule-name", "rule-description", _incompleArgs, ValidationResultType.Error);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Arg 'Max' not found", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'NumericValueMax' not found", ex.Message);
                 return;
             }
 
