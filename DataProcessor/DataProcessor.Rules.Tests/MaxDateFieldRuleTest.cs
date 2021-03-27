@@ -63,7 +63,7 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Initialize_Given_missing_datetime_arg_Should_throw_an_exception()
+        public void Initialize_Given_invalid_arg_Should_throw_an_exception()
         {
             try
             {
@@ -80,7 +80,7 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void Initialize_Given_missing_aggregate_arg_Should_throw_an_exception()
+        public void Initialize_Given_missing_arg_Should_throw_an_exception()
         {
             try
             {
