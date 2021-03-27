@@ -9,24 +9,23 @@ namespace DataProcessor.Rules
 {
     public class MatchesAggregateRule : FieldRule
     {
+        private const string ARG_AGGREGATOR = "aggregate";
         private Aggregate _aggregate;
-
-        protected override void SingleArgChanged()
-        {
-            DataProcessorGlobal.Debug($"Rule: {Name}. Arg: '{_singleArg}'.");
-            var isValidArg = !string.IsNullOrWhiteSpace(_singleArg);
-            if (!isValidArg)
-            {
-                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Arg cannot be null or empty");
-            }
-        }
 
         private void SetAggregate(IEnumerable<Aggregate> aggregates)
         {
-            _aggregate = aggregates.FirstOrDefault(a => a.Name == _singleArg);
+            var aggregateName = Args?.FirstOrDefault(a => a.Key == ARG_AGGREGATOR).Value;
+            if (string.IsNullOrEmpty(aggregateName))
+            {
+                throw new InvalidOperationException($"Rule: '{Name}'. Argument '{ARG_AGGREGATOR}' not found");
+            }
+
+            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_AGGREGATOR}: '{aggregateName}'.");
+
+            _aggregate = aggregates.FirstOrDefault(a => a.Name == aggregateName);
             if (_aggregate == null)
             {
-                throw new InvalidOperationException($"{typeof(MatchesAggregateRule)} - Aggregate '{_singleArg}' not found");
+                throw new InvalidOperationException($"Rule: '{Name}'. Aggregate '{aggregateName}' not found");
             }
         }
 
