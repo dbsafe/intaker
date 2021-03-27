@@ -2,6 +2,7 @@
 using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace DataProcessor.Rules.Tests
 {
@@ -62,15 +63,16 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void SingleArg_Given_an_invalid_arg_Should_throw_an_exception()
+        public void Initialize_Given_missing_datetime_arg_Should_throw_an_exception()
         {
             try
             {
-                CreateRule("rule-name", "rule-description", "2020-01-aa", ValidationResultType.Critical);
+                var target = CreateRule("rule-name", "rule-description", "2020-01-aa", ValidationResultType.Critical);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid arg '2020-01-aa'", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument: 'DateTime'. Invalid value '2020-01-aa'", ex.Message);
                 return;
             }
 
@@ -78,29 +80,43 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void SingleArg_Given_a_null_arg_Should_throw_an_exception()
+        public void Initialize_Given_missing_aggregate_arg_Should_throw_an_exception()
         {
             try
             {
-                CreateRule("rule-name", "rule-description", null, ValidationResultType.Critical);
+                var target = CreateRuleWithoutArgs("rule-name", "rule-description", ValidationResultType.Critical);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Invalid arg ''", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'DateTime' not found", ex.Message);
                 return;
             }
 
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
         }
 
-        public MaxDateFieldRule CreateRule(string name, string description, string arg, ValidationResultType failValidationResult)
+        public MaxDateFieldRule CreateRule(string name, string description, string argDateTimeValue, ValidationResultType failValidationResult)
         {
             return new MaxDateFieldRule
             {
                 Description = description,
                 FailValidationResult = failValidationResult,
                 Name = name,
-                SingleArg = arg
+                Args = new KeyValuePair<string, string>[]
+                {
+                    new KeyValuePair<string, string>("DateTime", argDateTimeValue)
+                }
+            };
+        }
+
+        public MaxDateFieldRule CreateRuleWithoutArgs(string name, string description, ValidationResultType failValidationResult)
+        {
+            return new MaxDateFieldRule
+            {
+                Description = description,
+                FailValidationResult = failValidationResult,
+                Name = name
             };
         }
     }

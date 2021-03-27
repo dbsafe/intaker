@@ -1,20 +1,30 @@
-﻿using DataProcessor.Models;
+﻿using DataProcessor.Contracts;
+using DataProcessor.Models;
 using DataProcessor.Utils;
 using System;
+using System.Linq;
 
 namespace DataProcessor.Rules
 {
     public class MaxDateFieldRule : FieldRule
     {
+        private const string ARG_DATETIME = "DateTime";
         private DateTime _dateTimeArg;
 
-        protected override void SingleArgChanged() 
+        private void SetDateTimeArg()
         {
-            DataProcessorGlobal.Debug($"Rule: {Name}. Arg: '{_singleArg}'.");
-            var isValidDateTime = DateTime.TryParse(_singleArg, out _dateTimeArg);
+            var dateTimeTextArg = Args?.FirstOrDefault(a => a.Key == ARG_DATETIME).Value;
+            if (string.IsNullOrEmpty(dateTimeTextArg))
+            {
+                throw new InvalidOperationException($"Rule: '{Name}'. Argument '{ARG_DATETIME}' not found");
+            }
+
+            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_DATETIME}: '{dateTimeTextArg}'.");
+
+            var isValidDateTime = DateTime.TryParse(dateTimeTextArg, out _dateTimeArg);
             if (!isValidDateTime)
             {
-                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Invalid arg '{_singleArg}'");
+                throw new InvalidOperationException($"Rule: '{Name}'. Argument: '{ARG_DATETIME}'. Invalid value '{dateTimeTextArg}'");
             }
         }
 
@@ -30,6 +40,12 @@ namespace DataProcessor.Rules
             {
                 field.ValidationResult = FailValidationResult;
             }
+        }
+
+        public override void Initialize(FieldRuleConfiguration config)
+        {
+            base.Initialize(config);
+            SetDateTimeArg();
         }
     }
 }
