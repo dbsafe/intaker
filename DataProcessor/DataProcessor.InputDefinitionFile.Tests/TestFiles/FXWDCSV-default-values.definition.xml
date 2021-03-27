@@ -11,9 +11,13 @@
           <rule name="SequenceNumber-MinNumberFieldRule" description="Sequence number should equal or greater than 1" rule="MinNumberFieldRule" failValidationResult="Warning">
             <args>
               <arg name="ruleValue" value="1" />
-            </args>            
+            </args>
           </rule>
-          <rule name="SequenceNumber-MaxNumberFieldRule" description="Sequence number should be equal or less than 100" rule="MaxNumberFieldRule" arg="100" />
+          <rule name="SequenceNumber-MaxNumberFieldRule" description="Sequence number should be equal or less than 100" rule="MaxNumberFieldRule" arg="100" >
+            <args>
+              <arg name="ruleValue" value="100" />
+            </args>
+          </rule>
         </rules>
       </field>
     </fields>
