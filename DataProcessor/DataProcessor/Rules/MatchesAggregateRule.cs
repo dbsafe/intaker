@@ -9,23 +9,23 @@ namespace DataProcessor.Rules
 {
     public class MatchesAggregateRule : FieldRule
     {
-        private const string ARG_AGGREGATOR = "aggregate";
-        private Aggregate _aggregate;
+        private const string ARG_AGGREGATE = "AggregateName";
+        private Aggregate _aggregateArg;
 
         private void SetAggregate(IEnumerable<Aggregate> aggregates)
         {
-            var aggregateName = Args?.FirstOrDefault(a => a.Key == ARG_AGGREGATOR).Value;
-            if (string.IsNullOrEmpty(aggregateName))
+            var aggregateNameArg = Args?.FirstOrDefault(a => a.Key == ARG_AGGREGATE).Value;
+            if (string.IsNullOrEmpty(aggregateNameArg))
             {
-                throw new InvalidOperationException($"Rule: '{Name}'. Argument '{ARG_AGGREGATOR}' not found");
+                throw new InvalidOperationException($"Rule: '{Name}'. Argument '{ARG_AGGREGATE}' not found");
             }
 
-            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_AGGREGATOR}: '{aggregateName}'.");
+            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_AGGREGATE}: '{aggregateNameArg}'.");
 
-            _aggregate = aggregates.FirstOrDefault(a => a.Name == aggregateName);
-            if (_aggregate == null)
+            _aggregateArg = aggregates.FirstOrDefault(a => a.Name == aggregateNameArg);
+            if (_aggregateArg == null)
             {
-                throw new InvalidOperationException($"Rule: '{Name}'. Aggregate '{aggregateName}' not found");
+                throw new InvalidOperationException($"Rule: '{Name}'. Aggregate '{aggregateNameArg}' not found");
             }
         }
 
@@ -37,7 +37,7 @@ namespace DataProcessor.Rules
                 return;
             }
 
-            if (field.AsDecimal() != _aggregate.AsDecimal())
+            if (field.AsDecimal() != _aggregateArg.AsDecimal())
             {
                 field.ValidationResult = FailValidationResult;
             }

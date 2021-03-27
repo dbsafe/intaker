@@ -121,7 +121,7 @@ namespace DataProcessor.Rules.Tests
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("Rule: 'rule-name'. Argument 'aggregate' not found", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'AggregateName' not found", ex.Message);
                 return;
             }
 
@@ -137,7 +137,7 @@ namespace DataProcessor.Rules.Tests
                 Name = name,
                 Args = new KeyValuePair<string, string>[] 
                 { 
-                    new KeyValuePair<string, string>("aggregate", argAgregatorValue) 
+                    new KeyValuePair<string, string>("AggregateName", argAgregatorValue) 
                 }
             };
         }
