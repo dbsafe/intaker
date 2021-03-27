@@ -7,12 +7,20 @@
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" failValidationResult="Error" />
       <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
         <rules>
-          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" arg="1" failValidationResult="Warning" />
-          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" arg="100" failValidationResult="Error" />
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Sequence number should equal or greater than 1" failValidationResult="Warning">
+            <args>
+              <arg name="NumericValue" value="1" />
+            </args>
+          </rule>
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Sequence number should be equal or less than 100" failValidationResult="Error">
+            <args>
+              <arg name="NumericValue" value="100" />
+            </args>
+          </rule>
           <rule name="SequenceNumber-RangeNumberFieldRule" rule="RangeNumberFieldRule" description="Sequence number should be between 1 and 100" failValidationResult="Warning">
             <args>
-              <arg name="Min" value="1" />
-              <arg name="Max" value="100" />
+              <arg name="NumericValueMin" value="1" />
+              <arg name="NumericValueMax" value="100" />
             </args>
           </rule>
         </rules>
@@ -55,12 +63,20 @@
       <field name="RecordType" description="Record Type (Trailer Line)" decoder="TextDecoder" pattern="TRAILER" failValidationResult="Error" />
       <field name="BalanceTotal" description="Balance Total" decoder="DecimalDecoder" pattern="-{0,1}[0-9]{1,10}\.[0-9]{2}" failValidationResult="Error">
         <rules>
-          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" arg="BalanceAggregator" failValidationResult="Warning"/>
+          <rule name="BalanceTotal-MatchesAggregateRule" rule="MatchesAggregateRule" description="Balance Total is incorrect" failValidationResult="Warning">
+            <args>
+              <arg name="AggregateName" value="BalanceAggregator" />
+            </args>
+          </rule>
         </rules>
       </field>
       <field name="RecordCount" description="Record Count" decoder="IntegerDecoder" pattern="\d{1,5}" failValidationResult="Error">
         <rules>
-          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" arg="DataRowCountAggregator" failValidationResult="Error" />
+          <rule name="RecordCount-MatchesAggregateRule" rule="MatchesAggregateRule" description="Record Count should match the number data row" failValidationResult="Error">
+            <args>
+              <arg name="AggregateName" value="DataRowCountAggregator" />
+            </args>
+          </rule>
         </rules>
       </field>
     </fields>

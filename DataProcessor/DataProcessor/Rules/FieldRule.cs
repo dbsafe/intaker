@@ -8,32 +8,9 @@ namespace DataProcessor.Rules
 {
     public abstract class FieldRule : IFieldRule
     {
-        protected string _singleArg;
-        protected KeyValuePair<string, string>[] _args;
-
         public virtual void Validate(Field field) { }
-        protected virtual void SingleArgChanged() { }
-        protected virtual void ArgsChanged() { }
 
-        public string SingleArg
-        {
-            get => _singleArg;
-            set
-            {
-                _singleArg = value;
-                SingleArgChanged();
-            }
-        }
-
-        public KeyValuePair<string, string>[] Args
-        {
-            get => _args;
-            set
-            {
-                _args = value;
-                ArgsChanged();
-            }
-        }
+        public KeyValuePair<string, string>[] Args { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }

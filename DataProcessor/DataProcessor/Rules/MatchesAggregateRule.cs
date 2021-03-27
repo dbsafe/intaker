@@ -9,24 +9,23 @@ namespace DataProcessor.Rules
 {
     public class MatchesAggregateRule : FieldRule
     {
-        private Aggregate _aggregate;
+        private const string ARG_AGGREGATE = "AggregateName";
+        private Aggregate _aggregateArg;
 
-        protected override void SingleArgChanged()
+        private void SetArg(IEnumerable<Aggregate> aggregates)
         {
-            DataProcessorGlobal.Debug($"Rule: {Name}. Arg: '{_singleArg}'.");
-            var isValidArg = !string.IsNullOrWhiteSpace(_singleArg);
-            if (!isValidArg)
+            var textArg = Args?.FirstOrDefault(a => a.Key == ARG_AGGREGATE).Value;
+            if (string.IsNullOrEmpty(textArg))
             {
-                throw new InvalidOperationException($"RuleName: {Name}, RuleDescription: {Description} - Arg cannot be null or empty");
+                throw new InvalidOperationException($"Rule: '{Name}'. Argument '{ARG_AGGREGATE}' not found");
             }
-        }
 
-        private void SetAggregate(IEnumerable<Aggregate> aggregates)
-        {
-            _aggregate = aggregates.FirstOrDefault(a => a.Name == _singleArg);
-            if (_aggregate == null)
+            DataProcessorGlobal.Debug($"Rule: {Name}. Argument {ARG_AGGREGATE}: '{textArg}'.");
+
+            _aggregateArg = aggregates.FirstOrDefault(a => a.Name == textArg);
+            if (_aggregateArg == null)
             {
-                throw new InvalidOperationException($"{typeof(MatchesAggregateRule)} - Aggregate '{_singleArg}' not found");
+                throw new InvalidOperationException($"Rule: '{Name}'. Aggregate '{textArg}' not found");
             }
         }
 
@@ -38,7 +37,7 @@ namespace DataProcessor.Rules
                 return;
             }
 
-            if (field.AsDecimal() != _aggregate.AsDecimal())
+            if (field.AsDecimal() != _aggregateArg.AsDecimal())
             {
                 field.ValidationResult = FailValidationResult;
             }
@@ -47,7 +46,7 @@ namespace DataProcessor.Rules
         public override void Initialize(FieldRuleConfiguration config)
         {
             base.Initialize(config);
-            SetAggregate(config.Aggregates);
+            SetArg(config.Aggregates);
         }
     }
 }

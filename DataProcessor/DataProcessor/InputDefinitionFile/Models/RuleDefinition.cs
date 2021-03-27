@@ -14,9 +14,6 @@ namespace DataProcessor.InputDefinitionFile.Models
         [XmlAttribute("rule")]
         public string Rule { get; set; }
 
-        [XmlAttribute("arg")]
-        public string SingleArg { get; set; }
-
         [XmlArray(ElementName = "args")]
         [XmlArrayItem(ElementName = "arg")]
         public ArgDefinition[] Args { get; set; }

@@ -201,7 +201,6 @@ namespace DataProcessor.ProcessorDefinition
             rule.Description = ruleDefinition.Description;
             rule.FailValidationResult = ruleDefinition.FailValidationResult;
 
-            rule.SingleArg = ruleDefinition.SingleArg;
             if (ruleDefinition.Args != null)
             {
                 rule.Args = ruleDefinition.Args.Select(a => new KeyValuePair<string, string>(a.Name, a.Value)).ToArray();

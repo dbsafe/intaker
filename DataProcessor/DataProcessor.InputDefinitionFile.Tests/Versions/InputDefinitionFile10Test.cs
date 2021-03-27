@@ -22,7 +22,6 @@ namespace DataProcessor.InputDefinitionFile.Tests.Versions
                 Name = "SequenceNumber-MinNumberFieldRule",
                 Description = "Sequence number should be greater or equal to 10",
                 Rule = "MinNumberFieldRule",
-                SingleArg = "10",
                 FailValidationResult = ValidationResultType.Error
             };
 

@@ -7,8 +7,16 @@
       <field name="LocationID" description="Location ID" decoder="TextDecoder" pattern="[a-zA-Z]{12}" failValidationResult="Error"/>
       <field name="SequenceNumber" description="Sequence Number" decoder="IntegerDecoder" pattern="(?!0{4})[0-9]{4}" failValidationResult="Error">
         <rules>
-          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Minimum sequence number should be 10" arg="10" failValidationResult="Warning" />
-          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" arg="100" failValidationResult="Error" />
+          <rule name="SequenceNumber-MinNumberFieldRule" rule="MinNumberFieldRule" description="Minimum sequence number should be 10" failValidationResult="Warning">
+            <args>
+              <arg name="NumericValue" value="10" />
+            </args>
+          </rule>
+          <rule name="SequenceNumber-MaxNumberFieldRule" rule="MaxNumberFieldRule" description="Maximum sequence number should be 100" failValidationResult="Error">
+            <args>
+              <arg name="NumericValue" value="100" />
+            </args>
+          </rule>
         </rules>
       </field>
       <field name="Optional" description="Optional Field" />

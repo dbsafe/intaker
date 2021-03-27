@@ -2,6 +2,7 @@
 using DataProcessor.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 
 namespace DataProcessor.Rules.Tests
 {
@@ -51,9 +52,7 @@ namespace DataProcessor.Rules.Tests
                 }
             };
 
-            var target = new MatchesAggregateRule { Description = "rule-description", Name = "rule-name", SingleArg = "aggregate-2" };
-
-
+            var target = new MatchesAggregateRule { Description = "rule-description", Name = "rule-name" };
             try
             {
                 target.Initialize(config);
@@ -82,14 +81,13 @@ namespace DataProcessor.Rules.Tests
         public void Initialize_Given_that_the_aggregator_is_not_found_Should_throw_an_exception()
         {
             var target = CreateRule("rule-name", "rule-description", "aggregate-3", ValidationResultType.Critical);
-
             try
             {
                 target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual($"DataProcessor.Rules.MatchesAggregateRule - Aggregate 'aggregate-3' not found", ex.Message);
+                Assert.AreEqual($"Rule: 'rule-name'. Aggregate 'aggregate-3' not found", ex.Message);
                 return;
             }
 
@@ -97,29 +95,60 @@ namespace DataProcessor.Rules.Tests
         }
 
         [TestMethod]
-        public void SingleArg_Given_a_null_arg_Should_throw_an_exception()
+        public void Initialize_Given_an_invalid_aggregator_name_Should_throw_an_exception()
         {
             try
             {
-                CreateRule("rule-name", "rule-description", null, ValidationResultType.Critical);
+                var target = CreateRule("rule-name", "rule-description", "aggregate-100", ValidationResultType.Critical);
+                target.Initialize(_config);
             }
             catch (InvalidOperationException ex)
             {
-                Assert.AreEqual("RuleName: rule-name, RuleDescription: rule-description - Arg cannot be null or empty", ex.Message);
+                Assert.AreEqual("Rule: 'rule-name'. Aggregate 'aggregate-100' not found", ex.Message);
                 return;
             }
 
             Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
         }
 
-        public MatchesAggregateRule CreateRule(string name, string description, string arg, ValidationResultType failValidationResult)
+        [TestMethod]
+        public void Initialize_Given_missing_aggregate_arg_Should_throw_an_exception()
+        {
+            try
+            {
+                var target = CreateRuleWithoutArgs("rule-name", "rule-description", ValidationResultType.Critical);
+                target.Initialize(_config);
+            }
+            catch (InvalidOperationException ex)
+            {
+                Assert.AreEqual("Rule: 'rule-name'. Argument 'AggregateName' not found", ex.Message);
+                return;
+            }
+
+            Assert.Fail($"An {nameof(InvalidOperationException)} was not thrown");
+        }
+
+        public MatchesAggregateRule CreateRule(string name, string description, string argAgregatorValue, ValidationResultType failValidationResult)
         {
             return new MatchesAggregateRule
             {
                 Description = description,
                 FailValidationResult = failValidationResult,
                 Name = name,
-                SingleArg = arg
+                Args = new KeyValuePair<string, string>[] 
+                { 
+                    new KeyValuePair<string, string>("AggregateName", argAgregatorValue) 
+                }
+            };
+        }
+
+        public MatchesAggregateRule CreateRuleWithoutArgs(string name, string description, ValidationResultType failValidationResult)
+        {
+            return new MatchesAggregateRule
+            {
+                Description = description,
+                FailValidationResult = failValidationResult,
+                Name = name
             };
         }
     }

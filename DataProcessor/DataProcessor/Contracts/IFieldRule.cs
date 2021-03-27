@@ -13,7 +13,6 @@ namespace DataProcessor.Contracts
         void Validate(Field field);
         string Name { get; set; }
         string Description { get; set; }
-        string SingleArg { get; set; }
         KeyValuePair<string, string>[] Args { get; set; }
         ValidationResultType FailValidationResult { get; set; }
         void Initialize(FieldRuleConfiguration config);
