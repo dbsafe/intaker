@@ -3,8 +3,9 @@ using MatBlazor;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
-
+using System.Threading.Tasks;
 namespace FileValidator.Blazor.Pages
 {
     public partial class FileSpecificationsPage
@@ -17,16 +18,16 @@ namespace FileValidator.Blazor.Pages
 
         [Inject]
         public IFileSpecificationsStore FileSpecificationsStore { get; set; }
-        
+
         [Inject]
         public IJSRuntime JS { get; set; }
-        
+
         [Inject]
         public FileSpecificationsPageState FileSpecificationsPageState { get; set; }
-        
+
         [Inject]
         public ApplicationsEvents ApplicationsEvents { get; set; }
-        
+
         [Inject]
         public IMatToaster Toaster { get; set; }
 
@@ -125,7 +126,7 @@ namespace FileValidator.Blazor.Pages
         private void Save()
         {
             _newFileSpecification.Content = _editorManager.GetValue();
-            
+
             var updateFileSpecificationResult = FileSpecificationsStore.UpdateFileSpecification(_newFileSpecification);
             if (updateFileSpecificationResult.Succeed)
             {
@@ -164,5 +165,44 @@ namespace FileValidator.Blazor.Pages
 
             return $"{FileSpecificationsPageState.SelectedFileSpecification.Name} - {FileSpecificationsPageState.SelectedFileSpecification.Description}";
         }
+
+        private async Task UploadSpecFile(IMatFileUploadEntry[] files)
+        {
+            var file = files.FirstOrDefault();
+            if (file == null)
+            {
+                return;
+            }
+
+            string content = string.Empty;
+            using (var stream = new MemoryStream())
+            {
+                await file.WriteToStreamAsync(stream);
+                stream.Seek(0, SeekOrigin.Begin);
+                using var reader = new StreamReader(stream);
+                content = await reader.ReadToEndAsync();
+            }
+
+            var fileSpec = new FileSpecification
+            {
+                Name = file.Name,
+                Content = content,
+                Description = "Custom Specification File"
+            };
+
+            var addFileSpecificationResult = FileSpecificationsStore.AddFileSpecification(fileSpec);
+
+            if(addFileSpecificationResult.Succeed)
+            {
+                Toaster.Add("File specification added", MatToastType.Success);
+                FileSpecificationOption fileSpecificationOption = new(addFileSpecificationResult.Data, fileSpec.Name, fileSpec.Description);
+                LoadSelectedFileSpecification(fileSpecificationOption);
+            }
+            else
+            {
+                Toaster.Add(addFileSpecificationResult.Message, MatToastType.Danger);
+            }
+
+		}
     }
 }
