@@ -20,3 +20,9 @@ steps:
 
 - script: dotnet build ./DataProcessor /warnaserror --configuration Release -p:Version=$(_version) -p:PackageVersion=$(_packageVersion) -p:PackageOutputPath=$(Build.ArtifactStagingDirectory)
   displayName: Build solution      
+
+- task: DotNetCoreCLI@2
+  displayName: Execute tests
+  inputs:
+    command: 'test'
+    workingDirectory: ./DataProcessor
