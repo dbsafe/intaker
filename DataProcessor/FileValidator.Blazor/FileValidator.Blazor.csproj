@@ -22,4 +22,9 @@
     <ProjectReference Include="..\FileValidator.Domain\FileValidator.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\javascript\" />
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
 </Project>

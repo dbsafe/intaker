@@ -1,4 +1,6 @@
-﻿window.tabulator = {
+﻿import { Tabulator } from 'tabulator-tables';
+
+window.tabulator = {
     displayEmptyRow: (row) => {
         var element = row.getElement();
         while (element.firstChild) {
@@ -35,7 +37,8 @@
 
         row.getElement().appendChild(holderEl);
 
-        var errorSubTable = new Tabulator(tableEl, {
+        // errorSubTable
+        new Tabulator(tableEl, {
             headerVisible: false,
             layout: "fitDataTable",
             data: data.errorsAndWarnings,
@@ -62,7 +65,8 @@
 
         row.getElement().appendChild(holderEl);
 
-        var childrenRowsSubTable = new Tabulator(tableEl, {
+        // childrenRowsSubTable
+        new Tabulator(tableEl, {
             headerVisible: true,
             layout: "fitDataTable",
             data: childrenRowGroup,
@@ -73,13 +77,13 @@
         })
     },
     displayChildrenGroups: (row, columnInfos, errorsAndWarningsColumnInfo) => {
+
         var data = row.getData();
         if (!data.childrenRowGroups) {
             return;
         }
 
         for (var i = 0; i < data.childrenRowGroups.length; i++) {
-
             var childrenRowGroup = data.childrenRowGroups[i];
             tabulator.displayChildrenGroup(row, childrenRowGroup, columnInfos, errorsAndWarningsColumnInfo)
         }
@@ -95,7 +99,7 @@
                 }
             };
 
-            table = new Tabulator(id, tabulatorData);
+            new Tabulator(id, tabulatorData);
         }
         catch (err) {
             console.log(err.message);
@@ -120,11 +124,11 @@
                     } else {
                         tabulator.displayErrorsAndWarnings(row, errorsAndWarningsColumnInfo);
                     }
-                    
+
                     tabulator.displayChildrenGroups(row, tableModel.columnInfos, errorsAndWarningsColumnInfo);
                 }
             };
-            table = new Tabulator(id, masterTabulatorData);
+            new Tabulator(id, masterTabulatorData);
         }
         catch (err) {
             console.log(err.message);
@@ -137,7 +141,7 @@
                 layout: "fitDataStretch",
                 columns: tableModel.columnInfos
             };
-            table = new Tabulator(id, masterTabulatorData);
+            new Tabulator(id, masterTabulatorData);
         }
         catch (err) {
             console.log(err.message);
