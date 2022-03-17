@@ -17,7 +17,11 @@
                     <td>@context.Description</td>
                 </MatTableRow>
             </MatTable>
-            <MatFileUpload OnChange="@UploadSpecFile" Label="Add a specification file" AllowMultiple="false"></MatFileUpload>
+            
+            @if (!_inEditMode)
+            {
+                <MatFileUpload OnChange="@UploadSpecFile" Label="Add a specification file" AllowMultiple="false"></MatFileUpload>
+            }
 
             <div class="space-20"></div>
 

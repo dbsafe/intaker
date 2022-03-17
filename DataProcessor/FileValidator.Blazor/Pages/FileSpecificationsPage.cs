@@ -195,12 +195,8 @@ namespace FileValidator.Blazor.Pages
             if(addFileSpecificationResult.Succeed)
             {
                 Toaster.Add("File specification added", MatToastType.Success);
-                LoadFileSpecification(new FileSpecificationOption(fileSpec.Id, fileSpec.Name, fileSpec.Description));
-				_inEditMode = false;
-                _allowSelection = true;
-                _editorManager.SetReadOnly(!_inEditMode);
-                _editorManager.SetValue(content);
-                _editorManager.Focus();
+                FileSpecificationOption fileSpecificationOption = new(addFileSpecificationResult.Data, fileSpec.Name, fileSpec.Description);
+                LoadSelectedFileSpecification(fileSpecificationOption);
             }
             else
             {
