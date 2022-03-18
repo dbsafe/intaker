@@ -22,12 +22,4 @@
     <ProjectReference Include="..\FileValidator.Domain\FileValidator.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Include="wwwroot\javascript\app-tabulator.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="javascript\src\" />
-  </ItemGroup>
-
 </Project>
