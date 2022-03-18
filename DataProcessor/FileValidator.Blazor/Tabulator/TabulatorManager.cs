@@ -25,18 +25,18 @@ namespace FileValidator.Blazor
         {
             var columnInfo = new List<object>
             {
-                new { title = "Line Number", field = "lineNumber", headerSort = false },
-                new { title = "Validation", field = "validationResult", headerSort = false }
+                new { title = "Line Number", field = "lineNumber" },
+                new { title = "Validation", field = "validationResult" }
             };
 
             var counter = 0;
             var headers = GetHeaderNames(rowDefinition.Fields);
             foreach (var header in headers)
             {
-                columnInfo.Add(new { title = header, field = $"field_{counter++}", headerSort = false });
+                columnInfo.Add(new { title = header, field = $"field_{counter++}" });
             }
 
-            columnInfo.Add(new { title = "Raw", field = "raw", headerSort = false });
+            columnInfo.Add(new { title = "Raw", field = "raw" });
 
             return columnInfo;
         }

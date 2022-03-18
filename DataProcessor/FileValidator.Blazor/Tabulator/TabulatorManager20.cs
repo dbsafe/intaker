@@ -16,9 +16,9 @@ namespace FileValidator.Blazor
 
         private static List<object> InitUndecodedRowsColumnInfo { get; } = new List<object>()
         {
-            new { title = "Line Number", field = "lineNumber", headerSort = false },
-            new { title = "Raw", field = "raw", headerSort = false },
-            new { title = "Error", field = "error", headerSort = false }
+            new { title = "Line Number", field = "lineNumber" },
+            new { title = "Raw", field = "raw" },
+            new { title = "Error", field = "error" }
         };
 
         public static TabulatorManager20 InitDecodedRows(IJSRuntime js, string id, IEnumerable<DataRow20> rows, Datas dataRowsDefinition)
