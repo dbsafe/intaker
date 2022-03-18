@@ -3,21 +3,13 @@
     "version": "1.0.0",
     "description": "",
     "main": "index.js",
-    "scripts": {
-        "build-prod": "webpack --config webpack.config.prod.js --output-path ../wwwroot/js --output-filename index.bundle.min.js",
-        "build-dev": "webpack --config webpack.config.dev.js --output-path ../wwwroot/js"
-    },
+    "scripts": {},
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "devDependencies": {
-        "css-loader": "^6.7.1",
-        "sass-loader": "^12.6.0",
-        "style-loader": "^3.3.1",
-        "webpack": "^5.70.0",
-        "webpack-cli": "^4.9.2"
-    },
     "dependencies": {
         "tabulator-tables": "^5.1.7"
+    },
+    "devDependencies": {
     }
 }
