@@ -23,8 +23,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\javascript\" />
-    <Folder Include="wwwroot\js\" />
+    <None Include="wwwroot\javascript\app-tabulator.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="javascript\src\" />
   </ItemGroup>
 
 </Project>
