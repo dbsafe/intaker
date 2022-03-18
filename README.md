@@ -1,4 +1,4 @@
-[![Build Status](https://dev.azure.com/dbsafe/dbsafe/_apis/build/status/intaker/intaker?branchName=refs%2Fpull%2F54%2Fmerge)](https://dev.azure.com/dbsafe/dbsafe/_build/latest?definitionId=11&branchName=refs%2Fpull%2F54%2Fmerge)
+[![Build Status](https://dev.azure.com/dbsafe/dbsafe/_apis/build/status/intaker/intaker?branchName=master)](https://dev.azure.com/dbsafe/dbsafe/_build/latest?definitionId=11&branchName=master)
 
 # Intaker
 
