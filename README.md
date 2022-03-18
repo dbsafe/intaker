@@ -1,4 +1,4 @@
-![Build Status](https://codebuild.us-east-1.amazonaws.com/badges?uuid=eyJlbmNyeXB0ZWREYXRhIjoianVqVjkzek5JY0kvbDNVaE50ZU9Ua3ZMNDN0SXVpTTVUYTEyOFphQ1dYMDVFVXdkK3NqZXpCUkxDeDRpcUJGTzludWJadVZpN1VkakhsdEFwcnNGVVFVPSIsIml2UGFyYW1ldGVyU3BlYyI6IkZHaTFEaHgzT2QreHF1eEIiLCJtYXRlcmlhbFNldFNlcmlhbCI6MX0%3D&branch=master)
+[![Build Status](https://dev.azure.com/dbsafe/dbsafe/_apis/build/status/intaker/intaker?branchName=refs%2Fpull%2F54%2Fmerge)](https://dev.azure.com/dbsafe/dbsafe/_build/latest?definitionId=11&branchName=refs%2Fpull%2F54%2Fmerge)
 
 # Intaker
 
@@ -6,8 +6,6 @@ File Parsing & Data Validation with .Net. It uses a declarative way of defining 
 
 Intaker UI is a demo website deployed to 
 > AWS: http://intaker-ui.s3-website-us-east-1.amazonaws.com/
-> 
-> Azure: http://intaker-ui.azurewebsites.net/
 
 Other demo projects
 https://github.com/dbsafe/intaker-demo
