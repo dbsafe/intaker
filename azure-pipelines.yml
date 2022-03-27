@@ -26,3 +26,9 @@ steps:
   inputs:
     command: 'test'
     workingDirectory: ./DataProcessor
+
+- task: PublishBuildArtifacts@1
+  condition: and(succeeded(), eq(variables._publishNugetPackages, 'true'))
+  displayName: 'Publish Artifact'
+  inputs:
+    ArtifactName: '$(Build.BuildNumber)'
