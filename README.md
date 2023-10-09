@@ -5,7 +5,9 @@
 File Parsing & Data Validation with .Net. It uses a declarative way of defining the file specs. 
 
 Intaker UI is a demo website deployed to 
+
 > AWS: http://intaker-ui.s3-website-us-east-1.amazonaws.com/
+
 > Azure: http://intaker-demo-webapp.azurewebsites.net/
 
 ### Demo projects
