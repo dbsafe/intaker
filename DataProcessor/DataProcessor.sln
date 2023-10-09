@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30104.148
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.DataSource.File.Tests", "DataProcessor.DataSource.File.Tests\DataProcessor.DataSource.File.Tests.csproj", "{2DB1E784-8389-4BF7-98A3-8C6D980BC5CC}"
 EndProject
@@ -30,12 +30,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{1F8E7641-B157-4F61-AABB-9AEAB66F138E}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.DataSource.Stream.Tests", "DataProcessor.DataSource.Stream.Tests\DataProcessor.DataSource.Stream.Tests.csproj", "{C29A5865-ED07-4C75-9616-2736AA4CD55A}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CEFDBB1C-6320-458A-919B-62A0D1685A57}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileValidator.Domain", "FileValidator.Domain\FileValidator.Domain.csproj", "{E8DAD325-7D69-4DC6-A2CF-BB4DF203FCB3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileValidator.Blazor", "FileValidator.Blazor\FileValidator.Blazor.csproj", "{F0E6D099-7435-4496-9685-F2967A45A2E1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataProcessor.Transformations.Tests", "DataProcessor.Transformations.Tests\DataProcessor.Transformations.Tests.csproj", "{69DBB00D-5662-447C-8CD5-8BDCBE95EAF8}"
 EndProject
@@ -102,14 +96,6 @@ Global
 		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C29A5865-ED07-4C75-9616-2736AA4CD55A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E8DAD325-7D69-4DC6-A2CF-BB4DF203FCB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E8DAD325-7D69-4DC6-A2CF-BB4DF203FCB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E8DAD325-7D69-4DC6-A2CF-BB4DF203FCB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E8DAD325-7D69-4DC6-A2CF-BB4DF203FCB3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0E6D099-7435-4496-9685-F2967A45A2E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0E6D099-7435-4496-9685-F2967A45A2E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0E6D099-7435-4496-9685-F2967A45A2E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0E6D099-7435-4496-9685-F2967A45A2E1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{69DBB00D-5662-447C-8CD5-8BDCBE95EAF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{69DBB00D-5662-447C-8CD5-8BDCBE95EAF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{69DBB00D-5662-447C-8CD5-8BDCBE95EAF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -131,8 +117,6 @@ Global
 		{93A459AC-446E-48C6-9B74-1A37ABC54FBE} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
 		{0D3F4737-9328-44BB-8DDE-7C65A1C6234F} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
 		{C29A5865-ED07-4C75-9616-2736AA4CD55A} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
-		{E8DAD325-7D69-4DC6-A2CF-BB4DF203FCB3} = {CEFDBB1C-6320-458A-919B-62A0D1685A57}
-		{F0E6D099-7435-4496-9685-F2967A45A2E1} = {CEFDBB1C-6320-458A-919B-62A0D1685A57}
 		{69DBB00D-5662-447C-8CD5-8BDCBE95EAF8} = {1F8E7641-B157-4F61-AABB-9AEAB66F138E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
