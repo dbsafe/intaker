@@ -6,21 +6,13 @@ File Parsing & Data Validation with .Net. It uses a declarative way of defining 
 
 Intaker UI is a demo website deployed to 
 > AWS: http://intaker-ui.s3-website-us-east-1.amazonaws.com/
-
 > Azure: http://intaker-demo-webapp.azurewebsites.net/
 
-Other demo projects
-https://github.com/dbsafe/intaker-demo
+### Demo projects
 
-## Dependencies
-#### Intaker library uses
-- .Net Core
-#### Demo UI uses
-- .Net Core
-- Blazor
-- MatBlazor - https://www.matblazor.com/
-- Tabulator - http://tabulator.info/
-- Ace Editor - https://ace.c9.io/
+https://github.com/dbsafe/intaker-in-action
+
+https://github.com/dbsafe/intaker-demo
 
 ## Basic Idea
 The basic idea is that a file specification can be declared using a XML file.
